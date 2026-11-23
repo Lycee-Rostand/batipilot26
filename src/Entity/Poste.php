@@ -34,11 +34,8 @@ class Poste
     #[ORM\OneToMany(targetEntity: Tache::class, mappedBy: 'PosteId')]
     private Collection $taches;
 
-    /**
-     * @var Collection<int, ChantierPoste>
-     */
-    #[ORM\OneToMany(targetEntity: ChantierPoste::class, mappedBy: 'poste')]
-    private Collection $chantierPostes;
+    #[ORM\Column(length: 3, nullable: true)]
+    private ?string $visibilite = null;
 
     public function __construct()
     {
@@ -136,32 +133,17 @@ class Poste
         return $this;
     }
 
-    /**
-     * @return Collection<int, ChantierPoste>
-     */
-    public function getChantierPostes(): Collection
+    public function getVisibilite(): ?string
     {
-        return $this->chantierPostes;
+        return $this->visibilite;
     }
 
-    public function addChantierPoste(ChantierPoste $chantierPoste): static
+    public function setVisibilite(?string $visibilite): static
     {
-        if (!$this->chantierPostes->contains($chantierPoste)) {
-            $this->chantierPostes->add($chantierPoste);
-            $chantierPoste->setPoste($this);
-        }
-
-        return $this;
-    }
-
-    public function removeChantierPoste(ChantierPoste $chantierPoste): static
-    {
-        if ($this->chantierPostes->removeElement($chantierPoste)) {
-            if ($chantierPoste->getPoste() === $this) {
-                $chantierPoste->setPoste(null);
-            }
-        }
+        $this->visibilite = $visibilite;
 
         return $this;
     }
 }
+
+
