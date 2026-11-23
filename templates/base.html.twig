@@ -82,6 +82,25 @@
             <main id="main-content" class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
+                        <div class="page-header">
+                            <div>
+                                <h1>{% block title_page %}{% endblock %}</h1>
+                                <p class="subtitle">{% block subtitle_page %}{% endblock %}</p>
+                            </div>
+
+                            <div class="page-header__actions bp-head-actions">
+                                <twig:Cta
+                                    route="devis_edition"
+                                    message="Démarrer un nouveau devis"
+                                    icon="plus"
+                                />
+                                <twig:Cta
+                                    route="devis_archives"
+                                    message="Voir les devis archivés"
+                                    secondaire="{{ true }}"
+                                />
+                            </div>
+                        </div>
                         {% block body %}{% endblock %}
                     </div>
                 </div>
@@ -90,10 +109,12 @@
         </div>
     </div>
 
-    <script src="{{ asset('vendor/bootstrap-5.3.8.bundle.min.js') }}"></script>
-    {{ include('partials/_routes_js.html.twig') }}
-    <script src="{{ asset('js/batipilot/bp-ui.js') }}"></script>
-    <script src="{{ asset('js/batipilot/bp-core.js') }}"></script>
-    {% block javascripts %}{% endblock %}
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {{ include('partials/_routes_js.html.twig') }}
+        <script src="{{ asset('vendor/bootstrap-5.3.8.bundle.min.js') }}"></script>
+        <script src="{{ asset('js/batipilot/bp-ui.js') }}"></script>
+        <script src="{{ asset('js/batipilot/bp-core.js') }}"></script>
+    {% endblock %}
 </body>
 </html>

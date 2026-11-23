@@ -43,12 +43,6 @@
       '</div></section>';
   }
 
-  function render() {
-    const total = Object.values(state.data).reduce((n, a) => n + a.length, 0);
-    $('#devis-total').textContent = total + ' devis';
-    $('#devis-sections').innerHTML = D.SECTIONS.map(sectionHTML).join('');
-  }
-
   $('#devis-sections').addEventListener('click', e => {
     const t = e.target.closest('[data-toggle]');
     if (t) { const k = t.dataset.toggle; closed.has(k) ? closed.delete(k) : closed.add(k); render(); return; }
@@ -60,6 +54,4 @@
     else BP.toast('Consultation des versions non disponible dans cette maquette', 'info');
   });
   $('#devis-search').addEventListener('input', e => { query = e.target.value.trim().toLowerCase(); Object.keys(pages).forEach(k => { pages[k] = 1; }); render(); });
-
-  render();
 })();
