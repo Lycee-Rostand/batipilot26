@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\PosteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PosteRepository::class)]
@@ -19,23 +18,14 @@ class Poste
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $libelle = null;
 
-    #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    private ?float $tva = null;
-
     #[ORM\Column(nullable: true)]
     private ?int $ordre = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $archive = null;
 
     /**
      * @var Collection<int, Tache>
      */
     #[ORM\OneToMany(targetEntity: Tache::class, mappedBy: 'PosteId')]
     private Collection $taches;
-
-    #[ORM\Column(length: 3, nullable: true)]
-    private ?string $visibilite = null;
 
     public function __construct()
     {
@@ -67,18 +57,7 @@ class Poste
         return $this;
     }
 
-    public function getTva(): ?float
-    {
-        return $this->tva;
-    }
-
-    public function setTva(?float $tva): static
-    {
-        $this->tva = $tva;
-
-        return $this;
-    }
-
+    
     public function getOrdre(): ?int
     {
         return $this->ordre;
@@ -87,18 +66,6 @@ class Poste
     public function setOrdre(?int $ordre): static
     {
         $this->ordre = $ordre;
-
-        return $this;
-    }
-
-    public function isArchive(): ?bool
-    {
-        return $this->archive;
-    }
-
-    public function setArchive(?bool $archive): static
-    {
-        $this->archive = $archive;
 
         return $this;
     }
@@ -133,17 +100,6 @@ class Poste
         return $this;
     }
 
-    public function getVisibilite(): ?string
-    {
-        return $this->visibilite;
-    }
-
-    public function setVisibilite(?string $visibilite): static
-    {
-        $this->visibilite = $visibilite;
-
-        return $this;
-    }
 }
 
 
