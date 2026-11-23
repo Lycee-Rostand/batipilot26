@@ -19,6 +19,7 @@
             <dt>Libellé</dt><dd>{{ tache.libelle ?: '-' }}</dd>
             <dt>Poste</dt><dd>{{ tache.posteId ? tache.posteId.libelle : '-' }}</dd>
             <dt>Format de la réponse</dt><dd>{{ tache.tacheFormat ? tache.tacheFormat.nom : '-' }}</dd>
+            <dt>Archive</dt><dd>{{ tache.archive == 1 ? 'Oui' : 'Non' }}</dd>
         </dl>
     </section>
 

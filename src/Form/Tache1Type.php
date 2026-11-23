@@ -16,9 +16,10 @@ class Tache1Type extends AbstractType
     {
         $builder
             ->add('libelle')
+            ->add('archive')
             ->add('TacheFormat', EntityType::class, [
                 'class' => TacheFormat::class,
-                'choice_label' => 'id',
+                'choice_label' => 'nom',
             ])
             ->add('PosteId', EntityType::class, [
                 'class' => Poste::class,

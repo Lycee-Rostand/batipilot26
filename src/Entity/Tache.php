@@ -30,6 +30,9 @@ class Tache
     #[ORM\OneToMany(targetEntity: ChantierTache::class, mappedBy: 'tache')]
     private Collection $chantierTaches;
 
+    #[ORM\Column]
+    private ?int $archive = null;
+
     public function __construct()
     {
         $this->chantierTaches = new ArrayCollection();
@@ -102,6 +105,18 @@ class Tache
                 $chantierTach->setTache(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getArchive(): ?int
+    {
+        return $this->archive;
+    }
+
+    public function setArchive(int $archive): static
+    {
+        $this->archive = $archive;
 
         return $this;
     }
