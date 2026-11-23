@@ -1,0 +1,38 @@
+{{ form_start(form, {attr: {class: 'bp-form-card', novalidate: 'novalidate'}}) }}
+    <div class="bp-form-grid">
+        {% if form.chantier is defined %}
+            {{ form_row(form.chantier, {
+                label: 'Chantier',
+                row_attr: {class: 'bp-field'},
+                attr: {class: 'form-select'}
+            }) }}
+        {% endif %}
+
+        {{ form_row(form.poste, {
+            label: 'Poste',
+            row_attr: {class: 'bp-field'},
+            attr: {class: 'form-select'}
+        }) }}
+
+        {{ form_row(form.montantVenduHT, {
+            label: 'Montant vendu HT (€)',
+            row_attr: {class: 'bp-field'},
+            attr: {class: 'form-control', step: '0.01'}
+        }) }}
+
+        {{ form_row(form.montantFournituresHT, {
+            label: 'Montant fournitures HT (€)',
+            row_attr: {class: 'bp-field'},
+            attr: {class: 'form-control', step: '0.01'}
+        }) }}
+    </div>
+
+    {{ form_rest(form) }}
+
+    <div class="bp-form-actions">
+        <a href="{{ cancel_url|default(path('app_chantier_index')) }}" class="m-btn m-btn--ghost">Annuler</a>
+        <div class="bp-form-actions__right">
+            <button type="submit" class="m-btn m-btn--primary">{{ button_label|default('Enregistrer') }}</button>
+        </div>
+    </div>
+{{ form_end(form) }}

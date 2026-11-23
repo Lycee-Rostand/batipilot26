@@ -19,15 +19,21 @@ class InterEmployeType extends AbstractType
             ->add('nbHeures')
             ->add('employe', EntityType::class, [
                 'class' => Employe::class,
-                'choice_label' => 'id',
+                'choice_label' => function (Employe $empl): string {
+                    return $empl->getId().' - '.$empl->getNom().' '.$empl->getPrenom();
+                },
             ])
             ->add('chantier', EntityType::class, [
                 'class' => Chantier::class,
-                'choice_label' => 'id',
+                'choice_label' => function(Chantier $chant): string {
+                    return $chant->getID().' - '.$chant->getReference();
+                },
             ])
             ->add('poste', EntityType::class, [
                 'class' => Poste::class,
-                'choice_label' => 'id',
+                'choice_label' => function(Poste $poste): string {
+                    return $poste->getId().' - '.$poste->getLibelle();
+                },
             ])
         ;
     }

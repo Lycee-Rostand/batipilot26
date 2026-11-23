@@ -1,0 +1,6 @@
+<form method="post"
+      action="{{ path('app_chantier_poste_delete', {'id': chantier_poste.id}) }}"
+      data-bp-confirm="Supprimer ce poste du chantier ?">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ chantier_poste.id) }}">
+    <button type="submit" class="m-btn m-btn--danger">Supprimer</button>
+</form>

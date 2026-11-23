@@ -14,6 +14,7 @@
                 <th>RefInterne</th>
                 <th>DateSignature</th>
                 <th>DateRDVClient</th>
+                <th>EtatDevis</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -26,6 +27,8 @@
                 <td>{{ devi.refInterne }}</td>
                 <td>{{ devi.dateSignature ? devi.dateSignature|date('Y-m-d') : '' }}</td>
                 <td>{{ devi.dateRDVClient ? devi.dateRDVClient|date('Y-m-d') : '' }}</td>
+                <td>{{ devi.etatDevis.id }}</td>
+
                 <td>
                     <a href="{{ path('app_devis_show', {'id': devi.id}) }}">show</a>
                     <a href="{{ path('app_devis_edit', {'id': devi.id}) }}">edit</a>

@@ -40,6 +40,7 @@ class Poste
     public function __construct()
     {
         $this->taches = new ArrayCollection();
+        $this->chantierPostes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,13 +71,14 @@ class Poste
     {
         return $this->tva;
     }
-    
+
     public function setTva(?float $tva): static
     {
         $this->tva = $tva;
-    
+
         return $this;
     }
+
     public function getOrdre(): ?int
     {
         return $this->ordre;
