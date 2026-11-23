@@ -27,10 +27,16 @@ class Poste
     #[ORM\OneToMany(targetEntity: Tache::class, mappedBy: 'PosteId')]
     private Collection $taches;
 
+    /**
+     * @var Collection<int, VisibilitePoste>
+     */
+    #[ORM\OneToMany(targetEntity: VisibilitePoste::class, mappedBy: 'poste')]
+    private Collection $visibilitePostes;
+
     public function __construct()
     {
         $this->taches = new ArrayCollection();
-        $this->chantierPostes = new ArrayCollection();
+        $this->visibilitePostes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -57,7 +63,6 @@ class Poste
         return $this;
     }
 
-    
     public function getOrdre(): ?int
     {
         return $this->ordre;
@@ -100,6 +105,33 @@ class Poste
         return $this;
     }
 
+    /**
+     * @return Collection<int, VisibilitePoste>
+     */
+    public function getVisibilitePostes(): Collection
+    {
+        return $this->visibilitePostes;
+    }
+
+    public function addVisibilitePoste(VisibilitePoste $visibilitePoste): static
+    {
+        if (!$this->visibilitePostes->contains($visibilitePoste)) {
+            $this->visibilitePostes->add($visibilitePoste);
+            $visibilitePoste->setPoste($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVisibilitePoste(VisibilitePoste $visibilitePoste): static
+    {
+        if ($this->visibilitePostes->removeElement($visibilitePoste)) {
+            // set the owning side to null (unless already changed)
+            if ($visibilitePoste->getPoste() === $this) {
+                $visibilitePoste->setPoste(null);
+            }
+        }
+
+        return $this;
+    }
 }
-
-
