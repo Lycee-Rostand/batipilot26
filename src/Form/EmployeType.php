@@ -3,9 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Employe;
+use App\Entity\TypeCharpente;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class EmployeType extends AbstractType
 {
@@ -16,6 +18,10 @@ class EmployeType extends AbstractType
             ->add('prenom')
             ->add('coutHrMo')
             ->add('archive')
+            ->add('typeCharpente', EntityType::class, [
+                'class' => TypeCharpente::class,
+                'choice_label' => 'id',
+            ])
         ;
     }
 

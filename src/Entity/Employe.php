@@ -25,6 +25,10 @@ class Employe
     #[ORM\Column]
     private ?int $archive = null;
 
+    #[ORM\ManyToOne(inversedBy: 'employes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?TypeCharpente $type_charpente = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +78,18 @@ class Employe
     public function setArchive(int $archive): static
     {
         $this->archive = $archive;
+
+        return $this;
+    }
+
+    public function getTypeCharpente(): ?TypeCharpente
+    {
+        return $this->type_charpente;
+    }
+
+    public function setTypeCharpente(?TypeCharpente $type_charpente): static
+    {
+        $this->type_charpente = $type_charpente;
 
         return $this;
     }

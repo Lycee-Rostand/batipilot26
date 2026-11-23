@@ -1,35 +1,43 @@
-{% extends 'layout.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}Employés{% endblock %}
+{% block title %}Employe index{% endblock %}
 
 {% block body %}
-    <div class="page-header">
-        <div>
-            <h1>Employés</h1>
-            <p class="subtitle">Employés et coût horaire de main-d'œuvre.</p>
-        </div>
-        <div class="page-header__actions">
-            <a href="{{ path('app_employe_new') }}" class="m-btn m-btn--primary"><i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter un employé</a>
-        </div>
-    </div>
+    <h1>Employe index</h1>
 
-    <section class="m-card">
-        <div class="bp-table-wrap">
-            <table class="bp-table bp-table--cards">
-                <thead><tr><th>Employé</th><th class="is-num">Coût horaire main-d'œuvre (€)</th><th>Archivé</th><th class="is-end">Actions</th></tr></thead>
-                <tbody>
-                {% for employe in employes %}
-                    <tr>
-                    <td class="bp-table__ref" data-label="Employé">{{ employe.prenom ~ ' ' ~ employe.nom }}</td>
-                    <td class="is-num" data-label="Coût horaire main-d'œuvre (€)">{{ employe.coutHrMo is null ? '-' : employe.coutHrMo|number_format(2, ',', ' ') ~ ' €' }}</td>
-                    <td data-label="Archivé">{% if employe.archive %}<span class="bp-badge">Archivé</span>{% else %}<span class="bp-badge bp-badge--success">Actif</span>{% endif %}</td>
-                    <td class="is-end"><div class="bp-actions"><a class="bp-link" href="{{ path('app_employe_show', {'id': employe.id}) }}">Voir</a><a class="bp-link" href="{{ path('app_employe_edit', {'id': employe.id}) }}">Modifier</a></div></td>
-                    </tr>
-                {% else %}
-                    <tr><td colspan="4" class="bp-table__empty">Aucun employé.</td></tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </section>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>CoutHrMo</th>
+                <th>Type Charpente</th>
+                <th>Archive</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for employe in employes %}
+            <tr>
+                <td>{{ employe.id }}</td>
+                <td>{{ employe.nom }}</td>
+                <td>{{ employe.prenom }}</td>
+                <td>{{ employe.coutHrMo }}</td>
+                <td>{{ employe.TypeCharpente.nom }}</td>
+                <td>{{ employe.archive }}</td>
+                <td>
+                    <a href="{{ path('app_employe_show', {'id': employe.id}) }}">show</a>
+                    <a href="{{ path('app_employe_edit', {'id': employe.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_employe_new') }}">Create new</a>
 {% endblock %}
