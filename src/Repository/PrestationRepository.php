@@ -33,4 +33,23 @@ class PrestationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    /**
+     * Prestations non archivées, triées par poste puis par ordre.
+     *
+     * @return Prestation[]
+     */
+    public function findPourListe(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.poste', 'po')->addSelect('po')
+            ->leftJoin('p.tva', 't')->addSelect('t')
+            ->leftJoin('p.unite', 'u')->addSelect('u')
+            ->where('p.archive = false')
+            ->orderBy('po.ordre', 'ASC')
+            ->addOrderBy('po.libelle', 'ASC')
+            ->addOrderBy('p.ordre', 'ASC')
+            ->addOrderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -1,0 +1,136 @@
+{% extends 'layout.html.twig' %}
+
+{% macro valeur(v) %}{% if v is not null and v != '' %}{{ v }}{% else %}<span class="pl-vide">—</span>{% endif %}{% endmacro %}
+
+{% block title %}Prestations{% endblock %}
+
+{% block body %}
+{% import _self as f %}
+<style>
+  .pl{--bleu:#0b6fd4;--bleu-clair:#e6f1fe;--bleu-fonce:#0b5cad;--bord:#e3e7ec;--bord-ligne:#eef1f4;--gris:#5f6873;--texte:#262c35;color:var(--texte)}
+  .pl-entete{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px}
+  .pl-titre{margin:0;font-size:24px}
+  .pl-sous-titre{margin:4px 0 0;color:var(--gris)}
+  .pl-actions{display:flex;flex-wrap:wrap;gap:8px}
+  .pl-btn{min-height:40px;padding:0 14px;border:1px solid var(--bord);border-radius:6px;background:#fff;color:var(--texte);font:inherit;font-weight:600;cursor:pointer}
+  .pl-btn:hover{border-color:var(--bleu);color:var(--bleu)}
+  .pl-recherche{display:block;width:100%;max-width:420px;box-sizing:border-box;min-height:40px;padding:0 12px;margin-bottom:16px;border:1px solid var(--bord);border-radius:6px;font:inherit}
+  .pl-poste{background:#fff;border:1px solid var(--bord);border-radius:8px;margin-bottom:12px;overflow:hidden}
+  .pl-poste-entete{display:flex;align-items:center;gap:10px;min-height:52px;box-sizing:border-box;padding:14px 18px;cursor:pointer;list-style:none;font-weight:700}
+  .pl-poste-entete::-webkit-details-marker{display:none}
+  .pl-poste-entete::before{content:'▸';color:var(--gris);transition:transform .15s}
+  .pl-poste[open] > .pl-poste-entete::before{transform:rotate(90deg)}
+  .pl-badge{padding:2px 8px;border-radius:999px;background:var(--bleu-clair);color:var(--bleu-fonce);font-size:12px;font-weight:600}
+  .pl-tableau-wrap{overflow-x:auto;padding:0 18px 14px}
+  .pl-tableau{width:100%;min-width:760px;border-collapse:collapse;font-size:14px}
+  .pl-tableau th{text-align:left;font-size:12px;font-weight:600;color:var(--gris);padding:10px 8px;border-bottom:1px solid var(--bord)}
+  .pl-tableau td{padding:10px 8px;border-bottom:1px solid var(--bord-ligne);vertical-align:top;line-height:1.45}
+  .pl-tableau tr:last-child td{border-bottom:0}
+  .pl-tableau .pl-num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .pl-code{font-weight:600;white-space:nowrap}
+  .pl-nowrap{white-space:nowrap}
+  .pl-vide{color:var(--gris);font-weight:400}
+  .pl-aucun{color:var(--gris)}
+</style>
+
+<div class="pl" id="prestations-liste">
+  <div class="pl-entete">
+    <div>
+      <h1 class="pl-titre">Prestations</h1>
+      <p class="pl-sous-titre">Catalogue des prestations par poste (consultation)</p>
+    </div>
+    <div class="pl-actions">
+      <button type="button" class="pl-btn" data-pl-tout="ouvrir">Tout déplier</button>
+      <button type="button" class="pl-btn" data-pl-tout="fermer">Tout replier</button>
+    </div>
+  </div>
+
+  <input type="search" class="pl-recherche" data-pl-recherche
+         placeholder="Rechercher un code ou une description…" aria-label="Rechercher une prestation">
+
+  {% for groupe in groupes %}
+    <details class="pl-poste" data-pl-poste {{ loop.index <= 2 ? 'open' }}>
+      <summary class="pl-poste-entete">
+        <span>{{ groupe.poste ? groupe.poste.libelle : 'Sans poste' }}</span>
+        <span class="pl-badge">{{ groupe.prestations|length }}</span>
+      </summary>
+      <div class="pl-tableau-wrap">
+        <table class="pl-tableau">
+          <thead>
+            <tr>
+              <th style="width:84px">Code</th>
+              <th>Description</th>
+              <th style="width:72px">Unité</th>
+              <th class="pl-num" style="width:110px">Montant HT</th>
+              <th class="pl-num" style="width:64px">TVA</th>
+              <th style="width:96px">Date début</th>
+              <th style="width:96px">Date fin</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in groupe.prestations %}
+              <tr data-pl-ligne data-pl-texte="{{ (p.code ~ ' ' ~ p.description)|lower }}">
+                <td class="pl-code">{{ f.valeur(p.code) }}</td>
+                <td>{{ p.description }}</td>
+                <td>{{ f.valeur(p.unite ? p.unite.libelle : null) }}</td>
+                <td class="pl-num">
+                  {% if p.montantUnitaire is not null %}{{ p.montantUnitaire|number_format(2, ',', ' ') }} €{% else %}<span class="pl-vide">—</span>{% endif %}
+                </td>
+                <td class="pl-num">
+                  {% if p.tva %}{{ (p.tva.taux + 0)|replace({'.': ','}) }} %{% else %}<span class="pl-vide">—</span>{% endif %}
+                </td>
+                <td class="pl-nowrap">{{ f.valeur(p.dateDebutValidite ? p.dateDebutValidite|date('d/m/Y') : null) }}</td>
+                <td class="pl-nowrap">{{ f.valeur(p.dateFinValidite ? p.dateFinValidite|date('d/m/Y') : null) }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </details>
+  {% else %}
+    <p class="pl-aucun">Aucune prestation pour le moment.</p>
+  {% endfor %}
+
+  <p class="pl-aucun" data-pl-aucun hidden>Aucune prestation ne correspond à la recherche.</p>
+</div>
+
+<script>
+(() => {
+  const racine = document.getElementById('prestations-liste');
+  if (!racine) return;
+  const postes = [...racine.querySelectorAll('[data-pl-poste]')];
+  const champ = racine.querySelector('[data-pl-recherche]');
+  const aucun = racine.querySelector('[data-pl-aucun]');
+  let etatAvantRecherche = null;
+
+  racine.querySelectorAll('[data-pl-tout]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const ouvrir = btn.dataset.plTout === 'ouvrir';
+      postes.forEach(p => { p.open = ouvrir; });
+    });
+  });
+
+  champ.addEventListener('input', () => {
+    const q = champ.value.trim().toLowerCase();
+    if (q && !etatAvantRecherche) etatAvantRecherche = postes.map(p => p.open);
+    let total = 0;
+
+    postes.forEach((poste, i) => {
+      let n = 0;
+      poste.querySelectorAll('[data-pl-ligne]').forEach(ligne => {
+        const ok = !q || ligne.dataset.plTexte.includes(q);
+        ligne.hidden = !ok;
+        if (ok) n++;
+      });
+      poste.hidden = q !== '' && n === 0;
+      if (q) poste.open = n > 0;
+      else if (etatAvantRecherche) poste.open = etatAvantRecherche[i];
+      total += n;
+    });
+
+    if (!q) etatAvantRecherche = null;
+    aucun.hidden = total > 0 || postes.length === 0;
+  });
+})();
+</script>
+{% endblock %}
