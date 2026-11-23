@@ -21,8 +21,20 @@
                 {% for type_document in type_documents %}
                     <tr>
                     <td class="bp-table__ref" data-label="Nom">{{ type_document.nom }}</td>
-                    <td data-label="Archivé">{% if type_document.archive %}<span class="bp-badge">Archivé</span>{% else %}<span class="bp-badge bp-badge--success">Actif</span>{% endif %}</td>
-                    <td class="is-end"><div class="bp-actions"><a class="bp-link" href="{{ path('app_type_document_show', {'id': type_document.id}) }}">Voir</a><a class="bp-link" href="{{ path('app_type_document_edit', {'id': type_document.id}) }}">Modifier</a></div></td>
+                    <td data-label="Archivé">{% if type_document.archive %}<span class="bp-badge">Archivé</span>{% else %}
+                    <span class="bp-badge bp-badge--success">Actif</span>{% endif %}</td>
+
+                    <td class="is-end" data-label="Actions">
+                    <div class="bp-actions">
+                        <a class="bp-link" href="{{ path('app_type_document_change', {'id': type_document.id}) }}">
+                            {{ type_document.archive ? 'Activer' : 'Archiver' }}
+                        </a>
+                        <a class="bp-link" href="{{ path('app_type_document_edit', {'id': type_document.id}) }}">
+                            Modifier
+                        </a>
+                    </div>
+                    </td>
+
                     </tr>
                 {% else %}
                     <tr><td colspan="3" class="bp-table__empty">Aucun type de document.</td></tr>

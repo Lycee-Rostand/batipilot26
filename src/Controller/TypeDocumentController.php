@@ -18,7 +18,10 @@ final class TypeDocumentController extends AbstractController
     public function index(TypeDocumentRepository $typeDocumentRepository): Response
     {
         return $this->render('type_document/index.html.twig', [
-            'type_documents' => $typeDocumentRepository->findAll(),
+            'type_documents' => $typeDocumentRepository->findBy(
+                [],
+                ['archive' => 'asc']
+            ),
         ]);
     }
 
@@ -30,6 +33,7 @@ final class TypeDocumentController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
             $entityManager->persist($typeDocument);
             $entityManager->flush();
 
@@ -42,18 +46,22 @@ final class TypeDocumentController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_type_document_show', methods: ['GET'])]
-    public function show(TypeDocument $typeDocument): Response
+    #[Route('/{id}', name: 'app_type_document_change', methods: ['GET'])]
+    public function change (TypeDocument $typeDocument): Response
     {
-        return $this->render('type_document/show.html.twig', [
+        
+        return $this->render('type_document/edit.html.twig', [
             'type_document' => $typeDocument,
-        ]);
+            'form' => $form,
+            'type_document.archive' => $typeArchive
+
+        ]);;
     }
 
     #[Route('/{id}/edit', name: 'app_type_document_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, TypeDocument $typeDocument, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(TypeDocumentType::class, $typeDocument);
+        $form = $this->createForm(TypeDocumenatType::class, $typeDocument);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
