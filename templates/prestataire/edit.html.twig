@@ -1,13 +1,17 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
-{% block title %}Edit Prestataire{% endblock %}
+{% block title %}Modifier le prestataire{% endblock %}
 
 {% block body %}
-    <h1>Edit Prestataire</h1>
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_prestataire_index') }}">Prestataires</a><span aria-hidden="true">/</span><span>{{ prestataire.nom }} {{ prestataire.prenom }}</span></nav>
+            <h1>Modifier le prestataire</h1>
+        </div>
+        <div class="page-header__actions">
+            {{ include('prestataire/_delete_form.html.twig') }}
+        </div>
+    </div>
 
-    {{ include('prestataire/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_prestataire_index') }}">back to list</a>
-
-    {{ include('prestataire/_delete_form.html.twig') }}
+    {{ include('prestataire/_form.html.twig', {'button_label': 'Enregistrer les modifications'}) }}
 {% endblock %}
