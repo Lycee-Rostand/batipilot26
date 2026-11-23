@@ -17,7 +17,7 @@ class Devis
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTime $dateEmission = null;
+    private ?\DateTime $dateCreation = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $dateValidite = null;
@@ -33,6 +33,9 @@ class Devis
      */
     #[ORM\OneToMany(targetEntity: DevisDocument::class, mappedBy: 'Devis')]
     private Collection $devisDocuments;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTime $dateRDVClient = null;
 
     public function __construct()
     {
@@ -51,14 +54,14 @@ class Devis
         return $this;
     }
 
-    public function getDateEmission(): ?\DateTime
+    public function getDateCreation(): ?\DateTime
     {
-        return $this->dateEmission;
+        return $this->dateCreation;
     }
 
-    public function setDateEmission(\DateTime $dateEmission): static
+    public function setDateCreation(\DateTime $dateCreation): static
     {
-        $this->dateEmission = $dateEmission;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
@@ -125,6 +128,18 @@ class Devis
                 $devisDocument->setDevis(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateRDVClient(): ?\DateTime
+    {
+        return $this->dateRDVClient;
+    }
+
+    public function setDateRDVClient(?\DateTime $dateRDVClient): static
+    {
+        $this->dateRDVClient = $dateRDVClient;
 
         return $this;
     }
