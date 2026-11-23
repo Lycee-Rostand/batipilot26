@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Prestataire index{% endblock %}
+
+{% block body %}
+    <h1>Prestataire index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Poste</th>
+                <th>Archive</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for prestataire in prestataires %}
+            <tr>
+                <td>{{ prestataire.id }}</td>
+                <td>{{ prestataire.nom }}</td>
+                <td>{{ prestataire.prenom }}</td>
+                
+                {# On affiche le nom du poste (ou 'Aucun poste' si non renseigné) #}
+                <td>{{ prestataire.poste ? prestataire.poste.libelle : 'Aucun poste' }}</td>
+                
+                <td>{{ prestataire.archive }}</td>
+                <td>
+                    <a href="{{ path('app_prestataire_show', {'id': prestataire.id}) }}">show</a>
+                    <a href="{{ path('app_prestataire_edit', {'id': prestataire.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td> {# <-- On passe à colspan 6 car il y a une colonne en plus #}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_prestataire_new') }}">Create new</a>
+{% endblock %}
