@@ -1,22 +1,47 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% block title %}Modifier le poste - {{ chantier_poste.chantier ? chantier_poste.chantier.reference : 'ChantierPoste' }}{% endblock %}
 
 {% block body %}
-    <h1>
-        Modifier le poste
-        {% if chantier_poste.poste %}
-            — {{ chantier_poste.poste.libelle ?: ('Poste #' ~ chantier_poste.poste.id) }}
-        {% endif %}
-    </h1>
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane">
+                <a href="{{ path('app_chantier_index') }}">Chantiers</a>
+                {% if chantier_poste.chantier %}
+                    <span aria-hidden="true">/</span>
+                    <a href="{{ path('app_chantier_show', {'id': chantier_poste.chantier.id}) }}">{{ chantier_poste.chantier.reference }}</a>
+                {% endif %}
+                <span aria-hidden="true">/</span>
+                <span>Modifier le poste</span>
+            </nav>
+            <h1>
+                Modifier le poste
+                {% if chantier_poste.poste %}
+                    — {{ chantier_poste.poste.libelle ?: ('Poste #' ~ chantier_poste.poste.id) }}
+                {% endif %}
+            </h1>
+        </div>
+        <div class="page-header__actions">
+            {% if chantier_poste.chantier %}
+                <a href="{{ path('app_chantier_show', {'id': chantier_poste.chantier.id}) }}" class="m-btn m-btn--ghost">
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour au chantier
+                </a>
+            {% else %}
+                <a href="{{ path('app_chantier_index') }}" class="m-btn m-btn--ghost">
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour
+                </a>
+            {% endif %}
+        </div>
+    </div>
 
-    {{ include('chantier_poste/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+    <section class="m-card">
+        {{ include('chantier_poste/_form.html.twig', {
+            'button_label': 'Enregistrer',
+            'cancel_url': chantier_poste.chantier ? path('app_chantier_show', {'id': chantier_poste.chantier.id}) : path('app_chantier_index')
+        }) }}
+    </section>
 
-    {% if chantier_poste.chantier %}
-        <a href="{{ path('app_chantier_show', {'id': chantier_poste.chantier.id}) }}">Retour au chantier</a>
-    {% else %}
-        <a href="{{ path('app_chantier_index') }}">Retour aux chantiers</a>
-    {% endif %}
-
-    {{ include('chantier_poste/_delete_form.html.twig') }}
+    <div class="bp-form-actions">
+        {{ include('chantier_poste/_delete_form.html.twig') }}
+    </div>
 {% endblock %}
