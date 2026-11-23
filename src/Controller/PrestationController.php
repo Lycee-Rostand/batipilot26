@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/prestation')]
 final class PrestationController extends AbstractController
 {
-    #[Route('', name: 'app_prestation_index', methods: ['GET'])]
+    #[Route(name: 'app_prestation_index', methods: ['GET'])]
     public function index(PrestationRepository $prestationRepository): Response
     {
         // Regroupe les prestations par poste (0 = prestations sans poste)
