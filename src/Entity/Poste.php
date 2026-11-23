@@ -34,6 +34,9 @@ class Poste
     #[ORM\OneToMany(targetEntity: Tache::class, mappedBy: 'PosteId')]
     private Collection $taches;
 
+    #[ORM\Column(length: 3, nullable: true)]
+    private ?string $visibilite = null;
+
     public function __construct()
     {
         $this->taches = new ArrayCollection();
@@ -124,6 +127,18 @@ class Poste
                 $tach->setPosteId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getVisibilite(): ?string
+    {
+        return $this->visibilite;
+    }
+
+    public function setVisibilite(?string $visibilite): static
+    {
+        $this->visibilite = $visibilite;
 
         return $this;
     }
