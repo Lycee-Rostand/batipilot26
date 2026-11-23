@@ -37,6 +37,10 @@ class Devis
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTime $dateRDVClient = null;
 
+    #[ORM\ManyToOne(inversedBy: 'devis')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?EtatDevis $etatDevis = null;
+
     public function __construct()
     {
         $this->devisDocuments = new ArrayCollection();
@@ -140,6 +144,18 @@ class Devis
     public function setDateRDVClient(?\DateTime $dateRDVClient): static
     {
         $this->dateRDVClient = $dateRDVClient;
+
+        return $this;
+    }
+
+    public function getEtatDevis(): ?EtatDevis
+    {
+        return $this->etatDevis;
+    }
+
+    public function setEtatDevis(?EtatDevis $etatDevis): static
+    {
+        $this->etatDevis = $etatDevis;
 
         return $this;
     }
