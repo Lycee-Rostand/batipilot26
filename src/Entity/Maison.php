@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MaisonRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -57,6 +59,17 @@ class Maison
     #[ORM\ManyToOne(inversedBy: 'maisons')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Client $client = null;
+
+    /**
+     * @var Collection<int, Devis>
+     */
+    #[ORM\OneToMany(targetEntity: Devis::class, mappedBy: 'maison')]
+    private Collection $devis;
+
+    public function __construct()
+    {
+        $this->devis = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -214,6 +227,36 @@ class Maison
     public function setClient(?Client $client): static
     {
         $this->client = $client;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Devis>
+     */
+    public function getDevis(): Collection
+    {
+        return $this->devis;
+    }
+
+    public function addDevi(Devis $devi): static
+    {
+        if (!$this->devis->contains($devi)) {
+            $this->devis->add($devi);
+            $devi->setMaison($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevi(Devis $devi): static
+    {
+        if ($this->devis->removeElement($devi)) {
+            // set the owning side to null (unless already changed)
+            if ($devi->getMaison() === $this) {
+                $devi->setMaison(null);
+            }
+        }
+
         return $this;
     }
 }
