@@ -103,7 +103,8 @@ cd batipilot26
 composer install
 
 # 3. Créer son fichier de configuration locale
-cp .env .env.local
+cp .env .env.local  # POUR POWERSHELL
+copy .env .env.local  # POUR CMD
 #    puis décommenter la ligne DATABASE_URL et renseigner vos infos locales
 
 # 4. Appliquer les migrations (création des tables)
