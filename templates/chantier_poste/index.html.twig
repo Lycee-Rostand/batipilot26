@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ChantierPoste index{% endblock %}
+
+{% block body %}
+    <h1>ChantierPoste index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>MontantVenduHT</th>
+                <th>MontantFournituresHT</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for chantier_poste in chantier_postes %}
+            <tr>
+                <td>{{ chantier_poste.id }}</td>
+                <td>{{ chantier_poste.montantVenduHT }}</td>
+                <td>{{ chantier_poste.montantFournituresHT }}</td>
+                <td>
+                    <a href="{{ path('app_chantier_poste_show', {'id': chantier_poste.id}) }}">show</a>
+                    <a href="{{ path('app_chantier_poste_edit', {'id': chantier_poste.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_chantier_poste_new') }}">Create new</a>
+{% endblock %}

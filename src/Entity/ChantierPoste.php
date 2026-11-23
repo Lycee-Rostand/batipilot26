@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ChantierPosteRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ChantierPosteRepository::class)]
 class ChantierPoste
@@ -14,17 +15,23 @@ class ChantierPoste
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\NotNull]
+    #[Assert\PositiveOrZero]
     private ?float $montantVenduHT = null;
 
     #[ORM\Column]
+    #[Assert\NotNull]
+    #[Assert\PositiveOrZero]
     private ?float $montantFournituresHT = null;
 
     #[ORM\ManyToOne(inversedBy: 'chantierPostes')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull]
     private ?Chantier $chantier = null;
 
     #[ORM\ManyToOne(inversedBy: 'chantierPostes')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull]
     private ?Poste $poste = null;
 
     public function getId(): ?int

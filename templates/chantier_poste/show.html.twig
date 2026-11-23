@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ChantierPoste{% endblock %}
+
+{% block body %}
+    <h1>ChantierPoste</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ chantier_poste.id }}</td>
+            </tr>
+            <tr>
+                <th>MontantVenduHT</th>
+                <td>{{ chantier_poste.montantVenduHT }}</td>
+            </tr>
+            <tr>
+                <th>MontantFournituresHT</th>
+                <td>{{ chantier_poste.montantFournituresHT }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_chantier_poste_index') }}">back to list</a>
+
+    <a href="{{ path('app_chantier_poste_edit', {'id': chantier_poste.id}) }}">edit</a>
+
+    {{ include('chantier_poste/_delete_form.html.twig') }}
+{% endblock %}

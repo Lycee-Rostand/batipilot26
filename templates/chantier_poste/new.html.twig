@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ChantierPoste{% endblock %}
+
+{% block body %}
+    <h1>Create new ChantierPoste</h1>
+
+    {{ include('chantier_poste/_form.html.twig') }}
+
+    <a href="{{ path('app_chantier_poste_index') }}">back to list</a>
+{% endblock %}

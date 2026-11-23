@@ -24,6 +24,75 @@
         </dl>
     </section>
 
+    <section class="m-card">
+        <div class="page-header">
+            <div>
+                <h2>Postes du chantier</h2>
+            </div>
+            <div class="page-header__actions">
+                <a href="{{ path('app_chantier_poste_new', {'chantier': chantier.id}) }}" class="m-btn m-btn--primary">
+                    <i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter un poste
+                </a>
+            </div>
+        </div>
+
+        {% if chantier.chantierPostes is empty %}
+            <p>Aucun poste rattaché à ce chantier.</p>
+        {% else %}
+            <table class="bp-table">
+                <thead>
+                    <tr>
+                        <th>Poste</th>
+                        <th>Montant vendu HT</th>
+                        <th>Montant fournitures HT</th>
+                        <th>Marge brute HT</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set totalVendu = 0 %}
+                    {% set totalFournitures = 0 %}
+
+                    {% for cp in chantier.chantierPostes %}
+                        {% set vendu = cp.montantVenduHT ?? 0 %}
+                        {% set fournitures = cp.montantFournituresHT ?? 0 %}
+                        {% set marge = vendu - fournitures %}
+                        {% set totalVendu = totalVendu + vendu %}
+                        {% set totalFournitures = totalFournitures + fournitures %}
+
+                        <tr>
+                            <td>{{ cp.poste ? (cp.poste.libelle ?: ('Poste #' ~ cp.poste.id)) : ('Poste #' ~ cp.id) }}</td>
+                            <td>{{ vendu|number_format(2, ',', ' ') }} €</td>
+                            <td>{{ fournitures|number_format(2, ',', ' ') }} €</td>
+                            <td>{{ marge|number_format(2, ',', ' ') }} €</td>
+                            <td>
+                                <a href="{{ path('app_chantier_poste_edit', {'id': cp.id}) }}" class="m-btn m-btn--ghost">
+                                    Modifier
+                                </a>
+                                <form method="post"
+                                      action="{{ path('app_chantier_poste_delete', {'id': cp.id}) }}"
+                                      style="display: inline;"
+                                      onsubmit="return confirm('Supprimer ce poste du chantier ?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cp.id) }}">
+                                    <button type="submit" class="m-btn m-btn--danger">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Total</th>
+                        <th>{{ totalVendu|number_format(2, ',', ' ') }} €</th>
+                        <th>{{ totalFournitures|number_format(2, ',', ' ') }} €</th>
+                        <th>{{ (totalVendu - totalFournitures)|number_format(2, ',', ' ') }} €</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        {% endif %}
+    </section>
+
     <div class="bp-form-actions">
         {{ include('chantier/_delete_form.html.twig') }}
     </div>
