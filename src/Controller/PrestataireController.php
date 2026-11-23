@@ -78,4 +78,15 @@ final class PrestataireController extends AbstractController
 
         return $this->redirectToRoute('app_prestataire_index', [], Response::HTTP_SEE_OTHER);
     }
+
+        #[Route('/{id}/archive', name: 'app_prestataire_archive', methods: ['POST'])]
+    public function archive(Request $request, Prestataire $prestataire, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('archive'.$prestataire->getId(), $request->request->get('_token'))) {
+            $prestataire->setIsArchived(true);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_prestataire_index', [], Response::HTTP_SEE_OTHER);
+    }
 }
