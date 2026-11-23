@@ -34,9 +34,16 @@ class Poste
     #[ORM\OneToMany(targetEntity: Tache::class, mappedBy: 'PosteId')]
     private Collection $taches;
 
+    /**
+     * @var Collection<int, ChantierPoste>
+     */
+    #[ORM\OneToMany(targetEntity: ChantierPoste::class, mappedBy: 'poste')]
+    private Collection $chantierPostes;
+
     public function __construct()
     {
         $this->taches = new ArrayCollection();
+        $this->chantierPostes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -67,13 +74,14 @@ class Poste
     {
         return $this->tva;
     }
-    
+
     public function setTva(?float $tva): static
     {
         $this->tva = $tva;
-    
+
         return $this;
     }
+
     public function getOrdre(): ?int
     {
         return $this->ordre;
@@ -122,6 +130,35 @@ class Poste
             // set the owning side to null (unless already changed)
             if ($tach->getPosteId() === $this) {
                 $tach->setPosteId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ChantierPoste>
+     */
+    public function getChantierPostes(): Collection
+    {
+        return $this->chantierPostes;
+    }
+
+    public function addChantierPoste(ChantierPoste $chantierPoste): static
+    {
+        if (!$this->chantierPostes->contains($chantierPoste)) {
+            $this->chantierPostes->add($chantierPoste);
+            $chantierPoste->setPoste($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChantierPoste(ChantierPoste $chantierPoste): static
+    {
+        if ($this->chantierPostes->removeElement($chantierPoste)) {
+            if ($chantierPoste->getPoste() === $this) {
+                $chantierPoste->setPoste(null);
             }
         }
 

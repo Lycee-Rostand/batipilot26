@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Chantier;
 use App\Form\ChantierType;
-use App\Repository\ChantierRepository;
 use App\Repository\StatutChantierRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,7 +42,7 @@ final class ChantierController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_chantier_show', methods: ['GET'])]
+    #[Route('/{id<\d+>}', name: 'app_chantier_show', methods: ['GET'])]
     public function show(Chantier $chantier): Response
     {
         return $this->render('chantier/show.html.twig', [
@@ -51,7 +50,7 @@ final class ChantierController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_chantier_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id<\d+>}/edit', name: 'app_chantier_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Chantier $chantier, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ChantierType::class, $chantier);
@@ -69,7 +68,7 @@ final class ChantierController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_chantier_delete', methods: ['POST'])]
+    #[Route('/{id<\d+>}', name: 'app_chantier_delete', methods: ['POST'])]
     public function delete(Request $request, Chantier $chantier, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$chantier->getId(), $request->getPayload()->getString('_token'))) {

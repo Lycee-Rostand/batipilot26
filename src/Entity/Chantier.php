@@ -37,9 +37,16 @@ class Chantier
     #[ORM\OneToMany(targetEntity: ChantierTache::class, mappedBy: 'chantier')]
     private Collection $chantierTaches;
 
+    /**
+     * @var Collection<int, ChantierPoste>
+     */
+    #[ORM\OneToMany(targetEntity: ChantierPoste::class, mappedBy: 'chantier', orphanRemoval: true)]
+    private Collection $chantierPostes;
+
     public function __construct()
     {
         $this->chantierTaches = new ArrayCollection();
+        $this->chantierPostes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -131,6 +138,36 @@ class Chantier
             // set the owning side to null (unless already changed)
             if ($chantierTach->getChantier() === $this) {
                 $chantierTach->setChantier(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ChantierPoste>
+     */
+    public function getChantierPostes(): Collection
+    {
+        return $this->chantierPostes;
+    }
+
+    public function addChantierPoste(ChantierPoste $chantierPoste): static
+    {
+        if (!$this->chantierPostes->contains($chantierPoste)) {
+            $this->chantierPostes->add($chantierPoste);
+            $chantierPoste->setChantier($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChantierPoste(ChantierPoste $chantierPoste): static
+    {
+        if ($this->chantierPostes->removeElement($chantierPoste)) {
+            // set the owning side to null (unless already changed)
+            if ($chantierPoste->getChantier() === $this) {
+                $chantierPoste->setChantier(null);
             }
         }
 
