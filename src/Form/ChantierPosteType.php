@@ -14,16 +14,25 @@ class ChantierPosteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('montantVenduHT')
-            ->add('montantFournituresHT')
-            ->add('chantier', EntityType::class, [
+        if (!$options['lock_chantier']) {
+            $builder->add('chantier', EntityType::class, [
                 'class' => Chantier::class,
-                'choice_label' => 'id',
-            ])
+                'choice_label' => 'reference',
+                'label' => 'Chantier',
+            ]);
+        }
+
+        $builder
             ->add('poste', EntityType::class, [
                 'class' => Poste::class,
-                'choice_label' => 'id',
+                'choice_label' => 'libelle',
+                'label' => 'Poste',
+            ])
+            ->add('montantVenduHT', null, [
+                'label' => 'Montant vendu HT (€)',
+            ])
+            ->add('montantFournituresHT', null, [
+                'label' => 'Montant fournitures HT (€)',
             ])
         ;
     }
@@ -32,6 +41,9 @@ class ChantierPosteType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ChantierPoste::class,
+            'lock_chantier' => false,
         ]);
+
+        $resolver->setAllowedTypes('lock_chantier', 'bool');
     }
 }
