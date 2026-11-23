@@ -96,7 +96,7 @@ symfony version
 
 ```bash
 # 1. Cloner le dépôt
-git clone https://github.com/JoackimV/batipilot26.git
+git clone https://github.com/Lycee-Rostand/batipilot26.git
 cd batipilot26
 
 # 2. Installer les dépendances PHP
