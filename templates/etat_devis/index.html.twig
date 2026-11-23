@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EtatDevis index{% endblock %}
+
+{% block body %}
+    <h1>EtatDevis index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Archive</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for etat_devi in etat_devis %}
+            <tr>
+                <td>{{ etat_devi.id }}</td>
+                <td>{{ etat_devi.nom }}</td>
+                <td>{{ etat_devi.archive }}</td>
+                <td>
+                    <a href="{{ path('app_etat_devis_show', {'id': etat_devi.id}) }}">show</a>
+                    <a href="{{ path('app_etat_devis_edit', {'id': etat_devi.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_etat_devis_new') }}">Create new</a>
+{% endblock %}

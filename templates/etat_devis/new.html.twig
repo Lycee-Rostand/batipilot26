@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New EtatDevis{% endblock %}
+
+{% block body %}
+    <h1>Create new EtatDevis</h1>
+
+    {{ include('etat_devis/_form.html.twig') }}
+
+    <a href="{{ path('app_etat_devis_index') }}">back to list</a>
+{% endblock %}
