@@ -1,0 +1,43 @@
+<section class="bp-section is-open" data-controller="bp-section-toggle">
+    <button
+        type="button"
+        class="bp-section__toggle"
+        aria-expanded="true"
+        data-action="click->bp-section-toggle#toggle"
+        data-bp-section-toggle-target="button"
+    >
+        <h2 class="bp-section__title">{{ titre }}</h2>
+        {% if nombre is defined and nombre is not null %}
+            <span class="bp-badge bp-badge--{{ couleur }}">{{ nombre }}</span>
+        {% endif %}
+        <i class="fa-solid fa-chevron-down bp-section__chevron" aria-hidden="true"></i>
+    </button>
+    <div class="bp-section__body" data-bp-section-toggle-target="body">
+        <p class="bp-section__desc">{{ sousTitre }}</p>
+        <div class="bp-table-wrap">
+            <table class="bp-table bp-table--cards">
+                <thead>
+                <tr>
+                    {% for colonne in colonnes %}
+                        <th>{{ colonne }}</th>
+                    {% endfor %}
+                    <th class="is-end">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td colspan="{{ colonnes|length + 1 }}" class="bp-table__empty">{{ messageEmpty }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="bp-pagination">
+            <span>{{ messageEmpty }}</span>
+            <div class="bp-pagination__pages">
+                <button type="button" class="bp-page-btn" data-page="draft" data-to="0" disabled="" aria-label="Page précédente">‹</button>
+                <button type="button" class="bp-page-btn is-current" data-page="draft" data-to="1">1</button>
+                <button type="button" class="bp-page-btn" data-page="draft" data-to="2" disabled="" aria-label="Page suivante">›</button>
+            </div>
+        </div>
+    </div>
+</section>
