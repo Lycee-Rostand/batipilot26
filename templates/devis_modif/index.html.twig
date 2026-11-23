@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DevisModif index{% endblock %}
+
+{% block body %}
+    <h1>DevisModif index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Version</th>
+                <th>DateModif</th>
+                <th>Objet</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for devis_modif in devis_modifs %}
+            <tr>
+                <td>{{ devis_modif.id }}</td>
+                <td>{{ devis_modif.version }}</td>
+                <td>{{ devis_modif.dateModif ? devis_modif.dateModif|date('Y-m-d') : '' }}</td>
+                <td>{{ devis_modif.objet }}</td>
+                <td>
+                    <a href="{{ path('app_devis_modif_show', {'id': devis_modif.id}) }}">show</a>
+                    <a href="{{ path('app_devis_modif_edit', {'id': devis_modif.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_devis_modif_new') }}">Create new</a>
+{% endblock %}
