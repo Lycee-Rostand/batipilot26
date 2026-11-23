@@ -1,0 +1,501 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Design system{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <h1>Design system BatiPilot</h1>
+            <p class="subtitle">Toutes les classes à réutiliser. Copiez le code sous chaque exemple : le style s'applique tout seul.</p>
+        </div>
+    </div>
+
+    <nav class="bp-ds-toc" aria-label="Sommaire">
+        <a href="#ds-regles">Règles</a><a href="#ds-gabarits">Gabarits</a><a href="#ds-couleurs">Couleurs</a><a href="#ds-entete">En-tête de page</a>
+        <a href="#ds-boutons">Boutons</a><a href="#ds-badges">Badges</a><a href="#ds-messages">Messages</a><a href="#ds-liste">Liste</a>
+        <a href="#ds-formulaire">Formulaire</a><a href="#ds-assistant">Assistant</a><a href="#ds-controle">Point de contrôle</a><a href="#ds-totaux">Totaux</a>
+        <a href="#ds-accueil">Tableau de bord</a><a href="#ds-depliable">Ligne dépliable</a><a href="#ds-vide">Page vide</a><a href="#ds-js">JavaScript</a><a href="#ds-crud">CRUD Symfony</a>
+    </nav>
+
+    <!-- ===================================================================== Règles -->
+    <section class="m-card bp-ds-section" id="ds-regles">
+        <h2 class="bp-ds-title">1. Règles communes</h2>
+        <dl class="bp-dl">
+            <dt>Classes</dt><dd>On n'écrit pas de CSS dans les pages : on met les classes de ce document. Nos classes commencent par <code>bp-</code>, les boutons sont des <code>m-btn</code>, les champs des <code>form-control</code> / <code>form-select</code> (Bootstrap 5).</dd>
+            <dt>Nommage</dt><dd><code>.bp-bloc</code>, <code>.bp-bloc__element</code>, <code>.bp-bloc--variante</code>. États : <code>.is-active</code>, <code>.is-done</code>, <code>.is-open</code>, <code>.is-invalid</code>.</dd>
+            <dt>Nouveau besoin</dt><dd>Si aucun composant ne convient, demander au responsable design : on ajoute la classe dans <code>assets/scss/app/_batipilot.scss</code> et un exemple ici.</dd>
+            <dt>Textes</dt><dd>En français. Champ obligatoire = astérisque rouge. Données fictives = bandeau « Maquette ».</dd>
+            <dt>Responsive</dt><dd>Tous les composants s'adaptent au téléphone et à la tablette. Sur téléphone, un tableau <code>bp-table--cards</code> devient une liste de cartes.</dd>
+        </dl>
+    </section>
+
+    <!-- ===================================================================== Gabarits -->
+    <section class="m-card bp-ds-section" id="ds-gabarits">
+        <h2 class="bp-ds-title">2. Gabarits (héritage de templates Twig)</h2>
+        <p class="bp-help">La barre du haut et le menu de gauche sont dans le gabarit commun. Chaque profil hérite de ce gabarit, et l'administrateur hérite du responsable. Toutes les pages font <code>{% verbatim %}{% extends 'layout.html.twig' %}{% endverbatim %}</code> : le menu affiché est toujours celui de la personne connectée.</p>
+        <div class="bp-table-wrap">
+            <table class="bp-table bp-table--cards">
+                <thead><tr><th>Template</th><th>Rôle</th></tr></thead>
+                <tbody>
+                    <tr><td data-label="Template"><code>templates/base.html.twig</code></td><td data-label="Rôle">Commun : &lt;head&gt;, barre du haut, zone de contenu, pied de page (à venir), scripts</td></tr>
+                    <tr><td data-label="Template"><code>templates/espace_employe/base.html.twig</code></td><td data-label="Rôle">Hérite du commun. Menu employé réduit, consultation seule (<code>data-readonly</code>)</td></tr>
+                    <tr><td data-label="Template"><code>templates/responsable/base.html.twig</code></td><td data-label="Rôle">Hérite du commun. Tout sauf l'administration</td></tr>
+                    <tr><td data-label="Template"><code>templates/admin/base.html.twig</code></td><td data-label="Rôle">Hérite du responsable : tout son menu + bloc <code>menu_admin</code> (données référentielles)</td></tr>
+                    <tr><td data-label="Template"><code>templates/layout.html.twig</code></td><td data-label="Rôle">Étendu par toutes les pages : choisit le gabarit du profil connecté</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <h3 class="bp-subcard__title mt-4">Récupérer la barre du haut et le menu dans sa page</h3>
+        <ol class="bp-help">
+            <li>Mettre <code>{% verbatim %}{% extends 'layout.html.twig' %}{% endverbatim %}</code> sur la <strong>première ligne</strong> de chaque page (index, new, edit, show).</li>
+            <li>Écrire le titre de l'onglet dans <code>{% verbatim %}{% block title %}{% endverbatim %}</code> et le contenu dans <code>{% verbatim %}{% block body %}{% endverbatim %}</code>.</li>
+            <li>Les scripts propres à la page vont dans <code>{% verbatim %}{% block javascripts %}{% endverbatim %}</code> (facultatif).</li>
+            <li>Pas de <code>extends</code> dans les fichiers qui commencent par <code>_</code> (<code>_form.html.twig</code>, <code>_delete_form.html.twig</code>) : ils sont inclus dans une page.</li>
+            <li>Ne jamais étendre <code>base.html.twig</code> ni <code>admin/base.html.twig</code> directement.</li>
+        </ol>
+        <p class="bp-label mb-1">Page : templates/client/index.html.twig</p>
+{% verbatim %}
+<pre class="bp-code">{% extends 'layout.html.twig' %}
+
+{% block title %}Clients{% endblock %}
+
+{% block body %}
+    &lt;div class="page-header"&gt; … &lt;/div&gt;
+    &lt;section class="m-card"&gt;
+        &lt;div class="bp-table-wrap"&gt;&lt;table class="bp-table bp-table--cards"&gt; … &lt;/table&gt;&lt;/div&gt;
+    &lt;/section&gt;
+{% endblock %}
+
+{% block javascripts %}
+    &lt;script src="{{ asset('js/batipilot/ma-page.js') }}"&gt;&lt;/script&gt;
+{% endblock %}</pre>
+{% endverbatim %}
+        <h3 class="bp-subcard__title mt-4">Ajouter sa page dans le menu</h3>
+        <p class="bp-help">Pour le responsable <strong>et</strong> l'administrateur (héritage) : <code>templates/responsable/base.html.twig</code>. Pour l'administrateur seulement : bloc <code>menu_admin</code> de <code>templates/admin/base.html.twig</code>. Pour l'employé : <code>templates/espace_employe/base.html.twig</code>.</p>
+        <p class="bp-label mb-1">Menu : templates/responsable/base.html.twig</p>
+{% verbatim %}
+<pre class="bp-code">{{ menu.link('app_client_index', 'fa-solid fa-users', 'Clients &amp; maisons') }}</pre>
+{% endverbatim %}
+        <p class="bp-help mt-3 mb-0">Profil employé : <code>&lt;body data-readonly&gt;</code> est posé par son gabarit. Ajouter <code>data-edit-only</code> sur un bouton de modification suffit à le masquer pour l'employé.</p>
+    </section>
+
+    <!-- ===================================================================== Couleurs -->
+    <section class="m-card bp-ds-section" id="ds-couleurs">
+        <h2 class="bp-ds-title">3. Couleurs</h2>
+        <p class="bp-help">Une couleur = un sens. Dans le CSS, toujours les variables, jamais un code couleur.</p>
+        <div class="row g-3">
+            <div class="col-6 col-md-3 col-xl"><div class="bp-swatch" style="background:var(--m-accent)"></div><strong>Accent</strong><div class="bp-help">--m-accent · action principale, en cours</div></div>
+            <div class="col-6 col-md-3 col-xl"><div class="bp-swatch" style="background:var(--bp-info)"></div><strong>Info</strong><div class="bp-help">--bp-info · information, à venir</div></div>
+            <div class="col-6 col-md-3 col-xl"><div class="bp-swatch" style="background:var(--m-success)"></div><strong>Succès</strong><div class="bp-help">--m-success · terminé, signé</div></div>
+            <div class="col-6 col-md-3 col-xl"><div class="bp-swatch" style="background:var(--m-warning)"></div><strong>Attention</strong><div class="bp-help">--m-warning · en attente</div></div>
+            <div class="col-6 col-md-3 col-xl"><div class="bp-swatch" style="background:var(--m-danger)"></div><strong>Danger</strong><div class="bp-help">--m-danger · retard, suppression</div></div>
+            <div class="col-6 col-md-3 col-xl"><div class="bp-swatch" style="background:var(--m-text)"></div><strong>Texte</strong><div class="bp-help">--m-text / --m-text-muted</div></div>
+            <div class="col-6 col-md-3 col-xl"><div class="bp-swatch" style="background:var(--m-surface-2)"></div><strong>Fond doux</strong><div class="bp-help">--m-surface-2</div></div>
+        </div>
+    </section>
+
+    <!-- ===================================================================== En-tête -->
+    <section class="m-card bp-ds-section" id="ds-entete">
+        <h2 class="bp-ds-title">4. En-tête de page</h2>
+        <p class="bp-help">Toute page commence par cet en-tête : fil d'Ariane (facultatif), titre, sous-titre, boutons à droite.</p>
+        <div class="bp-ds-demo">
+            <div class="page-header">
+                <div>
+                    <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('chantiers') }}">Chantiers</a><span aria-hidden="true">/</span><span>CH-2026-100</span></nav>
+                    <h1>Suivi du chantier CH-2026-100</h1>
+                    <p class="subtitle">Assistant de suivi des travaux</p>
+                </div>
+                <div class="page-header__actions">
+                    <a href="{{ path('chantiers') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour</a>
+                    <button type="button" class="m-btn m-btn--primary" data-edit-only><i class="fa-solid fa-plus" aria-hidden="true"></i> Nouveau</button>
+                </div>
+            </div>
+        </div>
+        <p class="bp-help mb-0">Variante : <code>page-header__actions bp-head-actions</code> empile un bouton et un lien (comme sur la liste des chantiers).</p>
+    </section>
+
+    <!-- ===================================================================== Boutons -->
+    <section class="m-card bp-ds-section" id="ds-boutons">
+        <h2 class="bp-ds-title">5. Boutons et liens</h2>
+        <p class="bp-help">Un seul bouton principal par écran. Les actions d'une ligne de tableau sont des liens.</p>
+        <div class="bp-ds-demo">
+            <div class="bp-ds-row">
+                <button type="button" class="m-btn m-btn--primary"><i class="fa-solid fa-plus" aria-hidden="true"></i> Démarrer un chantier</button>
+                <button type="button" class="m-btn m-btn--ghost">Enregistrer</button>
+                <button type="button" class="m-btn m-btn--danger">Supprimer</button>
+                <button type="button" class="m-btn m-btn--ghost m-btn--sm">Petit bouton</button>
+                <button type="button" class="m-btn m-btn--primary" disabled>Désactivé</button>
+            </div>
+            <div class="bp-ds-row mt-3">
+                <a class="bp-link" href="#">Ouvrir →</a>
+                <a class="bp-link bp-link--muted" href="#">Voir les archives →</a>
+                <button type="button" class="bp-link bp-link--danger">Supprimer</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================================== Badges -->
+    <section class="m-card bp-ds-section" id="ds-badges">
+        <h2 class="bp-ds-title">6. Badges de statut et étiquettes</h2>
+        <p class="bp-help">Même statut = même couleur partout.</p>
+        <div class="bp-table-wrap mb-3">
+            <table class="bp-table bp-table--cards">
+                <thead><tr><th>Module</th><th>Statuts</th></tr></thead>
+                <tbody>
+                    <tr><td class="bp-table__ref" data-label="Module">Chantier</td><td data-label="Statuts"><div class="bp-ds-row"><span class="bp-badge bp-badge--info">À venir</span><span class="bp-badge bp-badge--accent">En cours</span><span class="bp-badge bp-badge--success">Terminé</span><span class="bp-badge">Archivé</span><span class="bp-badge bp-badge--danger">En retard</span></div></td></tr>
+                    <tr><td class="bp-table__ref" data-label="Module">Devis</td><td data-label="Statuts"><div class="bp-ds-row"><span class="bp-badge">Brouillon</span><span class="bp-badge bp-badge--info">En attente client</span><span class="bp-badge bp-badge--success">Signé</span><span class="bp-badge">Archivé</span></div></td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="bp-ds-demo">
+            <div class="bp-ds-row">
+                <span class="bp-badge">Neutre</span>
+                <span class="bp-badge bp-badge--info">Info</span>
+                <span class="bp-badge bp-badge--accent">Accent</span>
+                <span class="bp-badge bp-badge--success">Succès</span>
+                <span class="bp-badge bp-badge--warning">Attention</span>
+                <span class="bp-badge bp-badge--danger">Danger</span>
+                <span class="bp-badge bp-badge--plain bp-badge--accent">Sans point</span>
+                <span class="bp-tag">DEV-2026-1042</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================================== Messages -->
+    <section class="m-card bp-ds-section" id="ds-messages">
+        <h2 class="bp-ds-title">7. Messages</h2>
+        <div class="bp-ds-demo">
+            <div class="bp-notice"><i class="fa-solid fa-circle-info" aria-hidden="true"></i><span><strong>Information.</strong> Les informations client sont reprises du devis.</span></div>
+            <div class="bp-notice bp-notice--success"><i class="fa-solid fa-circle-check" aria-hidden="true"></i><span><strong>Succès.</strong> Le devis a été enregistré.</span></div>
+            <div class="bp-notice bp-notice--warning"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i><span><strong>Attention.</strong> Consultation seule.</span></div>
+            <div class="bp-notice bp-notice--danger"><i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i><span><strong>Erreur.</strong> Identifiant ou mot de passe incorrect.</span></div>
+            <div class="bp-demo-banner"><i class="fa-solid fa-flask" aria-hidden="true"></i><span>Maquette - données fictives.</span></div>
+        </div>
+        <p class="bp-help">Notifications et confirmations : en JavaScript (voir section 16).</p>
+        <div class="bp-ds-row">
+            <button type="button" class="m-btn m-btn--ghost m-btn--sm" id="ds-toast">Afficher une notification</button>
+            <button type="button" class="m-btn m-btn--ghost m-btn--sm" id="ds-toast-error">Notification d'erreur</button>
+            <button type="button" class="m-btn m-btn--ghost m-btn--sm" id="ds-confirm">Ouvrir une confirmation</button>
+        </div>
+    </section>
+
+    <!-- ===================================================================== Liste -->
+    <section class="m-card bp-ds-section" id="ds-liste">
+        <h2 class="bp-ds-title">8. Liste : recherche, section, tableau, pagination</h2>
+        <p class="bp-help">Modèle de toutes les listes. <code>bp-table--cards</code> + <code>data-label</code> sur chaque cellule = cartes sur téléphone. Colonnes : <code>is-num</code> (montant), <code>is-end</code> (action).</p>
+        <div class="bp-ds-demo">
+            <div class="bp-toolbar">
+                <div class="bp-search">
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                    <input type="search" class="form-control" placeholder="Rechercher…" aria-label="Rechercher">
+                </div>
+            </div>
+            <section class="bp-section is-open">
+                <button type="button" class="bp-section__toggle" aria-expanded="true" data-ds-toggle>
+                    <h3 class="bp-section__title">Chantiers en cours</h3>
+                    <span class="bp-badge bp-badge--accent">2</span>
+                    <i class="fa-solid fa-chevron-down bp-section__chevron" aria-hidden="true"></i>
+                </button>
+                <div class="bp-section__body">
+                    <p class="bp-section__desc">Travaux en cours de réalisation</p>
+                    <div class="bp-table-wrap">
+                        <table class="bp-table bp-table--cards">
+                            <thead><tr><th>Référence</th><th>Client</th><th>Avancement</th><th class="is-num">Montant HT</th><th class="is-end">Action</th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td class="bp-table__ref" data-label="Référence">CH-2026-100<span class="bp-table__sub">Lyon</span></td>
+                                    <td data-label="Client">Camille Martin</td>
+                                    <td data-label="Avancement"><div class="bp-meter"><div class="bp-progress bp-progress--success"><div class="bp-progress__bar" style="width:57%"></div></div><span>57 %</span></div></td>
+                                    <td class="is-num" data-label="Montant HT">19 905,85 €</td>
+                                    <td class="is-end"><a class="bp-link" href="#">Ouvrir →</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="bp-table__ref" data-label="Référence">CH-2026-101<span class="bp-table__sub">Nantes</span></td>
+                                    <td data-label="Client">Thomas Bernard</td>
+                                    <td data-label="Avancement"><div class="bp-meter"><div class="bp-progress bp-progress--success"><div class="bp-progress__bar" style="width:20%"></div></div><span>20 %</span></div></td>
+                                    <td class="is-num" data-label="Montant HT">14 355,55 €</td>
+                                    <td class="is-end"><div class="bp-actions"><a class="bp-link" href="#">Ouvrir</a><button type="button" class="bp-link bp-link--danger">Supprimer</button></div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bp-pagination">
+                        <span>1–2 sur 2 chantiers</span>
+                        <div class="bp-pagination__pages">
+                            <button type="button" class="bp-page-btn" disabled>‹ Précédent</button>
+                            <button type="button" class="bp-page-btn is-current" aria-current="page">1</button>
+                            <button type="button" class="bp-page-btn" disabled>Suivant ›</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <p class="bp-help mb-0">Ligne vide : <code>&lt;td colspan="5" class="bp-table__empty"&gt;Aucun chantier.&lt;/td&gt;</code> · texte gris : <code>bp-table__muted</code>.</p>
+    </section>
+
+    <!-- ===================================================================== Formulaire -->
+    <section class="m-card bp-ds-section" id="ds-formulaire">
+        <h2 class="bp-ds-title">9. Formulaire</h2>
+        <p class="bp-help">Grille de 2 colonnes (1 sur téléphone). Erreur : <code>is-invalid</code> sur le champ + texte dans <code>invalid-feedback</code>.</p>
+        <div class="bp-ds-demo">
+            <form class="bp-form-card" novalidate onsubmit="return false">
+                <h2 class="bp-form-card__title">Informations client</h2>
+                <p class="bp-form-card__intro">Phrase courte qui explique quoi remplir.</p>
+                <div class="bp-form-grid">
+                    <div class="bp-field">
+                        <label for="ds-nom">Nom et prénom<span class="bp-required" aria-hidden="true">*</span></label>
+                        <input class="form-control" id="ds-nom" value="Jean Martin">
+                    </div>
+                    <div class="bp-field">
+                        <label for="ds-mail">Mail</label>
+                        <input class="form-control is-invalid" id="ds-mail" type="email" value="jean@">
+                        <div class="invalid-feedback">Adresse mail invalide.</div>
+                    </div>
+                    <div class="bp-field">
+                        <label for="ds-type">Type de charpente</label>
+                        <select class="form-select" id="ds-type"><option>Traditionnelle</option><option>Fermette</option></select>
+                    </div>
+                    <div class="bp-field">
+                        <label for="ds-date">Date de démarrage</label>
+                        <input class="form-control" id="ds-date" type="date">
+                        <span class="bp-help">Texte d'aide facultatif.</span>
+                    </div>
+                    <div class="bp-field bp-field--full">
+                        <label class="bp-check"><input class="form-check-input" type="checkbox"> Maison Phénix</label>
+                    </div>
+                    <div class="bp-field bp-field--full">
+                        <label for="ds-obs">Observations</label>
+                        <textarea class="form-control" id="ds-obs" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="bp-form-actions">
+                    <button type="button" class="m-btn m-btn--ghost">Précédent</button>
+                    <div class="bp-form-actions__right">
+                        <button type="button" class="m-btn m-btn--ghost">Enregistrer</button>
+                        <button type="button" class="m-btn m-btn--primary">Suivant</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <p class="bp-help">Blocs dans un formulaire : sous-bloc et liste « libellé : valeur ».</p>
+        <div class="bp-ds-demo">
+            <div class="bp-subcard">
+                <h3 class="bp-subcard__title">Informations issues du devis</h3>
+                <dl class="bp-dl">
+                    <dt>Client</dt><dd>Jean Martin · 06 11 22 33 44</dd>
+                    <dt>Maison</dt><dd>12 rue des Lilas 14000 Caen</dd>
+                </dl>
+            </div>
+            <div class="bp-subcard bp-subcard--soft mb-0">Sous-bloc grisé (<code>bp-subcard--soft</code>)</div>
+        </div>
+    </section>
+
+    <!-- ===================================================================== Assistant -->
+    <section class="m-card bp-ds-section" id="ds-assistant">
+        <h2 class="bp-ds-title">10. Formulaire en plusieurs étapes (assistant)</h2>
+        <p class="bp-help">Pour tout formulaire long (devis, chantier…). Étape courante : <code>is-active</code>, étapes passées : <code>is-done</code>. Le formulaire <code>bp-form-card</code> de la section 9 vient juste en dessous.</p>
+        <div class="bp-ds-demo">
+            <div class="bp-stepper">
+                <div class="bp-stepper__head"><strong>Maison</strong><span class="bp-stepper__count">Étape 2 sur 4</span></div>
+                <div class="bp-progress"><div class="bp-progress__bar" style="width:50%"></div></div>
+                <nav class="bp-steps" aria-label="Étapes">
+                    <button type="button" class="bp-step is-done"><span class="bp-step__num">1.</span><span>Client</span></button>
+                    <button type="button" class="bp-step is-active" aria-current="step"><span class="bp-step__num">2.</span><span>Maison</span></button>
+                    <button type="button" class="bp-step"><span class="bp-step__num">3.</span><span>Structure</span></button>
+                    <button type="button" class="bp-step"><span class="bp-step__num">4.</span><span>Récapitulatif</span></button>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================================== Point de contrôle -->
+    <section class="m-card bp-ds-section" id="ds-controle">
+        <h2 class="bp-ds-title">11. Point de contrôle et prestation</h2>
+        <p class="bp-help">Une ligne cochable (suivi de chantier, prestations d'un devis). <code>is-done</code> quand la case est cochée.</p>
+        <div class="bp-ds-demo">
+            <div class="bp-post-total">Total du poste : 4 800,00 €</div>
+            <div class="bp-inline-stats">
+                <span class="bp-tag">1 / 2 tâches terminées</span>
+                <div class="bp-progress bp-progress--sm bp-progress--success"><div class="bp-progress__bar" style="width:50%"></div></div>
+            </div>
+            <div class="bp-task-list">
+                <div class="bp-task is-done">
+                    <div class="bp-task__head">
+                        <input class="form-check-input" type="checkbox" id="ds-t1" checked>
+                        <span class="bp-task__code">CH4</span>
+                        <label class="bp-task__title" for="ds-t1">Commande Dispano effectuée</label>
+                    </div>
+                    <div class="bp-task__controls">
+                        <div class="bp-field"><label for="ds-t1v">Réponse oui / non</label><select class="form-select" id="ds-t1v"><option>Oui</option><option>Non</option></select></div>
+                        <div class="bp-field"><label for="ds-t1n">Note complémentaire</label><input class="form-control" id="ds-t1n" placeholder="Facultatif"></div>
+                    </div>
+                </div>
+                <div class="bp-task">
+                    <div class="bp-task__head">
+                        <input class="form-check-input" type="checkbox" id="ds-t2">
+                        <span class="bp-task__code">ISO2</span>
+                        <label class="bp-task__title bp-task__title--desc" for="ds-t2">Isolation du plafond et rampants par TRISO-TOITURE</label>
+                    </div>
+                    <div class="bp-item-price">
+                        <div class="bp-help">Unité : m²</div>
+                        <div class="bp-field"><label for="ds-q">Quantité (m²)</label><input class="form-control" id="ds-q" type="number" value="48"></div>
+                        <div class="bp-field"><label for="ds-r">Montant unitaire (€)</label><input class="form-control" id="ds-r" type="number" value="100"></div>
+                    </div>
+                    <div class="bp-help bp-item-total">Montant calculé : <strong class="bp-line-total">4 800,00 €</strong></div>
+                </div>
+            </div>
+            <div class="bp-calc-row"><span>Surface habitable estimée</span><strong>45 m²</strong><span>×</span><label>Montant unitaire (€ / m²) <input class="form-control" type="number" value="400"></label><span>=</span><strong>18 000,00 €</strong></div>
+            <div class="bp-add-panel">
+                <h3 class="bp-add-panel__title"><i class="fa-solid fa-plus me-1" aria-hidden="true"></i> Ajouter une tâche spécifique au chantier</h3>
+                <button type="button" class="m-btn m-btn--ghost m-btn--sm">Ajouter cette tâche</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================================== Totaux -->
+    <section class="m-card bp-ds-section" id="ds-totaux">
+        <h2 class="bp-ds-title">12. Totaux et récapitulatif</h2>
+        <div class="bp-ds-demo">
+            <div class="bp-subcard bp-subcard--soft">
+                <div class="bp-total-row"><span>Structure</span><strong>20 850,00 €</strong></div>
+                <div class="bp-total-row"><span>Plancher / Isolation</span><strong>4 800,00 €</strong></div>
+                <div class="bp-total-row bp-total-row--grand"><strong>Total général</strong><strong>25 650,00 €</strong></div>
+            </div>
+            <div class="bp-summary-grid">
+                <div class="bp-summary-box">
+                    <span class="bp-summary-box__label">Structure</span>
+                    <strong class="bp-summary-box__value">12 / 17</strong>
+                    <div class="bp-progress bp-progress--success"><div class="bp-progress__bar" style="width:70%"></div></div>
+                </div>
+                <div class="bp-summary-box">
+                    <span class="bp-summary-box__label">Fournitures HT</span>
+                    <strong class="bp-summary-box__value">28 450 €</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================================== Tableau de bord -->
+    <section class="m-card bp-ds-section" id="ds-accueil">
+        <h2 class="bp-ds-title">13. Tableau de bord (accueils)</h2>
+        <p class="bp-help">Accès rapide, indicateur, compteur cliquable, titre de bloc, liste d'alertes, graphique (Chart.js : voir accueil.js).</p>
+        <div class="bp-ds-demo">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <a class="bp-quick" href="#">
+                        <span class="bp-quick__icon"><i class="fa-regular fa-file-lines" aria-hidden="true"></i></span>
+                        <span><span class="bp-quick__title">Devis</span><span class="bp-quick__text">Créer, suivre et relancer</span></span>
+                        <i class="fa-solid fa-arrow-right bp-quick__arrow" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <div class="bp-kpi">
+                        <div class="bp-kpi__head"><p class="bp-kpi__label">Chantiers en cours</p><span class="bp-kpi__icon"><i class="fa-solid fa-helmet-safety" aria-hidden="true"></i></span></div>
+                        <div class="bp-kpi__value">8</div>
+                        <div class="bp-kpi__meta">dont 2 en retard</div>
+                    </div>
+                </div>
+            </div>
+            <div class="bp-block-title"><h2>À traiter</h2></div>
+            <div class="bp-stat-grid">
+                <a class="bp-stat bp-stat--danger" href="#"><span class="bp-stat__icon"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></span><span class="bp-stat__body"><span class="bp-stat__value">2</span><span class="bp-stat__label">Chantiers en retard</span></span></a>
+                <a class="bp-stat bp-stat--warning" href="#"><span class="bp-stat__icon"><i class="fa-solid fa-receipt" aria-hidden="true"></i></span><span class="bp-stat__body"><span class="bp-stat__value">3</span><span class="bp-stat__label">Factures impayées</span><span class="bp-stat__meta">12 450 € à encaisser</span></span></a>
+                <a class="bp-stat" href="#"><span class="bp-stat__icon"><i class="fa-regular fa-file-lines" aria-hidden="true"></i></span><span class="bp-stat__body"><span class="bp-stat__value">5</span><span class="bp-stat__label">Devis en brouillon</span></span></a>
+            </div>
+            <ul class="bp-list mt-3">
+                <li class="bp-list__item">
+                    <i class="fa-solid fa-phone bp-list__icon text-danger" aria-hidden="true"></i>
+                    <span class="bp-list__body"><span class="bp-list__title">DEV-2026-1046 · Sophie Lemaire</span><span class="bp-list__text">Relance prévue le 04/11</span></span>
+                    <span class="bp-badge bp-badge--danger">5 j de retard</span>
+                </li>
+            </ul>
+            <div class="bp-legend mt-3"><span><span class="bp-legend__swatch bp-legend__swatch--c1"></span>Ventes</span><span><span class="bp-legend__swatch bp-legend__swatch--c2"></span>Coût de revient</span></div>
+        </div>
+        <p class="bp-help mb-0">Un graphique se place dans <code>&lt;div class="bp-chart"&gt;&lt;canvas id="…"&gt;&lt;/canvas&gt;&lt;/div&gt;</code> et la page charge <code>vendor/chartjs</code> (block javascripts).</p>
+    </section>
+
+    <!-- ===================================================================== Ligne dépliable -->
+    <section class="m-card bp-ds-section" id="ds-depliable">
+        <h2 class="bp-ds-title">14. Ligne dépliable</h2>
+        <p class="bp-help">Une ligne de résumé qui s'ouvre sur un détail (rentabilité par poste). Ouverte : <code>is-open</code> + retirer <code>hidden</code> du corps.</p>
+        <div class="bp-ds-demo">
+            <article class="bp-acc is-open">
+                <button type="button" class="bp-acc__head" aria-expanded="true" data-ds-acc>
+                    <span class="bp-acc__title"><i class="fa-solid fa-chevron-right bp-acc__chevron" aria-hidden="true"></i>Structure <span class="bp-money ms-auto text-success">9 384 €</span></span>
+                </button>
+                <div class="bp-acc__body">Contenu détaillé du poste (formulaires, tableau des employés…).</div>
+            </article>
+        </div>
+    </section>
+
+    <!-- ===================================================================== Page vide -->
+    <section class="m-card bp-ds-section" id="ds-vide">
+        <h2 class="bp-ds-title">15. Page vide / en conception</h2>
+        <div class="bp-ds-demo">
+            <section class="m-card">
+                <div class="empty-state">
+                    <span class="empty-state__icon"><i class="fa-regular fa-folder" aria-hidden="true"></i></span>
+                    <h2 class="empty-state__title">Aucun document</h2>
+                    <p class="empty-state__text">Ajoutez un premier document pour ce chantier.</p>
+                    <div class="empty-state__actions"><button type="button" class="m-btn m-btn--primary">Ajouter un document</button></div>
+                </div>
+            </section>
+        </div>
+    </section>
+
+    <!-- ===================================================================== JavaScript -->
+    <section class="m-card bp-ds-section" id="ds-js">
+        <h2 class="bp-ds-title">16. Outils JavaScript communs</h2>
+        <p class="bp-help">Chargés sur toutes les pages par le gabarit commun (<code>bp-ui.js</code>, <code>bp-core.js</code>). Pas besoin de jQuery.</p>
+    <pre class="bp-code">BP.toast('Client enregistré');                 // success | info | warning | error
+    BP.flash('Chantier enregistré');               // notification affichée sur la page suivante
+    BP.confirm({ title: 'Supprimer ce client ?', message: 'Action définitive.', confirmLabel: 'Supprimer', danger: true })
+      .then(ok =&gt; { if (ok) { … } });
+    BP.badge('En cours', 'accent');                // HTML d'un badge
+    BP.esc(texteSaisi);                            // TOUJOURS échapper une saisie avant de l'afficher
+    BP.dateFR('2026-11-09');                       // → 09/11/2026
+    BP.readOnly;                                   // true dans l'espace employé</pre>
+        <p class="bp-help mt-3">Sans écrire de JavaScript :</p>
+    <pre class="bp-code">&lt;form method="post" action="…" data-bp-confirm="Supprimer ce poste ?"&gt;   → confirmation avant l'envoi
+&lt;button class="bp-section__toggle" data-bp-toggle aria-expanded="true"&gt;          → ouvre / ferme la .bp-section</pre>
+    </section>
+
+    <!-- ===================================================================== CRUD -->
+    <section class="m-card bp-ds-section" id="ds-crud">
+        <h2 class="bp-ds-title">17. CRUD Symfony (make:crud)</h2>
+        <p class="bp-help">Modèle complet : <code>templates/poste/</code> (liste, fiche, nouveau, modifier, formulaire, suppression). Pour un nouveau CRUD, copier ces 6 fichiers et changer les noms.</p>
+        <dl class="bp-dl">
+            <dt>Gabarit</dt><dd><code>{% verbatim %}{% extends 'layout.html.twig' %}{% endverbatim %}</code>, comme toutes les pages.</dd>
+            <dt>Menu</dt><dd>Lien vers la route <code>app_…_index</code> : il reste surligné sur les pages _new, _show et _edit.</dd>
+            <dt>Liste</dt><dd><code>m-card</code> + <code>bp-table bp-table--cards</code> (section 8). Liste groupée : une <code>bp-section</code> par groupe avec <code>data-bp-toggle</code>.</dd>
+            <dt>Fiche</dt><dd><code>m-card</code> + <code>bp-dl</code> (libellé / valeur).</dd>
+            <dt>Formulaire</dt><dd>Le thème <code>form/batipilot_theme.html.twig</code> est actif partout : <code>form_row</code> donne directement un <code>bp-field</code> avec astérisque si obligatoire.</dd>
+        </dl>
+<p class="bp-label mb-1">Formulaire : templates/poste/_form.html.twig (pas de extends)</p>
+{% verbatim %}
+<pre class="bp-code">{{ form_start(form, {attr: {class: 'bp-form-card', novalidate: 'novalidate'}}) }}
+    &lt;div class="bp-form-grid"&gt;
+        {{ form_row(form.libelle, {label: 'Libellé'}) }}
+        {{ form_row(form.archive, {label: 'Archivé', help: '0 = actif, 1 = archivé'}) }}
+        {{ form_row(form.notes, {label: 'Notes', row_attr: {class: 'bp-field--full'}}) }}
+    &lt;/div&gt;
+    {{ form_rest(form) }}
+    &lt;div class="bp-form-actions"&gt;
+        &lt;a href="{{ path('app_poste_index') }}" class="m-btn m-btn--ghost"&gt;Annuler&lt;/a&gt;
+        &lt;div class="bp-form-actions__right"&gt;&lt;button class="m-btn m-btn--primary"&gt;Enregistrer&lt;/button&gt;&lt;/div&gt;
+    &lt;/div&gt;
+{{ form_end(form) }}</pre>
+{% endverbatim %}
+<p class="bp-label mb-1">Suppression : templates/poste/_delete_form.html.twig (pas de extends)</p>
+{% verbatim %}
+<pre class="bp-code">&lt;form method="post" action="{{ path('app_poste_delete', {'id': poste.id}) }}" data-bp-confirm="Supprimer ce poste ?"&gt;
+    &lt;input type="hidden" name="_token" value="{{ csrf_token('delete' ~ poste.id) }}"&gt;
+    &lt;button class="m-btn m-btn--danger"&gt;Supprimer&lt;/button&gt;
+&lt;/form&gt;</pre>
+{% endverbatim %}
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/batipilot/design-system.js') }}"></script>
+{% endblock %}

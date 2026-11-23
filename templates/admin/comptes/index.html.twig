@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Comptes utilisateurs{% endblock %}
+
+{% block body %}
+    {{ include('partials/_page_a_venir.html.twig', {
+        titre: 'Comptes utilisateurs',
+        sous_titre: 'Créer, activer ou désactiver les comptes et leur attribuer un profil.',
+        action: 'Créer un compte',
+        icone: 'fa-solid fa-user-gear'
+    }) }}
+{% endblock %}

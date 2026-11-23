@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Fournisseurs{% endblock %}
+
+{% block body %}
+    {{ include('partials/_page_a_venir.html.twig', {
+        titre: 'Fournisseurs',
+        sous_titre: 'Gérer les fournisseurs de matériaux et d’équipements.',
+        action: 'Ajouter un fournisseur',
+        icone: 'fa-solid fa-boxes-stacked'
+    }) }}
+{% endblock %}

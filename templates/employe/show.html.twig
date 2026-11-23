@@ -1,0 +1,29 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ employe.prenom ~ ' ' ~ employe.nom }} - Employés{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_employe_index') }}">Employés</a><span aria-hidden="true">/</span><span>{{ employe.prenom ~ ' ' ~ employe.nom }}</span></nav>
+            <h1>{{ employe.prenom ~ ' ' ~ employe.nom }}</h1>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('app_employe_index') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour</a>
+            <a href="{{ path('app_employe_edit', {'id': employe.id}) }}" class="m-btn m-btn--primary"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Modifier</a>
+        </div>
+    </div>
+
+    <section class="m-card">
+        <dl class="bp-dl">
+            <dt>Nom</dt><dd>{{ employe.nom ?: '-' }}</dd>
+            <dt>Prénom</dt><dd>{{ employe.prenom ?: '-' }}</dd>
+            <dt>Coût horaire main-d'œuvre (€)</dt><dd>{{ employe.coutHrMo is null ? '-' : employe.coutHrMo|number_format(2, ',', ' ') ~ ' €' }}</dd>
+            <dt>Archivé</dt><dd>{% if employe.archive %}<span class="bp-badge">Archivé</span>{% else %}<span class="bp-badge bp-badge--success">Actif</span>{% endif %}</dd>
+        </dl>
+    </section>
+
+    <div class="bp-form-actions">
+        {{ include('employe/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

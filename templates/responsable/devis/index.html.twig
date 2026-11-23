@@ -1,0 +1,30 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Devis{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <h1>Devis</h1>
+            <p class="subtitle" id="devis-total">&nbsp;</p>
+        </div>
+        <div class="page-header__actions bp-head-actions">
+            <a href="{{ path('devis_edition') }}" class="m-btn m-btn--primary"><i class="fa-solid fa-plus" aria-hidden="true"></i> Démarrer un nouveau devis</a>
+            <a href="{{ path('devis_archives') }}" class="bp-link bp-link--muted">Voir les devis archivés →</a>
+        </div>
+    </div>
+
+    <div class="bp-toolbar">
+        <div class="bp-search">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <input type="search" class="form-control" id="devis-search" placeholder="Rechercher : référence, client, ville…" aria-label="Rechercher un devis">
+        </div>
+    </div>
+
+    <div id="devis-sections"></div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/batipilot/devis-store.js') }}"></script>
+    <script src="{{ asset('js/batipilot/devis-list.js') }}"></script>
+{% endblock %}

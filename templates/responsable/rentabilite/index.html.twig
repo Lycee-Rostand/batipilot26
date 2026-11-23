@@ -1,0 +1,70 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Rentabilité du chantier{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb bp-no-print" aria-label="Fil d'Ariane"><a href="{{ path('chantiers') }}">Chantiers</a><span aria-hidden="true">/</span><a href="{{ path('chantier_suivi') }}" id="rent-crumb">Chantier</a><span aria-hidden="true">/</span><span>Rentabilité</span></nav>
+            <h1 id="rent-title">Rentabilité du chantier</h1>
+            <p class="subtitle">Ventes, coûts et marges par poste - uniquement hors taxes</p>
+        </div>
+        <div class="page-header__actions bp-no-print">
+            <a href="{{ path('chantier_suivi') }}" class="m-btn m-btn--ghost" id="rent-back"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour au chantier</a>
+            <button type="button" class="m-btn m-btn--ghost" id="print"><i class="fa-solid fa-print" aria-hidden="true"></i> Imprimer / PDF</button>
+        </div>
+    </div>
+
+    <section class="m-card" id="rent-missing" hidden>
+        <div class="empty-state">
+            <span class="empty-state__icon"><i class="fa-solid fa-chart-pie" aria-hidden="true"></i></span>
+            <h2 class="empty-state__title">Aucun chantier sélectionné</h2>
+            <p class="empty-state__text">La rentabilité se consulte depuis un chantier : ouvrez la liste et cliquez sur « Rentabilité ».</p>
+            <a href="{{ path('chantiers') }}" class="m-btn m-btn--primary">Voir les chantiers</a>
+        </div>
+    </section>
+
+    <div id="rent-content">
+    <section class="bp-subcard bp-subcard--soft bp-rent-client">
+        <div class="bp-field"><label for="client">Nom et prénom du client</label><input class="form-control" id="client"></div>
+        <div class="bp-field"><label for="city">Ville du chantier</label><input class="form-control" id="city"></div>
+        <div class="bp-field"><label for="reference">Référence du devis</label><input class="form-control" id="reference"></div>
+    </section>
+
+    <div class="bp-block-title"><div><h2>Vue d'ensemble</h2><p class="bp-help mb-0">Résultat financier global du chantier</p></div></div>
+    <div class="row g-3">
+        <div class="col-6 col-xl-3"><div class="bp-kpi"><p class="bp-kpi__label">Montant vendu HT</p><div class="bp-kpi__value" id="topSales">-</div><div class="bp-kpi__meta">Chiffre d'affaires</div></div></div>
+        <div class="col-6 col-xl-3"><div class="bp-kpi"><p class="bp-kpi__label">Coût de revient HT</p><div class="bp-kpi__value" id="topCost">-</div><div class="bp-kpi__meta">Fournitures + prestations + salariés</div></div></div>
+        <div class="col-6 col-xl-3"><div class="bp-kpi"><p class="bp-kpi__label">Marge HT</p><div class="bp-kpi__value" id="topMargin">-</div><div class="bp-kpi__meta">Ventes moins coûts</div></div></div>
+        <div class="col-6 col-xl-3"><div class="bp-kpi"><p class="bp-kpi__label">Taux de marge sur ventes</p><div class="bp-kpi__value" id="topRate">-</div><div class="bp-kpi__meta">Marge / montant vendu</div></div></div>
+    </div>
+
+    <div class="bp-block-title">
+        <div><h2>Détail par poste</h2><p class="bp-help mb-0">Cliquez sur un poste pour voir les achats, prestations et employés.</p></div>
+        <div class="bp-ds-row bp-no-print">
+            <button type="button" class="m-btn m-btn--ghost m-btn--sm" id="expand">Tout déplier</button>
+            <button type="button" class="m-btn m-btn--ghost m-btn--sm" id="collapse">Tout replier</button>
+        </div>
+    </div>
+    <div class="bp-rent-columns bp-rent-grid" aria-hidden="true">
+        <span>Poste</span><span>Vendu HT</span><span>Fournitures</span><span>Prestations</span><span>Main-d'œuvre</span><span>Marge HT</span><span>Marge / ventes</span>
+    </div>
+    <div id="posts"></div>
+
+    <div class="bp-block-title"><h2>Synthèse des coûts</h2></div>
+    <div class="row g-3">
+        <div class="col-sm-6 col-xl-4"><div class="bp-summary-box"><span class="bp-summary-box__label">Fournitures HT</span><strong class="bp-summary-box__value" id="sSupplies"></strong></div></div>
+        <div class="col-sm-6 col-xl-4"><div class="bp-summary-box"><span class="bp-summary-box__label">Prestations externes HT</span><strong class="bp-summary-box__value" id="sServices"></strong></div></div>
+        <div class="col-sm-6 col-xl-4"><div class="bp-summary-box"><span class="bp-summary-box__label">Main-d'œuvre HT</span><strong class="bp-summary-box__value" id="sLabor"></strong></div></div>
+        <div class="col-sm-6 col-xl-4"><div class="bp-summary-box"><span class="bp-summary-box__label">Coût de revient HT</span><strong class="bp-summary-box__value" id="sCost"></strong></div></div>
+        <div class="col-sm-6 col-xl-4"><div class="bp-summary-box"><span class="bp-summary-box__label">Marge totale HT</span><strong class="bp-summary-box__value" id="sMargin"></strong></div></div>
+        <div class="col-sm-6 col-xl-4"><div class="bp-summary-box"><span class="bp-summary-box__label">Rentabilité sur coût</span><strong class="bp-summary-box__value" id="sProfit"></strong></div></div>
+    </div>
+    <p class="bp-help mt-3">Coût de revient HT = fournitures HT + prestations externes HT + main-d'œuvre. Marge HT = vendu HT - coût de revient. Marge sur ventes = marge / vendu HT. Rentabilité sur coût = marge / coût de revient. Les coûts horaires sont des coûts chargés.</p>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/batipilot/chantiers-store.js') }}"></script>
+    <script src="{{ asset('js/batipilot/rentabilite.js') }}"></script>
+{% endblock %}

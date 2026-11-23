@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Documents{% endblock %}
+
+{% block body %}
+    {{ include('partials/_page_a_venir.html.twig', {
+        titre: 'Documents',
+        sous_titre: 'Centraliser plans, photos et documents des projets et chantiers.',
+        action: 'Ajouter un document',
+        icone: 'fa-regular fa-folder'
+    }) }}
+{% endblock %}

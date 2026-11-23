@@ -1,0 +1,26 @@
+{% use 'bootstrap_5_layout.html.twig' %}
+
+{% block form_row -%}
+    {%- set row_class = ('bp-field ' ~ (row_attr.class ?? ''))|trim -%}
+    <div{% with {attr: row_attr|merge({class: row_class})} %}{{ block('attributes') }}{% endwith %}>
+        {%- if 'checkbox' in block_prefixes -%}
+            {{- form_widget(form) -}}
+        {%- else -%}
+            {{- form_label(form) -}}
+            {{- form_widget(form) -}}
+        {%- endif -%}
+        {{- form_help(form) -}}
+        {{- form_errors(form) -}}
+    </div>
+{%- endblock form_row %}
+
+{% block form_label_content -%}
+    {{- parent() -}}
+    {%- if required and 'checkbox' not in block_prefixes -%}<span class="bp-required" aria-hidden="true">*</span>{%- endif -%}
+{%- endblock form_label_content %}
+
+{% block form_help -%}
+    {%- if help is not empty -%}
+        <span id="{{ id }}_help" class="bp-help">{{ help|trans(help_translation_parameters, translation_domain) }}</span>
+    {%- endif -%}
+{%- endblock form_help %}

@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Mes chantiers{% endblock %}
+
+{% block body %}
+    {{ include('partials/chantier/_liste.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/batipilot/chantiers-store.js') }}"></script>
+    <script src="{{ asset('js/batipilot/chantiers-list.js') }}"></script>
+{% endblock %}

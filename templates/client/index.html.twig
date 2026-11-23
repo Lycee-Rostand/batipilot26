@@ -1,0 +1,36 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Clients{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <h1>Clients</h1>
+            <p class="subtitle">Clients et coordonnées.</p>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('app_client_new') }}" class="m-btn m-btn--primary"><i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter un client</a>
+        </div>
+    </div>
+
+    <section class="m-card">
+        <div class="bp-table-wrap">
+            <table class="bp-table bp-table--cards">
+                <thead><tr><th>Client</th><th>Téléphone</th><th>Mail</th><th>Nom (2e client)</th><th class="is-end">Actions</th></tr></thead>
+                <tbody>
+                {% for client in clients %}
+                    <tr>
+                    <td class="bp-table__ref" data-label="Client">{{ client.prenom ~ ' ' ~ client.nom }}</td>
+                    <td data-label="Téléphone">{{ client.telephone1 ?: '-' }}</td>
+                    <td data-label="Mail">{{ client.mail1 ?: '-' }}</td>
+                    <td data-label="Nom (2e client)">{{ client.nom2 ?: '-' }}</td>
+                    <td class="is-end"><div class="bp-actions"><a class="bp-link" href="{{ path('app_client_show', {'id': client.id}) }}">Voir</a><a class="bp-link" href="{{ path('app_client_edit', {'id': client.id}) }}">Modifier</a></div></td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="5" class="bp-table__empty">Aucun client.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

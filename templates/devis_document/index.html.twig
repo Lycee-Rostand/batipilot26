@@ -1,0 +1,36 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Documents des devis{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <h1>Documents des devis</h1>
+            <p class="subtitle">Documents rattachés aux devis.</p>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('app_devis_document_new') }}" class="m-btn m-btn--primary"><i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter un document</a>
+        </div>
+    </div>
+
+    <section class="m-card">
+        <div class="bp-table-wrap">
+            <table class="bp-table bp-table--cards">
+                <thead><tr><th>Devis</th><th>Type de document</th><th>Date d'enregistrement</th><th>Date de modification</th><th class="is-end">Actions</th></tr></thead>
+                <tbody>
+                {% for devis_document in devis_documents %}
+                    <tr>
+                    <td class="bp-table__ref" data-label="Devis">{{ devis_document.devis ? devis_document.devis.refInterne : '-' }}</td>
+                    <td data-label="Type de document">{{ devis_document.typeDocument ? devis_document.typeDocument.nom : '-' }}</td>
+                    <td data-label="Date d'enregistrement">{{ devis_document.dateEnregistrement ? devis_document.dateEnregistrement|date('d/m/Y') : '-' }}</td>
+                    <td data-label="Date de modification">{{ devis_document.dateModification ? devis_document.dateModification|date('d/m/Y') : '-' }}</td>
+                    <td class="is-end"><div class="bp-actions"><a class="bp-link" href="{{ path('app_devis_document_show', {'id': devis_document.id}) }}">Voir</a><a class="bp-link" href="{{ path('app_devis_document_edit', {'id': devis_document.id}) }}">Modifier</a></div></td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="5" class="bp-table__empty">Aucun document.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

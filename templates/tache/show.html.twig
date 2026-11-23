@@ -1,0 +1,28 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ tache.libelle }} - Étapes (tâches par poste){% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_tache_index') }}">Étapes (tâches par poste)</a><span aria-hidden="true">/</span><span>{{ tache.libelle }}</span></nav>
+            <h1>{{ tache.libelle }}</h1>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('app_tache_index') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour</a>
+            <a href="{{ path('app_tache_edit', {'id': tache.id}) }}" class="m-btn m-btn--primary"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Modifier</a>
+        </div>
+    </div>
+
+    <section class="m-card">
+        <dl class="bp-dl">
+            <dt>Libellé</dt><dd>{{ tache.libelle ?: '-' }}</dd>
+            <dt>Poste</dt><dd>{{ tache.posteId ? tache.posteId.libelle : '-' }}</dd>
+            <dt>Format de la réponse</dt><dd>{{ tache.tacheFormat ? tache.tacheFormat.nom : '-' }}</dd>
+        </dl>
+    </section>
+
+    <div class="bp-form-actions">
+        {{ include('tache/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

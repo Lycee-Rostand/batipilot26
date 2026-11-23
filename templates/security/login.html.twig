@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Connexion | BatiPilot</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/batipilot/logo-batipilot-icon.png') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Poppins:wght@700&display=swap">
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&display=swap">
+    <link rel="stylesheet" href="{{ asset('vendor/fontawesome-7.3.1/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap-5.3.8.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/theme.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+</head>
+<body class="app bp-login">
+<div class="bp-login__layout">
+    <aside class="bp-login__visual">
+        <img class="bp-login__photo" src="{{ asset('images/batipilot/connexion/photo-grue.jpg') }}" alt="BatiPilot">
+    </aside>
+
+    <main class="bp-login__panel">
+        <img class="bp-login__shapes" src="{{ asset('images/batipilot/connexion/fond-formes.png') }}" alt="">
+
+        <div class="bp-login__box">
+            <h1 class="bp-login__title">Bienvenue</h1>
+            <p class="bp-login__subtitle">Connexion avec votre identifiant</p>
+
+            <div class="bp-notice bp-notice--danger bp-login__error" id="login-error" role="alert" hidden>
+                <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+                <span id="login-error-text"></span>
+            </div>
+
+            <form id="login-form" novalidate>
+                <div class="bp-login__field">
+                    <label class="bp-login__label" for="login-id">Identifiant</label>
+                    <img src="{{ asset('images/batipilot/connexion/icone-mail.svg') }}" alt="" width="24" height="24">
+                    <input id="login-id" class="bp-login__input" type="text" name="_username" placeholder="Votre identifiant" autocomplete="username" required>
+                </div>
+                <p class="bp-login__feedback">Saisissez votre identifiant.</p>
+
+                <div class="bp-login__field">
+                    <label class="bp-login__label" for="login-password">Mot de passe</label>
+                    <img src="{{ asset('images/batipilot/connexion/icone-cadenas.svg') }}" alt="" width="24" height="24">
+                    <input id="login-password" class="bp-login__input" type="password" name="_password" placeholder="Votre mot de passe" autocomplete="current-password" required>
+                </div>
+                <p class="bp-login__feedback" id="password-feedback" hidden>Saisissez votre mot de passe.</p>
+
+                <button type="button" class="bp-login__forgot" id="login-forgot">Mot de passe oublié ?</button>
+
+                <button class="bp-login__submit" type="submit">Connexion</button>
+            </form>
+
+            <div class="bp-login__or">
+                <img src="{{ asset('images/batipilot/connexion/separateur.svg') }}" alt="" width="225" height="1">
+                <span>OU</span>
+            </div>
+
+            <div class="bp-login__social">
+                <button type="button" class="bp-login__social-btn" data-login-social="Google" aria-label="Connexion avec Google">
+                    <img src="{{ asset('images/batipilot/connexion/google.svg') }}" alt="" width="23.5215" height="24">
+                </button>
+                <button type="button" class="bp-login__social-btn" data-login-social="Facebook" aria-label="Connexion avec Facebook">
+                    <img src="{{ asset('images/batipilot/connexion/facebook.svg') }}" alt="" width="24.007" height="24">
+                </button>
+                <button type="button" class="bp-login__social-btn bp-login__social-btn--image" data-login-social="Apple" aria-label="Connexion avec Apple">
+                    <img src="{{ asset('images/batipilot/connexion/bouton-apple.svg') }}" alt="" width="95" height="54">
+                </button>
+            </div>
+
+            <p class="bp-login__register">Pas encore de compte ? <strong>Contactez l’administrateur</strong></p>
+        </div>
+    </main>
+</div>
+
+    {{ include('partials/_routes_js.html.twig') }}
+    <script src="{{ asset('vendor/bootstrap-5.3.8.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/batipilot/bp-ui.js') }}"></script>
+    <script src="{{ asset('js/batipilot/bp-core.js') }}"></script>
+    <script src="{{ asset('js/batipilot/connexion.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Chantiers archivés{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane">
+                <a href="{{ path('chantiers') }}">Chantiers</a>
+                <span aria-hidden="true">/</span>
+                <span>Archives</span>
+            </nav>
+            <h1>Chantiers archivés</h1>
+            <p class="subtitle" id="archives-count">&nbsp;</p>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('chantiers') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour aux chantiers</a>
+        </div>
+    </div>
+
+    <section class="bp-section is-open">
+        <div class="bp-section__body pt-3">
+                                            <div class="bp-table-wrap">
+                <table class="bp-table bp-table--cards">
+                    <thead>
+                        <tr>
+                            <th>Chantier</th>
+                            <th>Client</th>
+                            <th>Ville</th>
+                            <th>Devis</th>
+                            <th>Date de démarrage</th>
+                            <th class="is-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="archives-rows"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/batipilot/chantiers-store.js') }}"></script>
+    <script src="{{ asset('js/batipilot/chantiers-archives.js') }}"></script>
+{% endblock %}

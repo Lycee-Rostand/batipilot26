@@ -1,0 +1,15 @@
+{{ form_start(form, {attr: {class: 'bp-form-card', novalidate: 'novalidate'}}) }}
+    <div class="bp-form-grid">
+        {{ form_row(form.Devis, {label: 'Devis'}) }}
+        {{ form_row(form.TypeDocument, {label: 'Type de document'}) }}
+        {{ form_row(form.dateEnregistrement, {label: 'Date d\'enregistrement'}) }}
+        {{ form_row(form.dateModification, {label: 'Date de modification'}) }}
+    </div>
+    {{ form_rest(form) }}
+    <div class="bp-form-actions">
+        <a href="{{ path('app_devis_document_index') }}" class="m-btn m-btn--ghost">Annuler</a>
+        <div class="bp-form-actions__right">
+            <button class="m-btn m-btn--primary"><i class="fa-solid fa-check" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button>
+        </div>
+    </div>
+{{ form_end(form) }}

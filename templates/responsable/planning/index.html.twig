@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Planning & équipes{% endblock %}
+
+{% block body %}
+    {{ include('partials/_page_a_venir.html.twig', {
+        titre: 'Planning & équipes',
+        sous_titre: 'Planifier les équipes principales et les ouvriers polyvalents.',
+        action: 'Planifier une intervention',
+        icone: 'fa-regular fa-calendar'
+    }) }}
+{% endblock %}

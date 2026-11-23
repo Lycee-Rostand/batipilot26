@@ -1,0 +1,36 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Heures des employés{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <h1>Heures des employés</h1>
+            <p class="subtitle">Heures passées par employé, par poste et par chantier.</p>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('app_inter_employe_new') }}" class="m-btn m-btn--primary"><i class="fa-solid fa-plus" aria-hidden="true"></i> Saisir des heures</a>
+        </div>
+    </div>
+
+    <section class="m-card">
+        <div class="bp-table-wrap">
+            <table class="bp-table bp-table--cards">
+                <thead><tr><th>Employé</th><th>Chantier</th><th>Poste</th><th class="is-num">Nombre d'heures</th><th class="is-end">Actions</th></tr></thead>
+                <tbody>
+                {% for inter_employe in inter_employes %}
+                    <tr>
+                    <td class="bp-table__ref" data-label="Employé">{{ inter_employe.employe ? inter_employe.employe.prenom ~ ' ' ~ inter_employe.employe.nom : '-' }}</td>
+                    <td data-label="Chantier">{{ inter_employe.chantier ? inter_employe.chantier.reference : '-' }}</td>
+                    <td data-label="Poste">{{ inter_employe.poste ? inter_employe.poste.libelle : '-' }}</td>
+                    <td class="is-num" data-label="Nombre d'heures">{{ inter_employe.nbHeures ?? '-' }}</td>
+                    <td class="is-end"><div class="bp-actions"><a class="bp-link" href="{{ path('app_inter_employe_show', {'id': inter_employe.id}) }}">Voir</a><a class="bp-link" href="{{ path('app_inter_employe_edit', {'id': inter_employe.id}) }}">Modifier</a></div></td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="5" class="bp-table__empty">Aucune heure saisie.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

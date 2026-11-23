@@ -1,0 +1,12 @@
+{% macro link(route, icon, label, also = []) %}
+    {%- set current = app.request.attributes.get('_route') -%}
+    {%- set crud = route ends with '_index' ? route|slice(0, -6) : '' -%}
+    {%- set active = current == route or current in also or (crud and current in [crud ~ '_new', crud ~ '_show', crud ~ '_edit']) -%}
+    <li{% if active %} class="active"{% endif %}>
+        <a href="{{ path(route) }}"{% if active %} aria-current="page"{% endif %}><i class="{{ icon }}" aria-hidden="true"></i>{{ label }}</a>
+    </li>
+{% endmacro %}
+
+{% macro heading(label) %}
+    <li class="bp-nav-heading" role="presentation">{{ label }}</li>
+{% endmacro %}

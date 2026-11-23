@@ -1,0 +1,286 @@
+/* ----------------------------------------------------------------------------
+   Page de connexion (maquette Figma « Travel Login Page »)
+   ---------------------------------------------------------------------------- */
+body.bp-login {
+    --login-blue: #009ee2;
+    --login-soft: #e7f2f5;
+    --login-muted: rgba(0, 0, 0, 0.5);
+    --login-font: 'Cabinet Grotesk', 'Inter', system-ui, sans-serif;
+
+    margin: 0;
+    background: #fff;
+    font-family: var(--login-font);
+    color: #000;
+    overflow-x: hidden;
+}
+
+body.bp-login .bp-login__layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+}
+
+body.bp-login .bp-login__visual {
+    position: relative;
+    overflow: hidden;
+    background: #1f5fd6;
+}
+body.bp-login .bp-login__photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 0;
+}
+
+body.bp-login .bp-login__panel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 60px 24px 130px;
+    overflow: hidden;
+}
+
+body.bp-login .bp-login__shapes {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    user-select: none;
+}
+
+
+body.bp-login .bp-login__box {
+    position: relative;
+    width: 364px;
+    max-width: 100%;
+    text-align: center;
+}
+
+body.bp-login .bp-login__title {
+    margin: 0;
+    font-family: var(--login-font);
+    font-size: 66px;
+    font-weight: 800;
+    line-height: 50px;
+    color: var(--login-blue);
+}
+body.bp-login .bp-login__subtitle {
+    margin: 16px 0 31px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--login-muted);
+}
+
+body.bp-login .bp-login__error {
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+body.bp-login .bp-login__field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    height: 54px;
+    margin-top: 9px;
+    padding: 0 20px;
+    border: 1px solid var(--login-blue);
+    border-radius: 9px;
+    background: #fff;
+}
+body.bp-login .bp-login__field:has(.is-invalid) {
+    border-color: var(--m-danger, #dc2626);
+}
+body.bp-login #login-form .bp-login__label {
+    position: absolute;
+    top: -9px;
+    left: 16px;
+    padding: 0 5px;
+    background: #fff;
+    font-family: 'Poppins', var(--login-font);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 16px;
+    color: var(--login-blue);
+}
+body.bp-login #login-form .bp-login__field:has(.is-invalid) .bp-login__label {
+    color: var(--m-danger, #dc2626);
+}
+body.bp-login .bp-login__input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-family: var(--login-font);
+    font-size: 14px;
+    font-weight: 500;
+    color: #000;
+}
+body.bp-login .bp-login__input:-webkit-autofill,
+body.bp-login .bp-login__input:-webkit-autofill:hover,
+body.bp-login .bp-login__input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 40px #fff inset;
+    -webkit-text-fill-color: #000;
+    caret-color: #000;
+}
+body.bp-login .bp-login__input::placeholder {
+    color: var(--login-muted);
+}
+body.bp-login .bp-login__field:focus-within {
+    box-shadow: 0 0 0 3px rgba(0, 158, 226, 0.15);
+}
+
+body.bp-login .bp-login__feedback {
+    display: none;
+    margin: 6px 0 0;
+    font-size: 12px;
+    text-align: left;
+    color: var(--m-danger, #dc2626);
+}
+body.bp-login .bp-login__field:has(.is-invalid) + .bp-login__feedback,
+body.bp-login #password-feedback:not([hidden]) {
+    display: block;
+}
+body.bp-login .bp-login__field + .bp-login__feedback + .bp-login__field {
+    margin-top: 24px;
+}
+
+body.bp-login .bp-login__forgot {
+    display: block;
+    margin: 24px 0 0 auto;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: var(--login-font);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 18px;
+    color: var(--login-muted);
+    cursor: pointer;
+}
+body.bp-login .bp-login__forgot:hover {
+    color: var(--login-blue);
+}
+
+body.bp-login .bp-login__submit {
+    display: block;
+    width: 125px;
+    height: 48px;
+    margin: 24px auto 0;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 5px;
+    background: var(--login-blue);
+    box-shadow: 0 16px 32px rgba(0, 158, 226, 0.1);
+    font-family: var(--login-font);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 18px;
+    text-transform: uppercase;
+    color: #fff;
+    cursor: pointer;
+}
+body.bp-login .bp-login__submit:hover {
+    background: #008ccb;
+}
+
+body.bp-login .bp-login__or {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 18px;
+    margin-top: 26px;
+}
+body.bp-login .bp-login__or img {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+body.bp-login .bp-login__or span {
+    position: relative;
+    padding: 0 12px;
+    background: #fff;
+    font-family: 'Montserrat', var(--login-font);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: -0.28px;
+}
+
+body.bp-login .bp-login__social {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 32px;
+}
+body.bp-login .bp-login__social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 95px;
+    height: 54px;
+    padding: 0;
+    border: 0;
+    border-radius: 9px;
+    background: var(--login-soft);
+    cursor: pointer;
+}
+body.bp-login .bp-login__social-btn--image {
+    background: none;
+}
+body.bp-login .bp-login__social-btn:hover {
+    filter: brightness(0.97);
+}
+
+body.bp-login .bp-login__register {
+    margin: 26px 0 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+body.bp-login .bp-login__register strong {
+    font-weight: 700;
+}
+
+@media (min-width: 1600px) and (min-height: 860px) {
+    body.bp-login .bp-login__box {
+        zoom: 1.25;
+    }
+}
+
+@media (min-width: 1900px) and (min-height: 1000px) {
+    body.bp-login .bp-login__box {
+        zoom: 1.4;
+    }
+}
+
+@media (max-width: 991.98px) {
+    body.bp-login .bp-login__layout {
+        grid-template-columns: 1fr;
+        min-height: 0;
+    }
+    body.bp-login .bp-login__visual,
+    body.bp-login .bp-login__shapes {
+        display: none;
+    }
+    body.bp-login .bp-login__panel {
+        min-height: 100vh;
+        padding: 64px 16px 40px;
+    }
+}
+
+@media (max-width: 420px) {
+    body.bp-login .bp-login__title {
+        font-size: 52px;
+        line-height: 44px;
+    }
+}

@@ -1,0 +1,53 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Chantiers{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <h1>Chantiers</h1>
+            <p class="subtitle">Chantiers classés par statut.</p>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('app_chantier_new') }}" class="m-btn m-btn--primary"><i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter un chantier</a>
+        </div>
+    </div>
+
+    {% for statut in statuts %}
+    <section class="bp-section is-open">
+        <button type="button" class="bp-section__toggle" data-bp-toggle aria-expanded="true">
+            <h2 class="bp-section__title">{{ statut.nom }}</h2>
+            <span class="bp-badge bp-badge--accent">{{ statut.chantiers|length }}</span>
+            <i class="fa-solid fa-chevron-down bp-section__chevron" aria-hidden="true"></i>
+        </button>
+        <div class="bp-section__body">
+            <div class="bp-table-wrap">
+                <table class="bp-table bp-table--cards">
+                    <thead><tr><th>Référence</th><th>Date de démarrage</th><th>Date de fin prévue</th><th>Archivé</th><th class="is-end">Actions</th></tr></thead>
+                    <tbody>
+                    {% for chantier in statut.chantiers %}
+                        <tr>
+                        <td class="bp-table__ref" data-label="Référence">{{ chantier.reference }}</td>
+                        <td data-label="Date de démarrage">{{ chantier.dateDemarrage ? chantier.dateDemarrage|date('d/m/Y') : '-' }}</td>
+                        <td data-label="Date de fin prévue">{{ chantier.dateFinPrevue ? chantier.dateFinPrevue|date('d/m/Y') : '-' }}</td>
+                        <td data-label="Archivé">{% if chantier.archive %}<span class="bp-badge">Archivé</span>{% else %}<span class="bp-badge bp-badge--success">Actif</span>{% endif %}</td>
+                        <td class="is-end"><div class="bp-actions"><a class="bp-link" href="{{ path('app_chantier_show', {'id': chantier.id}) }}">Voir</a><a class="bp-link" href="{{ path('app_chantier_edit', {'id': chantier.id}) }}">Modifier</a></div></td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="5" class="bp-table__empty">Aucun chantier pour ce statut.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    {% else %}
+    <section class="m-card">
+        <div class="empty-state">
+            <span class="empty-state__icon"><i class="fa-solid fa-helmet-safety" aria-hidden="true"></i></span>
+            <h2 class="empty-state__title">Aucun statut de chantier</h2>
+            <p class="empty-state__text">Créez d'abord les statuts dans les données référentielles.</p>
+        </div>
+    </section>
+    {% endfor %}
+{% endblock %}

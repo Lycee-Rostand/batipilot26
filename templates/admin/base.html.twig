@@ -1,0 +1,22 @@
+{% extends 'responsable/base.html.twig' %}
+{% import 'partials/_menu.html.twig' as menu %}
+
+{% block space %}Espace administrateur{% endblock %}
+{% block user_role %}Administrateur{% endblock %}
+{% block home_url %}{{ path('accueil_admin') }}{% endblock %}
+
+{% block menu_accueil %}
+    {{ menu.link('accueil_admin', 'fa-solid fa-house', 'Accueil') }}
+{% endblock %}
+
+{% block menu_admin %}
+    {{ menu.heading('Données référentielles') }}
+    {{ menu.link('admin_comptes', 'fa-solid fa-user-gear', 'Comptes utilisateurs') }}
+    {{ menu.link('app_employe_index', 'fa-solid fa-people-group', 'Employés') }}
+    {{ menu.link('app_poste_index', 'fa-solid fa-hammer', 'Postes de travaux') }}
+    {{ menu.link('app_tache_index', 'fa-solid fa-list-ol', 'Étapes (tâches par poste)') }}
+    {{ menu.link('admin_statuts_devis', 'fa-solid fa-tags', 'Statuts des devis') }}
+    {{ menu.link('app_statut_chantier_index', 'fa-solid fa-tag', 'Statuts des chantiers') }}
+    {{ menu.link('app_tva_index', 'fa-solid fa-percent', 'Taux de TVA') }}
+    {{ menu.link('app_type_document_index', 'fa-regular fa-folder', 'Types de documents') }}
+{% endblock %}

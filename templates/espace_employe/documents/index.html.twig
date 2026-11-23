@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Documents{% endblock %}
+
+{% block body %}
+    {{ include('partials/_page_a_venir.html.twig', {
+        titre: 'Documents',
+        sous_titre: 'Documents des chantiers sur lesquels vous intervenez.',
+        action: 'Rechercher un document',
+        icone: 'fa-regular fa-folder'
+    }) }}
+{% endblock %}

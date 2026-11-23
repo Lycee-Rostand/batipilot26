@@ -1,0 +1,16 @@
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.dev
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+/migrations/
+###< symfony/framework-bundle ###
+
+###> JetBrains ###
+/.idea/
+###< JetBrains ###

@@ -1,0 +1,30 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ chantier.reference }} - Chantiers{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_chantier_index') }}">Chantiers</a><span aria-hidden="true">/</span><span>{{ chantier.reference }}</span></nav>
+            <h1>{{ chantier.reference }}</h1>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('app_chantier_index') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour</a>
+            <a href="{{ path('app_chantier_edit', {'id': chantier.id}) }}" class="m-btn m-btn--primary"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Modifier</a>
+        </div>
+    </div>
+
+    <section class="m-card">
+        <dl class="bp-dl">
+            <dt>Référence</dt><dd>{{ chantier.reference ?: '-' }}</dd>
+            <dt>Statut</dt><dd>{{ chantier.statut ? chantier.statut.nom : '-' }}</dd>
+            <dt>Date de démarrage</dt><dd>{{ chantier.dateDemarrage ? chantier.dateDemarrage|date('d/m/Y') : '-' }}</dd>
+            <dt>Date de fin prévue</dt><dd>{{ chantier.dateFinPrevue ? chantier.dateFinPrevue|date('d/m/Y') : '-' }}</dd>
+            <dt>Archivé</dt><dd>{% if chantier.archive %}<span class="bp-badge">Archivé</span>{% else %}<span class="bp-badge bp-badge--success">Actif</span>{% endif %}</dd>
+        </dl>
+    </section>
+
+    <div class="bp-form-actions">
+        {{ include('chantier/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

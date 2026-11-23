@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Saisie des heures{% endblock %}
+
+{% block body %}
+    {{ include('partials/_page_a_venir.html.twig', {
+        titre: 'Saisie des heures',
+        sous_titre: 'Saisir le nombre d’heures passées sur un poste d’un chantier.',
+        action: 'Saisir des heures',
+        icone: 'fa-regular fa-clock'
+    }) }}
+{% endblock %}

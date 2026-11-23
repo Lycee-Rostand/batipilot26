@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Nouveau client{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_client_index') }}">Clients</a><span aria-hidden="true">/</span><span>Nouveau</span></nav>
+            <h1>Nouveau client</h1>
+        </div>
+    </div>
+
+    {{ include('client/_form.html.twig') }}
+{% endblock %}

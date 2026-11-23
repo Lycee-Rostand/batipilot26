@@ -1,0 +1,19 @@
+{{ form_start(form, {attr: {class: 'bp-form-card', novalidate: 'novalidate'}}) }}
+    <div class="bp-form-grid">
+        {{ form_row(form.chantier, {label: 'Chantier'}) }}
+        {{ form_row(form.tache, {label: 'Tâche'}) }}
+        {{ form_row(form.valBoolean, {label: 'Valeur oui / non'}) }}
+        {{ form_row(form.valEntier, {label: 'Valeur entière'}) }}
+        {{ form_row(form.valFloat, {label: 'Valeur décimale'}) }}
+        {{ form_row(form.valTexte, {label: 'Valeur texte'}) }}
+        {{ form_row(form.valDate, {label: 'Valeur date'}) }}
+        {{ form_row(form.valDateHeure, {label: 'Valeur date et heure'}) }}
+    </div>
+    {{ form_rest(form) }}
+    <div class="bp-form-actions">
+        <a href="{{ path('app_chantier_tache_index') }}" class="m-btn m-btn--ghost">Annuler</a>
+        <div class="bp-form-actions__right">
+            <button class="m-btn m-btn--primary"><i class="fa-solid fa-check" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button>
+        </div>
+    </div>
+{{ form_end(form) }}

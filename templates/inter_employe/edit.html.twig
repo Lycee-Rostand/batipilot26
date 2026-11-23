@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Modifier la saisie d'heures{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_inter_employe_index') }}">Heures des employés</a><span aria-hidden="true">/</span><span>{{ inter_employe.employe ? inter_employe.employe.prenom ~ ' ' ~ inter_employe.employe.nom : '-' }}</span></nav>
+            <h1>Modifier la saisie d'heures</h1>
+        </div>
+        <div class="page-header__actions">
+            {{ include('inter_employe/_delete_form.html.twig') }}
+        </div>
+    </div>
+
+    {{ include('inter_employe/_form.html.twig', {'button_label': 'Enregistrer les modifications'}) }}
+{% endblock %}

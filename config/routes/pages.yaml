@@ -1,0 +1,134 @@
+index:
+    path: /
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults: { route: connexion, permanent: false }
+
+connexion:
+    path: /connexion
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: security/login.html.twig }
+
+design_system:
+    path: /design-system
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: design_system/index.html.twig }
+
+accueil:
+    path: /responsable
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: responsable/accueil.html.twig }
+
+devis:
+    path: /responsable/devis
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: responsable/devis/index.html.twig }
+
+devis_edition:
+    path: /responsable/devis/edition
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: responsable/devis/edition.html.twig }
+
+devis_archives:
+    path: /responsable/devis/archives
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: responsable/devis/archives.html.twig }
+
+chantiers:
+    path: /responsable/chantiers
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: responsable/chantier/index.html.twig }
+
+chantier_suivi:
+    path: /responsable/chantiers/suivi
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: responsable/chantier/suivi.html.twig }
+
+chantiers_archives:
+    path: /responsable/chantiers/archives
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: responsable/chantier/archives.html.twig }
+
+rentabilite:
+    path: /responsable/chantiers/rentabilite
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: responsable/rentabilite/index.html.twig }
+
+projets:
+    path: /responsable/projets
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: responsable/projets/index.html.twig }
+
+planning:
+    path: /responsable/planning
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: responsable/planning/index.html.twig }
+
+taches:
+    path: /responsable/taches
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: responsable/taches/index.html.twig }
+
+prestataires:
+    path: /responsable/prestataires
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: responsable/prestataires/index.html.twig }
+
+fournisseurs:
+    path: /responsable/fournisseurs
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: responsable/fournisseurs/index.html.twig }
+
+commandes:
+    path: /responsable/commandes
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: responsable/commandes/index.html.twig }
+
+factures:
+    path: /responsable/factures
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: responsable/factures/index.html.twig }
+
+documents:
+    path: /responsable/documents
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: responsable/documents/index.html.twig }
+
+accueil_admin:
+    path: /admin
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: admin/accueil.html.twig }
+
+admin_comptes:
+    path: /admin/comptes
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: admin/comptes/index.html.twig }
+
+admin_statuts_devis:
+    path: /admin/statuts-devis
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: admin/statuts_devis/index.html.twig }
+
+accueil_employe:
+    path: /espace-employe
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: espace_employe/accueil.html.twig }
+
+employe_chantiers:
+    path: /espace-employe/chantiers
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: espace_employe/chantier/index.html.twig }
+
+employe_chantier:
+    path: /espace-employe/chantiers/suivi
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: espace_employe/chantier/suivi.html.twig }
+
+employe_heures:
+    path: /espace-employe/heures
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: espace_employe/heures/index.html.twig }
+
+employe_documents:
+    path: /espace-employe/documents
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults: { template: espace_employe/documents/index.html.twig }

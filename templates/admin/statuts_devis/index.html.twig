@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Statuts des devis{% endblock %}
+
+{% block body %}
+    {{ include('partials/_page_a_venir.html.twig', {
+        titre: 'Statuts des devis',
+        sous_titre: 'Liste des statuts possibles d’un devis.',
+        action: 'Ajouter un statut',
+        icone: 'fa-solid fa-tags'
+    }) }}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Nouveau statut de chantier{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_statut_chantier_index') }}">Statuts des chantiers</a><span aria-hidden="true">/</span><span>Nouveau</span></nav>
+            <h1>Nouveau statut de chantier</h1>
+        </div>
+    </div>
+
+    {{ include('statut_chantier/_form.html.twig') }}
+{% endblock %}

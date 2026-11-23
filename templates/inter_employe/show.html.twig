@@ -1,0 +1,29 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ inter_employe.employe ? inter_employe.employe.prenom ~ ' ' ~ inter_employe.employe.nom : '-' }} - Heures des employés{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_inter_employe_index') }}">Heures des employés</a><span aria-hidden="true">/</span><span>{{ inter_employe.employe ? inter_employe.employe.prenom ~ ' ' ~ inter_employe.employe.nom : '-' }}</span></nav>
+            <h1>{{ inter_employe.employe ? inter_employe.employe.prenom ~ ' ' ~ inter_employe.employe.nom : '-' }}</h1>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('app_inter_employe_index') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour</a>
+            <a href="{{ path('app_inter_employe_edit', {'id': inter_employe.id}) }}" class="m-btn m-btn--primary"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Modifier</a>
+        </div>
+    </div>
+
+    <section class="m-card">
+        <dl class="bp-dl">
+            <dt>Employé</dt><dd>{{ inter_employe.employe ? inter_employe.employe.prenom ~ ' ' ~ inter_employe.employe.nom : '-' }}</dd>
+            <dt>Chantier</dt><dd>{{ inter_employe.chantier ? inter_employe.chantier.reference : '-' }}</dd>
+            <dt>Poste</dt><dd>{{ inter_employe.poste ? inter_employe.poste.libelle : '-' }}</dd>
+            <dt>Nombre d'heures</dt><dd>{{ inter_employe.nbHeures ?? '-' }}</dd>
+        </dl>
+    </section>
+
+    <div class="bp-form-actions">
+        {{ include('inter_employe/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

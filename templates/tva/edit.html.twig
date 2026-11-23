@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Modifier le taux de TVA{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_tva_index') }}">Taux de TVA</a><span aria-hidden="true">/</span><span>{{ tva.nom }}</span></nav>
+            <h1>Modifier le taux de TVA</h1>
+        </div>
+        <div class="page-header__actions">
+            {{ include('tva/_delete_form.html.twig') }}
+        </div>
+    </div>
+
+    {{ include('tva/_form.html.twig', {'button_label': 'Enregistrer les modifications'}) }}
+{% endblock %}

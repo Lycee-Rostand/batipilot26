@@ -1,0 +1,47 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Devis{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane">
+                <a href="{{ path('devis') }}">Devis</a>
+                <span aria-hidden="true">/</span>
+                <span id="wizard-crumb">Nouveau devis</span>
+            </nav>
+            <h1 id="wizard-title">Nouveau devis</h1>
+            <p class="subtitle">Assistant de création de devis</p>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('devis') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour aux devis</a>
+        </div>
+    </div>
+
+    <div class="bp-stepper" id="bp-stepper">
+        <div class="bp-stepper__head">
+            <strong id="step-heading"></strong>
+            <span class="bp-stepper__count" id="step-count"></span>
+        </div>
+        <div class="bp-progress"><div class="bp-progress__bar" id="step-progress"></div></div>
+        <nav class="bp-steps" id="step-chips" aria-label="Étapes de l'assistant"></nav>
+
+        <form class="bp-form-card" id="wizard-form" novalidate>
+            <div id="step-content"></div>
+            <div class="bp-form-actions">
+                <button type="button" class="m-btn m-btn--ghost" id="prev-step"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Précédent</button>
+                <div class="bp-form-actions__right">
+                    <button type="button" class="m-btn m-btn--ghost" id="save-draft"><i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Enregistrer le brouillon</button>
+                    <button type="button" class="m-btn m-btn--primary" id="next-step">Suivant <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </form>
+
+        <p class="bp-help mt-3">Estimations indicatives en euros, hors taxes. Les références non présentes dans le fichier source sont signalées comme à compléter.</p>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/batipilot/devis-store.js') }}"></script>
+    <script src="{{ asset('js/batipilot/devis-edition.js') }}"></script>
+{% endblock %}

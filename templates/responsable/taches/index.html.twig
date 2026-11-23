@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Tâches & postes{% endblock %}
+
+{% block body %}
+    {{ include('partials/_page_a_venir.html.twig', {
+        titre: 'Tâches & postes',
+        sous_titre: 'Suivre les tâches des chantiers et leurs échéances.',
+        action: 'Nouvelle tâche',
+        icone: 'fa-solid fa-list-check'
+    }) }}
+{% endblock %}

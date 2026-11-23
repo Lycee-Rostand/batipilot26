@@ -1,0 +1,29 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ devis_document.devis ? devis_document.devis.refInterne : '-' }} - Documents des devis{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_devis_document_index') }}">Documents des devis</a><span aria-hidden="true">/</span><span>{{ devis_document.devis ? devis_document.devis.refInterne : '-' }}</span></nav>
+            <h1>{{ devis_document.devis ? devis_document.devis.refInterne : '-' }}</h1>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('app_devis_document_index') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour</a>
+            <a href="{{ path('app_devis_document_edit', {'id': devis_document.id}) }}" class="m-btn m-btn--primary"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Modifier</a>
+        </div>
+    </div>
+
+    <section class="m-card">
+        <dl class="bp-dl">
+            <dt>Devis</dt><dd>{{ devis_document.devis ? devis_document.devis.refInterne : '-' }}</dd>
+            <dt>Type de document</dt><dd>{{ devis_document.typeDocument ? devis_document.typeDocument.nom : '-' }}</dd>
+            <dt>Date d'enregistrement</dt><dd>{{ devis_document.dateEnregistrement ? devis_document.dateEnregistrement|date('d/m/Y') : '-' }}</dd>
+            <dt>Date de modification</dt><dd>{{ devis_document.dateModification ? devis_document.dateModification|date('d/m/Y') : '-' }}</dd>
+        </dl>
+    </section>
+
+    <div class="bp-form-actions">
+        {{ include('devis_document/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

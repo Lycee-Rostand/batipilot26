@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Factures & règlements{% endblock %}
+
+{% block body %}
+    {{ include('partials/_page_a_venir.html.twig', {
+        titre: 'Factures & règlements',
+        sous_titre: 'Établir les factures et suivre les encaissements.',
+        action: 'Créer une facture',
+        icone: 'fa-solid fa-receipt'
+    }) }}
+{% endblock %}

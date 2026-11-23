@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Modifier le type de document{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_type_document_index') }}">Types de documents</a><span aria-hidden="true">/</span><span>{{ type_document.nom }}</span></nav>
+            <h1>Modifier le type de document</h1>
+        </div>
+        <div class="page-header__actions">
+            {{ include('type_document/_delete_form.html.twig') }}
+        </div>
+    </div>
+
+    {{ include('type_document/_form.html.twig', {'button_label': 'Enregistrer les modifications'}) }}
+{% endblock %}

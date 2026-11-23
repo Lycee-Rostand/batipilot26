@@ -1,0 +1,19 @@
+<div class="page-header">
+    <div>
+        <h1>Chantiers</h1>
+        <p class="subtitle" id="chantiers-total">&nbsp;</p>
+    </div>
+    <div class="page-header__actions bp-head-actions">
+        <a href="{{ path('chantier_suivi') }}" class="m-btn m-btn--primary" data-edit-only><i class="fa-solid fa-plus" aria-hidden="true"></i> Démarrer un chantier</a>
+        <a href="{{ path('chantiers_archives') }}" class="bp-link bp-link--muted" data-edit-only>Voir les chantiers archivés →</a>
+    </div>
+</div>
+
+<div class="bp-toolbar">
+    <div class="bp-search">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        <input type="search" class="form-control" id="chantiers-search" placeholder="Rechercher : référence, client, ville, devis…" aria-label="Rechercher un chantier">
+    </div>
+</div>
+
+<div id="chantiers-sections"></div>

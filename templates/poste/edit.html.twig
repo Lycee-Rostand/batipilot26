@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Modifier le poste{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_poste_index') }}">Postes de travaux</a><span aria-hidden="true">/</span><span>{{ poste.libelle }}</span></nav>
+            <h1>Modifier le poste</h1>
+        </div>
+        <div class="page-header__actions">
+            {{ include('poste/_delete_form.html.twig') }}
+        </div>
+    </div>
+
+    {{ include('poste/_form.html.twig', {'button_label': 'Enregistrer les modifications'}) }}
+{% endblock %}

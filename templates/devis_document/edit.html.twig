@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Modifier le document{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_devis_document_index') }}">Documents des devis</a><span aria-hidden="true">/</span><span>{{ devis_document.devis ? devis_document.devis.refInterne : '-' }}</span></nav>
+            <h1>Modifier le document</h1>
+        </div>
+        <div class="page-header__actions">
+            {{ include('devis_document/_delete_form.html.twig') }}
+        </div>
+    </div>
+
+    {{ include('devis_document/_form.html.twig', {'button_label': 'Enregistrer les modifications'}) }}
+{% endblock %}

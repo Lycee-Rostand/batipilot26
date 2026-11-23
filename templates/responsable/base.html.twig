@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% import 'partials/_menu.html.twig' as menu %}
+
+{% block space %}Espace responsable{% endblock %}
+{% block user_role %}Responsable de chantier{% endblock %}
+{% block home_url %}{{ path('accueil') }}{% endblock %}
+
+{% block menu %}
+    {% block menu_accueil %}
+        {{ menu.link('accueil', 'fa-solid fa-house', 'Accueil') }}
+    {% endblock %}
+
+    {% block menu_admin %}{% endblock %}
+
+    {{ menu.heading('Espace de travail') }}
+    {{ menu.link('app_client_index', 'fa-solid fa-users', 'Clients & maisons') }}
+    {{ menu.link('projets', 'fa-regular fa-folder-open', 'Projets') }}
+    {{ menu.link('devis', 'fa-regular fa-file-lines', 'Devis', ['devis_edition', 'devis_archives']) }}
+    {{ menu.link('chantiers', 'fa-solid fa-helmet-safety', 'Chantiers', ['chantier_suivi', 'chantiers_archives', 'rentabilite']) }}
+    {{ menu.link('planning', 'fa-regular fa-calendar', 'Planning & équipes') }}
+    {{ menu.link('taches', 'fa-solid fa-list-check', 'Tâches & postes') }}
+
+    {{ menu.heading('Saisie des données') }}
+    {{ menu.link('app_chantier_index', 'fa-solid fa-building', 'Chantiers (base)') }}
+    {{ menu.link('app_chantier_tache_index', 'fa-solid fa-clipboard-check', 'Tâches des chantiers') }}
+    {{ menu.link('app_inter_employe_index', 'fa-regular fa-clock', 'Heures des employés') }}
+    {{ menu.link('app_devis_document_index', 'fa-regular fa-file-lines', 'Documents des devis') }}
+
+    {{ menu.heading('Achats & finances') }}
+    {{ menu.link('prestataires', 'fa-solid fa-user-tie', 'Prestataires') }}
+    {{ menu.link('fournisseurs', 'fa-solid fa-boxes-stacked', 'Fournisseurs') }}
+    {{ menu.link('commandes', 'fa-solid fa-truck', 'Commandes & livraisons') }}
+    {{ menu.link('factures', 'fa-solid fa-receipt', 'Factures & règlements') }}
+
+    {{ menu.heading('Ressources') }}
+    {{ menu.link('documents', 'fa-regular fa-folder', 'Documents') }}
+    {{ menu.link('design_system', 'fa-solid fa-swatchbook', 'Design system') }}
+{% endblock %}

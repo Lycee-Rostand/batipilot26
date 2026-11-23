@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Nouveau taux de TVA{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_tva_index') }}">Taux de TVA</a><span aria-hidden="true">/</span><span>Nouveau</span></nav>
+            <h1>Nouveau taux de TVA</h1>
+        </div>
+    </div>
+
+    {{ include('tva/_form.html.twig') }}
+{% endblock %}

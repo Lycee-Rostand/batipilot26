@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Nouveau document{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_devis_document_index') }}">Documents des devis</a><span aria-hidden="true">/</span><span>Nouveau</span></nav>
+            <h1>Nouveau document</h1>
+        </div>
+    </div>
+
+    {{ include('devis_document/_form.html.twig') }}
+{% endblock %}

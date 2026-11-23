@@ -1,0 +1,19 @@
+{{ form_start(form, {attr: {class: 'bp-form-card', novalidate: 'novalidate'}}) }}
+    <div class="bp-form-grid">
+        {{ form_row(form.nom, {label: 'Nom'}) }}
+        {{ form_row(form.prenom, {label: 'Prénom'}) }}
+        {{ form_row(form.lieu_naissance, {label: 'Lieu de naissance'}) }}
+        {{ form_row(form.dateNaissance1, {label: 'Date de naissance'}) }}
+        {{ form_row(form.telephone1, {label: 'Téléphone'}) }}
+        {{ form_row(form.mail1, {label: 'Mail'}) }}
+        {{ form_row(form.nom2, {label: 'Nom (2e client)'}) }}
+        {{ form_row(form.prenom2, {label: 'Prénom (2e client)'}) }}
+    </div>
+    {{ form_rest(form) }}
+    <div class="bp-form-actions">
+        <a href="{{ path('app_client_index') }}" class="m-btn m-btn--ghost">Annuler</a>
+        <div class="bp-form-actions__right">
+            <button class="m-btn m-btn--primary"><i class="fa-solid fa-check" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button>
+        </div>
+    </div>
+{{ form_end(form) }}

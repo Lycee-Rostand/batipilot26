@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Suivi du chantier{% endblock %}
+
+{% block body %}
+    {{ include('partials/chantier/_suivi.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/batipilot/chantiers-store.js') }}"></script>
+    <script src="{{ asset('js/batipilot/chantier-suivi.js') }}"></script>
+{% endblock %}

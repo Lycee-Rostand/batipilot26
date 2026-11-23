@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Commandes & livraisons{% endblock %}
+
+{% block body %}
+    {{ include('partials/_page_a_venir.html.twig', {
+        titre: 'Commandes & livraisons',
+        sous_titre: 'Suivre les commandes de matériaux et les livraisons.',
+        action: 'Nouvelle commande',
+        icone: 'fa-solid fa-truck'
+    }) }}
+{% endblock %}

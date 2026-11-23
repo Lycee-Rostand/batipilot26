@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Nouvelle tâche{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_tache_index') }}">Étapes (tâches par poste)</a><span aria-hidden="true">/</span><span>Nouveau</span></nav>
+            <h1>Nouvelle tâche</h1>
+        </div>
+    </div>
+
+    {{ include('tache/_form.html.twig') }}
+{% endblock %}

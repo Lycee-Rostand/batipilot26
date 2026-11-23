@@ -1,0 +1,33 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ chantier_tache.chantier ? chantier_tache.chantier.reference : '-' }} - Tâches des chantiers{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_chantier_tache_index') }}">Tâches des chantiers</a><span aria-hidden="true">/</span><span>{{ chantier_tache.chantier ? chantier_tache.chantier.reference : '-' }}</span></nav>
+            <h1>{{ chantier_tache.chantier ? chantier_tache.chantier.reference : '-' }}</h1>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('app_chantier_tache_index') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour</a>
+            <a href="{{ path('app_chantier_tache_edit', {'id': chantier_tache.id}) }}" class="m-btn m-btn--primary"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Modifier</a>
+        </div>
+    </div>
+
+    <section class="m-card">
+        <dl class="bp-dl">
+            <dt>Chantier</dt><dd>{{ chantier_tache.chantier ? chantier_tache.chantier.reference : '-' }}</dd>
+            <dt>Tâche</dt><dd>{{ chantier_tache.tache ? chantier_tache.tache.libelle : '-' }}</dd>
+            <dt>Valeur oui / non</dt><dd>{{ chantier_tache.valBoolean is null ? '-' : (chantier_tache.valBoolean ? 'Oui' : 'Non') }}</dd>
+            <dt>Valeur entière</dt><dd>{{ chantier_tache.valEntier ?? '-' }}</dd>
+            <dt>Valeur décimale</dt><dd>{{ chantier_tache.valFloat ?? '-' }}</dd>
+            <dt>Valeur texte</dt><dd>{{ chantier_tache.valTexte ?: '-' }}</dd>
+            <dt>Valeur date</dt><dd>{{ chantier_tache.valDate ? chantier_tache.valDate|date('d/m/Y') : '-' }}</dd>
+            <dt>Valeur date et heure</dt><dd>{{ chantier_tache.valDateHeure ? chantier_tache.valDateHeure|date('d/m/Y H:i') : '-' }}</dd>
+        </dl>
+    </section>
+
+    <div class="bp-form-actions">
+        {{ include('chantier_tache/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

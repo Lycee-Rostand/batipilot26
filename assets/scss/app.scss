@@ -1,0 +1,25 @@
+// BatiPilot - feuille de styles de l'application (compilée dans css/app.css).
+// Chargée APRÈS css/theme.css (base du template CoolAdmin, ne pas modifier).
+// L'ordre des @use est important : ne pas le changer.
+
+// Base du template (tokens, menu, barre du haut, formulaires, mobile)
+@use 'app/variables';
+@use 'app/overlay-base';
+@use 'app/responsive-sidebar';
+@use 'app/dropdowns';
+@use 'app/topbar-layout';
+@use 'app/auth';
+@use 'app/legacy-overrides';
+@use 'app/forms-bootstrap';
+@use 'app/mobile-refinements';
+@use 'app/mobile-topbar';
+@use 'app/mobile-topbar-final';
+@use 'app/hamburger';
+@use 'app/header-grid';
+@use 'app/mobile-header-restore';
+@use 'app/toast';
+@use 'app/empty-states';
+
+// BatiPilot - composants communs (classes bp-…). TOUJOURS en dernier.
+@use 'app/batipilot';
+@use 'app/login';

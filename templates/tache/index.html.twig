@@ -1,0 +1,35 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Étapes (tâches par poste){% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <h1>Étapes (tâches par poste)</h1>
+            <p class="subtitle">Tâches à réaliser pour chaque poste de travaux.</p>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('app_tache_new') }}" class="m-btn m-btn--primary"><i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter une tâche</a>
+        </div>
+    </div>
+
+    <section class="m-card">
+        <div class="bp-table-wrap">
+            <table class="bp-table bp-table--cards">
+                <thead><tr><th>Libellé</th><th>Poste</th><th>Format de la réponse</th><th class="is-end">Actions</th></tr></thead>
+                <tbody>
+                {% for tache in taches %}
+                    <tr>
+                    <td class="bp-table__ref" data-label="Libellé">{{ tache.libelle }}</td>
+                    <td data-label="Poste">{{ tache.posteId ? tache.posteId.libelle : '-' }}</td>
+                    <td data-label="Format de la réponse">{{ tache.tacheFormat ? tache.tacheFormat.nom : '-' }}</td>
+                    <td class="is-end"><div class="bp-actions"><a class="bp-link" href="{{ path('app_tache_show', {'id': tache.id}) }}">Voir</a><a class="bp-link" href="{{ path('app_tache_edit', {'id': tache.id}) }}">Modifier</a></div></td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="4" class="bp-table__empty">Aucune tâche.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

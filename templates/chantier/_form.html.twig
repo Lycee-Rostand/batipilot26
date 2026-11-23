@@ -1,0 +1,16 @@
+{{ form_start(form, {attr: {class: 'bp-form-card', novalidate: 'novalidate'}}) }}
+    <div class="bp-form-grid">
+        {{ form_row(form.reference, {label: 'Référence'}) }}
+        {{ form_row(form.statut, {label: 'Statut'}) }}
+        {{ form_row(form.dateDemarrage, {label: 'Date de démarrage'}) }}
+        {{ form_row(form.dateFinPrevue, {label: 'Date de fin prévue'}) }}
+        {{ form_row(form.archive, {label: 'Archivé', help: '0 = actif, 1 = archivé'}) }}
+    </div>
+    {{ form_rest(form) }}
+    <div class="bp-form-actions">
+        <a href="{{ path('app_chantier_index') }}" class="m-btn m-btn--ghost">Annuler</a>
+        <div class="bp-form-actions__right">
+            <button class="m-btn m-btn--primary"><i class="fa-solid fa-check" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button>
+        </div>
+    </div>
+{{ form_end(form) }}

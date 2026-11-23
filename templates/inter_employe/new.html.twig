@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Nouvelle saisie d'heures{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_inter_employe_index') }}">Heures des employés</a><span aria-hidden="true">/</span><span>Nouveau</span></nav>
+            <h1>Nouvelle saisie d'heures</h1>
+        </div>
+    </div>
+
+    {{ include('inter_employe/_form.html.twig') }}
+{% endblock %}

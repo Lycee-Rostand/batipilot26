@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Prestataires{% endblock %}
+
+{% block body %}
+    {{ include('partials/_page_a_venir.html.twig', {
+        titre: 'Prestataires',
+        sous_titre: 'Gérer les entreprises extérieures qui interviennent sur les chantiers.',
+        action: 'Ajouter un prestataire',
+        icone: 'fa-solid fa-user-tie'
+    }) }}
+{% endblock %}

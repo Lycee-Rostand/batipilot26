@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Projets{% endblock %}
+
+{% block body %}
+    {{ include('partials/_page_a_venir.html.twig', {
+        titre: 'Projets',
+        sous_titre: 'Suivre les demandes, du besoin du client jusqu’à la clôture.',
+        action: 'Nouveau projet',
+        icone: 'fa-regular fa-folder-open'
+    }) }}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% import 'partials/_menu.html.twig' as menu %}
+
+{% block body_attributes %} data-readonly{% endblock %}
+{% block space %}Espace employé{% endblock %}
+{% block user_role %}Employé{% endblock %}
+{% block home_url %}{{ path('accueil_employe') }}{% endblock %}
+
+{% block menu %}
+    {{ menu.link('accueil_employe', 'fa-solid fa-house', 'Accueil') }}
+    {{ menu.link('employe_chantiers', 'fa-solid fa-helmet-safety', 'Mes chantiers', ['employe_chantier']) }}
+    {{ menu.link('employe_heures', 'fa-regular fa-clock', 'Saisie des heures') }}
+    {{ menu.link('employe_documents', 'fa-regular fa-folder', 'Documents') }}
+{% endblock %}

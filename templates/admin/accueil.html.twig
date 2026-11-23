@@ -1,0 +1,33 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Administration{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <h1>Administration</h1>
+            <p class="subtitle">Accueil de l'administrateur - paramètres de référence et accès complet à l'application.</p>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('accueil') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-chart-line" aria-hidden="true"></i> Tableau de bord de gestion</a>
+            <a href="{{ path('admin_comptes') }}" class="m-btn m-btn--primary"><i class="fa-solid fa-user-plus" aria-hidden="true"></i> Créer un compte</a>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-sm-6 col-xl-3"><div class="bp-kpi"><div class="bp-kpi__head"><p class="bp-kpi__label">Comptes actifs</p><span class="bp-kpi__icon"><i class="fa-solid fa-users" aria-hidden="true"></i></span></div><div class="bp-kpi__value">{{ nb_comptes ?? '-' }}</div></div></div>
+        <div class="col-sm-6 col-xl-3"><div class="bp-kpi"><div class="bp-kpi__head"><p class="bp-kpi__label">Postes de travaux</p><span class="bp-kpi__icon"><i class="fa-solid fa-hammer" aria-hidden="true"></i></span></div><div class="bp-kpi__value">{{ nb_postes ?? '-' }}</div></div></div>
+        <div class="col-sm-6 col-xl-3"><div class="bp-kpi"><div class="bp-kpi__head"><p class="bp-kpi__label">Taux de TVA</p><span class="bp-kpi__icon"><i class="fa-solid fa-percent" aria-hidden="true"></i></span></div><div class="bp-kpi__value">{{ nb_tva ?? '-' }}</div></div></div>
+        <div class="col-sm-6 col-xl-3"><div class="bp-kpi"><div class="bp-kpi__head"><p class="bp-kpi__label">Employés</p><span class="bp-kpi__icon"><i class="fa-solid fa-people-group" aria-hidden="true"></i></span></div><div class="bp-kpi__value">{{ nb_employes ?? '-' }}</div></div></div>
+    </div>
+
+    <div class="bp-block-title"><h2>Paramètres de référence</h2><span class="bp-help">Réservés à l'administrateur</span></div>
+    <div class="row g-3">
+        <div class="col-md-6 col-xl-4"><a class="bp-quick" href="{{ path('admin_comptes') }}"><span class="bp-quick__icon"><i class="fa-solid fa-user-gear" aria-hidden="true"></i></span><span><span class="bp-quick__title">Comptes utilisateurs</span><span class="bp-quick__text">Créer, activer, désactiver, attribuer un profil</span></span><i class="fa-solid fa-arrow-right bp-quick__arrow" aria-hidden="true"></i></a></div>
+        <div class="col-md-6 col-xl-4"><a class="bp-quick" href="{{ path('app_employe_index') }}"><span class="bp-quick__icon"><i class="fa-solid fa-people-group" aria-hidden="true"></i></span><span><span class="bp-quick__title">Employés</span><span class="bp-quick__text">Employés et coût horaire de main-d'œuvre</span></span><i class="fa-solid fa-arrow-right bp-quick__arrow" aria-hidden="true"></i></a></div>
+        <div class="col-md-6 col-xl-4"><a class="bp-quick" href="{{ path('app_poste_index') }}"><span class="bp-quick__icon"><i class="fa-solid fa-hammer" aria-hidden="true"></i></span><span><span class="bp-quick__title">Postes de travaux</span><span class="bp-quick__text">Postes utilisés dans les devis et les chantiers</span></span><i class="fa-solid fa-arrow-right bp-quick__arrow" aria-hidden="true"></i></a></div>
+        <div class="col-md-6 col-xl-4"><a class="bp-quick" href="{{ path('app_tache_index') }}"><span class="bp-quick__icon"><i class="fa-solid fa-list-ol" aria-hidden="true"></i></span><span><span class="bp-quick__title">Étapes</span><span class="bp-quick__text">Tâches à réaliser pour chaque poste</span></span><i class="fa-solid fa-arrow-right bp-quick__arrow" aria-hidden="true"></i></a></div>
+        <div class="col-md-6 col-xl-4"><a class="bp-quick" href="{{ path('app_tva_index') }}"><span class="bp-quick__icon"><i class="fa-solid fa-percent" aria-hidden="true"></i></span><span><span class="bp-quick__title">Taux de TVA</span><span class="bp-quick__text">Valeurs et périodes de validité</span></span><i class="fa-solid fa-arrow-right bp-quick__arrow" aria-hidden="true"></i></a></div>
+        <div class="col-md-6 col-xl-4"><a class="bp-quick" href="{{ path('app_statut_chantier_index') }}"><span class="bp-quick__icon"><i class="fa-solid fa-tag" aria-hidden="true"></i></span><span><span class="bp-quick__title">Statuts des chantiers</span><span class="bp-quick__text">Statuts possibles d'un chantier</span></span><i class="fa-solid fa-arrow-right bp-quick__arrow" aria-hidden="true"></i></a></div>
+    </div>
+{% endblock %}

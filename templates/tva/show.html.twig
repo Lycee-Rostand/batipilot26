@@ -1,0 +1,30 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ tva.nom }} - Taux de TVA{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_tva_index') }}">Taux de TVA</a><span aria-hidden="true">/</span><span>{{ tva.nom }}</span></nav>
+            <h1>{{ tva.nom }}</h1>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('app_tva_index') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour</a>
+            <a href="{{ path('app_tva_edit', {'id': tva.id}) }}" class="m-btn m-btn--primary"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Modifier</a>
+        </div>
+    </div>
+
+    <section class="m-card">
+        <dl class="bp-dl">
+            <dt>Nom</dt><dd>{{ tva.nom ?: '-' }}</dd>
+            <dt>Taux (%)</dt><dd>{{ tva.taux ?? '-' }}</dd>
+            <dt>Valable à partir du</dt><dd>{{ tva.dataValiditeDebut ? tva.dataValiditeDebut|date('d/m/Y') : '-' }}</dd>
+            <dt>Valable jusqu'au</dt><dd>{{ tva.dataValiditeFin ? tva.dataValiditeFin|date('d/m/Y') : '-' }}</dd>
+            <dt>Archivé</dt><dd>{% if tva.archive %}<span class="bp-badge">Archivé</span>{% else %}<span class="bp-badge bp-badge--success">Actif</span>{% endif %}</dd>
+        </dl>
+    </section>
+
+    <div class="bp-form-actions">
+        {{ include('tva/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

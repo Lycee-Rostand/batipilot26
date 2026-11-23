@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Modifier le statut{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_statut_chantier_index') }}">Statuts des chantiers</a><span aria-hidden="true">/</span><span>{{ statut_chantier.nom }}</span></nav>
+            <h1>Modifier le statut</h1>
+        </div>
+        <div class="page-header__actions">
+            {{ include('statut_chantier/_delete_form.html.twig') }}
+        </div>
+    </div>
+
+    {{ include('statut_chantier/_form.html.twig', {'button_label': 'Enregistrer les modifications'}) }}
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Statuts des chantiers{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <h1>Statuts des chantiers</h1>
+            <p class="subtitle">Statuts possibles d'un chantier.</p>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('app_statut_chantier_new') }}" class="m-btn m-btn--primary"><i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter un statut</a>
+        </div>
+    </div>
+
+    <section class="m-card">
+        <div class="bp-table-wrap">
+            <table class="bp-table bp-table--cards">
+                <thead><tr><th>Nom</th><th>Archivé</th><th class="is-end">Actions</th></tr></thead>
+                <tbody>
+                {% for statut_chantier in statut_chantiers %}
+                    <tr>
+                    <td class="bp-table__ref" data-label="Nom">{{ statut_chantier.nom }}</td>
+                    <td data-label="Archivé">{% if statut_chantier.archive %}<span class="bp-badge">Archivé</span>{% else %}<span class="bp-badge bp-badge--success">Actif</span>{% endif %}</td>
+                    <td class="is-end"><div class="bp-actions"><a class="bp-link" href="{{ path('app_statut_chantier_show', {'id': statut_chantier.id}) }}">Voir</a><a class="bp-link" href="{{ path('app_statut_chantier_edit', {'id': statut_chantier.id}) }}">Modifier</a></div></td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="3" class="bp-table__empty">Aucun statut.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% set bp_routes = {
+    connexion: path('connexion'),
+    accueil: path('accueil'),
+    accueil_admin: path('accueil_admin'),
+    accueil_employe: path('accueil_employe'),
+    devis: path('devis'),
+    devis_edition: path('devis_edition'),
+    chantiers: path('chantiers'),
+    chantier_suivi: path('chantier_suivi'),
+    rentabilite: path('rentabilite'),
+    chantiers_archives: path('chantiers_archives'),
+    employe_chantiers: path('employe_chantiers'),
+    employe_chantier: path('employe_chantier'),
+    projets: path('projets'),
+    commandes: path('commandes'),
+    factures: path('factures')
+} %}
+<script>window.BP_ROUTES = {{ bp_routes|json_encode|raw }};</script>

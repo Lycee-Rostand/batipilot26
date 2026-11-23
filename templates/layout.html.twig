@@ -1,0 +1,10 @@
+{% if app.user %}
+    {% set profil = is_granted('ROLE_ADMIN') ? 'admin' : (is_granted('ROLE_RESPONSABLE') ? 'responsable' : 'employe') %}
+{% else %}
+    {% set profil = app.request.cookies.get('bp_profil', 'responsable') %}
+{% endif %}
+{% extends {
+    admin: 'admin/base.html.twig',
+    responsable: 'responsable/base.html.twig',
+    employe: 'espace_employe/base.html.twig'
+}[profil] ?? 'responsable/base.html.twig' %}

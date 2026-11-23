@@ -1,0 +1,989 @@
+/* ============================================================================
+   BATIPILOT — composants communs (design system)
+   ----------------------------------------------------------------------------
+   Toutes les classes BATIPILOT commencent par `bp-` et suivent la convention
+   BEM du template :  .bp-bloc  /  .bp-bloc__element  /  .bp-bloc--variante
+   Les états utilisent `.is-…` (is-active, is-done, is-open, is-invalid).
+
+   Règles :
+   - Toujours utiliser les variables `--m-*` (couleurs, rayons, ombres) : les
+     thèmes de couleur du template continuent alors de fonctionner.
+   - Pas de style inline dans les pages : si un besoin revient, on ajoute
+     une classe ici.
+   - Catalogue visuel de toutes ces classes : design-system.html
+   ============================================================================ */
+
+/* Couleur « info » propre à BATIPILOT (le --m-c1 du template = même bleu que l accent). */
+body.app {
+    --bp-info:      #0284c7;
+    --bp-info-soft: #e0f2fe;
+}
+
+/* L'attribut HTML `hidden` doit toujours masquer, même sur un bloc en flex. */
+body.app [hidden] { display: none !important; }
+
+/* ----------------------------------------------------------------------------
+   Boutons — compléments aux .m-btn du template
+   ---------------------------------------------------------------------------- */
+body.app .m-btn--danger {
+    background: var(--m-danger);
+    border-color: var(--m-danger);
+    color: #fff;
+}
+body.app .m-btn--danger:hover { filter: brightness(0.92); color: #fff; }
+body.app .m-btn--sm { height: 30px; padding: 0 10px; font-size: 12.5px; }
+body.app .m-btn:disabled,
+body.app .m-btn.is-disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+
+/* Bouton-lien (action secondaire dans un tableau, « Voir les archives → »…) */
+body.app .bp-link {
+    border: 0;
+    background: none;
+    padding: 0;
+    color: var(--m-accent);
+    font-size: inherit;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+}
+body.app .bp-link:hover { text-decoration: underline; color: var(--m-accent-hover); }
+body.app .bp-link--muted { color: var(--m-text-muted); font-weight: 400; }
+body.app .bp-link--danger { color: var(--m-danger); }
+
+/* ----------------------------------------------------------------------------
+   Fil d'Ariane
+   ---------------------------------------------------------------------------- */
+body.app .bp-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 12.5px;
+    color: var(--m-text-faint);
+    margin-bottom: 6px;
+}
+body.app .bp-breadcrumb a { color: var(--m-text-muted); text-decoration: none; }
+body.app .bp-breadcrumb a:hover { color: var(--m-accent); }
+
+/* ----------------------------------------------------------------------------
+   Bandeau « données de démonstration »
+   ---------------------------------------------------------------------------- */
+body.app .bp-demo-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    margin-bottom: 20px;
+    border: 1px dashed var(--m-warning);
+    background: var(--m-warning-soft);
+    border-radius: var(--m-radius-sm);
+    font-size: 12.5px;
+    color: var(--m-text-muted);
+}
+body.app .bp-demo-banner i { color: var(--m-warning); }
+
+/* ----------------------------------------------------------------------------
+   Badges de statut — une couleur = un sens (voir design-system.html)
+   ---------------------------------------------------------------------------- */
+body.app .bp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 22px;
+    padding: 0 8px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    background: var(--m-surface-2);
+    color: var(--m-text-muted);
+    border: 1px solid var(--m-border);
+}
+body.app .bp-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+body.app .bp-badge--plain::before { display: none; }
+body.app .bp-badge--info    { background: var(--bp-info-soft);   color: var(--bp-info);     border-color: transparent; }
+body.app .bp-badge--accent  { background: var(--m-accent-soft);  color: var(--m-accent);  border-color: transparent; }
+body.app .bp-badge--success { background: var(--m-success-soft); color: #047857;          border-color: transparent; }
+body.app .bp-badge--warning { background: var(--m-warning-soft); color: #b45309;          border-color: transparent; }
+body.app .bp-badge--danger  { background: var(--m-danger-soft);  color: #b91c1c;          border-color: transparent; }
+
+/* Petite étiquette carrée (code, « Personnalisée », compteur) */
+body.app .bp-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--m-surface-2);
+    border: 1px solid var(--m-border);
+    color: var(--m-text-muted);
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* ----------------------------------------------------------------------------
+   Barre d'outils de liste (recherche + filtres)
+   ---------------------------------------------------------------------------- */
+body.app .bp-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+body.app .bp-search {
+    position: relative;
+    flex: 1 1 260px;
+    max-width: 380px;
+}
+body.app .bp-search i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--m-text-faint);
+    font-size: 13px;
+    pointer-events: none;
+}
+body.app .bp-search .form-control { padding-left: 36px; }
+body.app .bp-toolbar .form-select { width: auto; min-width: 180px; }
+body.app .bp-toolbar .bp-link { font-size: 13px; }
+body.app .bp-toolbar__end { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+
+/* ----------------------------------------------------------------------------
+   Section repliable (ex. « Chantiers en cours », « Chantiers à venir »)
+   ---------------------------------------------------------------------------- */
+body.app .bp-section {
+    background: var(--m-surface);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    box-shadow: var(--m-shadow-xs);
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+body.app .bp-section__toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border: 0;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    color: var(--m-text);
+}
+body.app .bp-section__toggle:hover { background: var(--m-surface-2); }
+body.app .bp-section__title { font-size: 14.5px; font-weight: 600; margin: 0; }
+body.app .bp-section__desc { font-size: 12.5px; color: var(--m-text-muted); margin: 0 0 12px; }
+body.app .bp-section__chevron {
+    margin-left: auto;
+    color: var(--m-text-faint);
+    transition: transform 150ms ease;
+}
+body.app .bp-section.is-open .bp-section__chevron { transform: rotate(180deg); }
+body.app .bp-section__body { padding: 0 18px 16px; }
+body.app .bp-section:not(.is-open) .bp-section__body { display: none; }
+
+/* ----------------------------------------------------------------------------
+   Tableau de données
+   ---------------------------------------------------------------------------- */
+body.app .bp-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius-sm);
+}
+body.app .bp-table {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+body.app .bp-table th {
+    background: var(--m-surface-2);
+    color: var(--m-text-muted);
+    font-size: 11.5px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--m-border);
+    white-space: nowrap;
+}
+body.app .bp-table td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--m-divider);
+    color: var(--m-text);
+    white-space: nowrap;
+    vertical-align: middle;
+}
+body.app .bp-table tbody tr:last-child td { border-bottom: 0; }
+body.app .bp-table tbody tr:hover td { background: var(--m-surface-2); }
+body.app .bp-table .is-num { text-align: right; font-variant-numeric: tabular-nums; }
+body.app .bp-table .is-end { text-align: right; }
+body.app .bp-table__ref { font-weight: 600; }
+body.app .bp-table__muted { color: var(--m-text-muted); }
+body.app .bp-table__empty {
+    text-align: center;
+    color: var(--m-text-faint);
+    padding: 28px 14px !important;
+    white-space: normal !important;
+}
+
+/* Pagination */
+body.app .bp-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-top: 12px;
+    font-size: 12.5px;
+    color: var(--m-text-muted);
+}
+body.app .bp-pagination__pages { display: flex; gap: 4px; flex-wrap: wrap; }
+body.app .bp-page-btn {
+    min-width: 30px;
+    height: 30px;
+    padding: 0 9px;
+    border: 1px solid var(--m-border);
+    background: var(--m-surface);
+    border-radius: var(--m-radius-sm);
+    color: var(--m-text);
+    font-size: 12.5px;
+    cursor: pointer;
+}
+body.app .bp-page-btn:hover:not(:disabled) { border-color: var(--m-accent); color: var(--m-accent); }
+body.app .bp-page-btn.is-current { background: var(--m-accent); border-color: var(--m-accent); color: #fff; }
+body.app .bp-page-btn:disabled { opacity: 0.4; cursor: default; }
+
+/* ----------------------------------------------------------------------------
+   Assistant multi-étapes (« formulaire avancé ») — modèle de TOUS les
+   formulaires longs : création de chantier, de devis, de projet…
+   ---------------------------------------------------------------------------- */
+/* Pleine largeur, comme les pages de liste : même gabarit sur toutes les pages. */
+body.app .bp-stepper { width: 100%; }
+body.app .bp-stepper__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+body.app .bp-stepper__count { font-size: 12.5px; color: var(--m-text-muted); }
+
+body.app .bp-progress {
+    height: 6px;
+    background: var(--m-border-soft);
+    border-radius: 999px;
+    overflow: hidden;
+}
+body.app .bp-progress__bar {
+    height: 100%;
+    background: var(--m-accent);
+    border-radius: inherit;
+    transition: width 200ms ease;
+}
+body.app .bp-progress--success .bp-progress__bar { background: var(--m-success); }
+body.app .bp-progress--sm { height: 5px; width: 130px; }
+body.app .bp-stepper > .bp-progress { margin-bottom: 16px; }
+
+body.app .bp-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 6px;
+    margin-bottom: 18px;
+}
+body.app .bp-step {
+    display: flex;
+    flex-direction: column;     /* numéro au-dessus du libellé */
+    align-items: flex-start;
+    gap: 2px;
+    min-height: 52px;
+    padding: 7px 8px;
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius-sm);
+    background: var(--m-surface);
+    color: var(--m-text-muted);
+    font-size: 12px;
+    line-height: 1.3;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 120ms ease, background 120ms ease;
+}
+body.app .bp-step:hover { border-color: var(--m-accent); }
+body.app .bp-step__num { font-weight: 600; font-variant-numeric: tabular-nums; }
+body.app .bp-step.is-active {
+    border-color: var(--m-accent);
+    background: var(--m-accent-soft);
+    color: var(--m-accent);
+    font-weight: 600;
+    box-shadow: 0 0 0 3px rgba(var(--m-accent-rgb), 0.12);
+}
+body.app .bp-step.is-done {
+    border-color: rgba(16, 185, 129, 0.45);
+    color: #047857;
+}
+
+/* Carte de formulaire (contenu d'une étape ou formulaire simple) */
+body.app .bp-form-card {
+    background: var(--m-surface);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    box-shadow: var(--m-shadow-xs);
+    padding: 24px;
+}
+body.app .bp-form-card__title { font-size: 18px; font-weight: 600; margin: 0 0 4px; color: var(--m-text); }
+body.app .bp-form-card__intro { font-size: 13px; color: var(--m-text-muted); margin: 0 0 20px; line-height: 1.5; }
+
+/* Grille de champs : 2 colonnes, 1 sur mobile */
+body.app .bp-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+body.app .bp-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+body.app .bp-field--full { grid-column: 1 / -1; }
+body.app .bp-field > label,
+body.app .bp-label {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--m-text-muted);
+    margin: 0;
+}
+body.app .bp-required { color: var(--m-danger); margin-left: 2px; }
+body.app .bp-help { font-size: 12px; color: var(--m-text-faint); line-height: 1.5; }
+body.app .bp-field .invalid-feedback { font-size: 12px; }
+
+/* Barre d'actions en bas de formulaire */
+body.app .bp-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid var(--m-divider);
+}
+body.app .bp-form-actions__right { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* Sous-bloc dans un formulaire */
+body.app .bp-subcard {
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius-sm);
+    padding: 16px;
+    margin-bottom: 16px;
+}
+body.app .bp-subcard__title { font-size: 14px; font-weight: 600; margin: 0 0 6px; }
+
+/* ----------------------------------------------------------------------------
+   Messages d'information / d'alerte dans une page
+   ---------------------------------------------------------------------------- */
+body.app .bp-notice {
+    display: flex;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: var(--m-radius-sm);
+    border: 1px solid transparent;
+    background: var(--bp-info-soft);
+    color: var(--m-text-muted);
+    font-size: 12.5px;
+    line-height: 1.55;
+    margin: 12px 0;
+}
+body.app .bp-notice > i { color: var(--bp-info); margin-top: 2px; }
+body.app .bp-notice strong { color: var(--m-text); }
+body.app .bp-notice--warning { background: var(--m-warning-soft); }
+body.app .bp-notice--warning > i { color: var(--m-warning); }
+body.app .bp-notice--danger { background: var(--m-danger-soft); }
+body.app .bp-notice--danger > i { color: var(--m-danger); }
+body.app .bp-notice--success { background: var(--m-success-soft); }
+body.app .bp-notice--success > i { color: var(--m-success); }
+
+/* ----------------------------------------------------------------------------
+   Tâche / point de contrôle (suivi des postes de travaux)
+   ---------------------------------------------------------------------------- */
+body.app .bp-task-list { display: flex; flex-direction: column; gap: 10px; }
+body.app .bp-task {
+    border: 1px solid var(--m-border);
+    border-left: 3px solid var(--m-border);
+    border-radius: var(--m-radius-sm);
+    padding: 12px 14px;
+    background: var(--m-surface);
+    transition: border-color 120ms ease, background 120ms ease;
+}
+body.app .bp-task.is-done {
+    border-color: rgba(16, 185, 129, 0.35);
+    border-left-color: var(--m-success);
+    background: var(--m-success-soft);
+}
+body.app .bp-task__head { display: flex; align-items: flex-start; gap: 10px; }
+body.app .bp-task__head .form-check-input { margin-top: 2px; flex-shrink: 0; }
+body.app .bp-task__code {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--m-text);
+    min-width: 38px;
+    font-variant-numeric: tabular-nums;
+}
+body.app .bp-task__title { flex: 1; font-size: 13px; line-height: 1.5; color: var(--m-text); }
+body.app .bp-task__controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 10px;
+    margin: 10px 0 0;
+}
+body.app .bp-task__controls textarea { min-height: 56px; resize: vertical; }
+
+/* Statistiques en ligne (« 3 / 8 tâches terminées » + jauge) */
+body.app .bp-inline-stats {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 14px;
+}
+
+/* Panneau d'ajout (pointillé) */
+body.app .bp-add-panel {
+    margin-top: 16px;
+    padding: 16px;
+    border: 1px dashed var(--m-border);
+    border-radius: var(--m-radius-sm);
+    background: var(--m-surface-2);
+}
+body.app .bp-add-panel__title { font-size: 13.5px; font-weight: 600; margin: 0 0 12px; }
+
+/* ----------------------------------------------------------------------------
+   Récapitulatif / indicateurs
+   ---------------------------------------------------------------------------- */
+body.app .bp-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+}
+body.app .bp-summary-box {
+    padding: 14px;
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius-sm);
+    background: var(--m-surface);
+}
+body.app .bp-summary-box__label { font-size: 12.5px; color: var(--m-text-muted); }
+body.app .bp-summary-box__value {
+    display: block;
+    margin: 4px 0 8px;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--m-text);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Carte KPI (accueil / tableaux de bord) */
+body.app .bp-kpi {
+    background: var(--m-surface);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    box-shadow: var(--m-shadow-xs);
+    padding: 16px 18px;
+    height: 100%;
+}
+body.app .bp-kpi__label { font-size: 12.5px; color: var(--m-text-muted); margin: 0; }
+body.app .bp-kpi__value { font-size: 24px; font-weight: 600; margin: 6px 0 4px; font-variant-numeric: tabular-nums; }
+body.app .bp-kpi__meta { font-size: 12px; color: var(--m-text-faint); }
+
+/* Liste clé / valeur (fiche détaillée) */
+body.app .bp-dl {
+    display: grid;
+    grid-template-columns: minmax(120px, 200px) 1fr;
+    gap: 8px 16px;
+    margin: 0;
+    font-size: 13px;
+}
+body.app .bp-dl dt { color: var(--m-text-muted); font-weight: 400; }
+body.app .bp-dl dd { margin: 0; color: var(--m-text); }
+
+/* ----------------------------------------------------------------------------
+   Design system : extraits de code
+   ---------------------------------------------------------------------------- */
+body.app .bp-code {
+    margin: 12px 0 0;
+    padding: 12px 14px;
+    background: var(--m-sidebar);
+    color: var(--m-text-on-dark);
+    border-radius: var(--m-radius-sm);
+    font-size: 12px;
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre;
+}
+body.app .bp-swatch {
+    height: 56px;
+    border-radius: var(--m-radius-sm);
+    border: 1px solid var(--m-border);
+    margin-bottom: 6px;
+}
+body.app .bp-ds-section { margin-bottom: 28px; }
+body.app .bp-ds-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+/* ----------------------------------------------------------------------------
+   Responsive
+   ---------------------------------------------------------------------------- */
+@media (max-width: 767.98px) {
+    body.app .bp-form-grid { grid-template-columns: 1fr; }
+    body.app .bp-form-card { padding: 16px; }
+    body.app .bp-task__controls { grid-template-columns: 1fr; margin-left: 0; }
+    body.app .bp-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    body.app .bp-step { font-size: 11px; min-height: 40px; }
+    body.app .bp-toolbar__end { margin-left: 0; }
+    body.app .bp-search { max-width: none; }
+    body.app .bp-dl { grid-template-columns: 1fr; gap: 2px; }
+    body.app .bp-dl dd { margin-bottom: 8px; }
+    body.app .bp-form-actions > .m-btn,
+    body.app .bp-form-actions__right { width: 100%; }
+    body.app .bp-form-actions__right .m-btn { flex: 1; justify-content: center; }
+}
+
+/* ----------------------------------------------------------------------------
+   Tableau → cartes sur téléphone (< 768 px) et compact sur tablette :
+   ajouter .bp-table--cards sur <table>
+   et data-label="Nom de colonne" sur chaque <td>.
+   ---------------------------------------------------------------------------- */
+/* Tablette : le tableau tient dans la largeur, sans défilement */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+    body.app .bp-table--cards { min-width: 0; font-size: 12.5px; }
+    body.app .bp-table--cards th,
+    body.app .bp-table--cards td { white-space: normal; padding: 10px 8px; }
+    body.app .bp-table--cards th { font-size: 10.5px; }
+    body.app .bp-table--cards td.is-end, body.app .bp-table--cards td .bp-tag { white-space: nowrap; }
+}
+@media (max-width: 767.98px) {
+    body.app .bp-table-wrap:has(.bp-table--cards) { border: 0; overflow: visible; }
+    body.app .bp-table--cards { min-width: 0; }
+    body.app .bp-table--cards thead { display: none; }
+    body.app .bp-table--cards,
+    body.app .bp-table--cards tbody,
+    body.app .bp-table--cards tr,
+    body.app .bp-table--cards td { display: block; width: 100%; }
+    body.app .bp-table--cards tr {
+        border: 1px solid var(--m-border);
+        border-radius: var(--m-radius-sm);
+        padding: 6px 12px;
+        margin-bottom: 10px;
+        background: var(--m-surface);
+    }
+    body.app .bp-table--cards tbody tr:hover td { background: none; }
+    body.app .bp-table--cards td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 7px 0;
+        border-bottom: 1px solid var(--m-divider);
+        white-space: normal;
+        text-align: right;
+    }
+    body.app .bp-table--cards tr td:last-child { border-bottom: 0; }
+    body.app .bp-table--cards td[data-label]::before {
+        content: attr(data-label);
+        color: var(--m-text-muted);
+        font-size: 12px;
+        text-align: left;
+    }
+    body.app .bp-table--cards td.bp-table__ref { font-size: 14px; }
+    body.app .bp-table--cards td.is-end { justify-content: flex-end; }
+    body.app .bp-table--cards td.bp-table__empty { display: block; text-align: center; }
+}
+@media (max-width: 575.98px) {
+    body.app .bp-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    body.app .bp-summary-box__value { font-size: 17px; }
+}
+
+/* ----------------------------------------------------------------------------
+   Logo BatiPilot (sidebar + en-tête mobile)
+   Fond de la sidebar conservé (sombre, comme le template).
+   ---------------------------------------------------------------------------- */
+body.app .menu-sidebar .logo img.bp-logo-full {
+    height: 44px;
+    width: auto;
+    filter: none;
+}
+body.app .menu-sidebar .logo img.bp-logo-icon {
+    display: none;
+    height: 36px;
+    width: 36px;
+    filter: none;
+}
+body.app .header-mobile .logo img.bp-logo-full { height: 38px; width: auto; }
+
+/* Menu replié en icônes (ordinateur) : seule la boussole reste visible */
+@media (min-width: 992px) {
+    body.app.sidebar-collapsed .menu-sidebar .logo img.bp-logo-full { display: none; }
+    body.app.sidebar-collapsed .menu-sidebar .logo img.bp-logo-icon { display: block; }
+}
+
+/* ----------------------------------------------------------------------------
+   Menu : titres de rubrique ({ heading: '…' } dans _nav-data.pug)
+   ---------------------------------------------------------------------------- */
+body.app .navbar-sidebar .navbar__list > li.bp-nav-heading {
+    padding: 18px 12px 6px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8b9ab3;
+    cursor: default;
+    white-space: nowrap;
+}
+body.app .navbar-sidebar .navbar__list > li.bp-nav-heading:first-child { padding-top: 4px; }
+body.app .navbar-mobile__list > li.bp-nav-heading {
+    padding: 14px 15px 4px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--m-text-faint);
+}
+@media (min-width: 992px) {
+    /* Menu replié : le titre devient un simple trait de séparation */
+    body.app.sidebar-collapsed .navbar-sidebar .navbar__list > li.bp-nav-heading {
+        font-size: 0;
+        padding: 0;
+        margin: 10px 18px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+}
+
+/* ----------------------------------------------------------------------------
+   Accès rapide (grande carte-lien : Devis, Chantiers, Indicateurs…)
+   ---------------------------------------------------------------------------- */
+body.app .bp-quick {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: 100%;
+    padding: 16px 18px;
+    background: var(--m-surface);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius);
+    box-shadow: var(--m-shadow-xs);
+    color: var(--m-text);
+    text-decoration: none;
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+body.app .bp-quick:hover { border-color: var(--m-accent); box-shadow: var(--m-shadow-sm); color: var(--m-text); }
+body.app .bp-quick__icon {
+    flex: 0 0 42px;
+    height: 42px;
+    border-radius: var(--m-radius-sm);
+    background: var(--m-accent-soft);
+    color: var(--m-accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+body.app .bp-quick__title { display: block; font-size: 14.5px; font-weight: 600; }
+body.app .bp-quick__text { display: block; font-size: 12.5px; color: var(--m-text-muted); margin-top: 2px; }
+body.app .bp-quick__arrow { margin-left: auto; color: var(--m-text-faint); }
+body.app .bp-quick:hover .bp-quick__arrow { color: var(--m-accent); }
+
+/* KPI avec icône */
+body.app .bp-kpi__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+body.app .bp-kpi__icon {
+    flex: 0 0 36px;
+    height: 36px;
+    border-radius: var(--m-radius-sm);
+    background: var(--m-accent-soft);
+    color: var(--m-accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Titre de bloc dans une page (« Indicateurs 2026 »…) */
+body.app .bp-block-title {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 28px 0 12px;
+}
+body.app .bp-block-title h2 { font-size: 16px; font-weight: 600; margin: 0; }
+
+/* Zone de graphique (hauteur fixe pour Chart.js) */
+body.app .bp-chart { position: relative; height: 280px; }
+body.app .bp-legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12.5px; color: var(--m-text-muted); }
+body.app .bp-legend__swatch { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+/* Liste d'alertes / échéances */
+body.app .bp-list { list-style: none; margin: 0; padding: 0; }
+body.app .bp-list__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--m-divider);
+}
+body.app .bp-list__item:last-child { border-bottom: 0; padding-bottom: 0; }
+body.app .bp-list__icon { margin-top: 2px; width: 16px; text-align: center; }
+body.app .bp-list__body { flex: 1; min-width: 0; }
+body.app .bp-list__title { display: block; font-size: 13px; font-weight: 600; }
+body.app .bp-list__text { display: block; font-size: 12px; color: var(--m-text-muted); }
+body.app .m-card__header .bp-link { font-size: 13px; white-space: nowrap; }
+
+/* ----------------------------------------------------------------------------
+   Barre du haut : avatar à initiales + profil de l'utilisateur
+   ---------------------------------------------------------------------------- */
+body.app .bp-avatar {
+    width: 100%;
+    height: 100%;
+    min-width: 32px;
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--m-accent-soft);
+    color: var(--m-accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+body.app .account-item .content { line-height: 1.2; }
+body.app .bp-user-role { display: block; font-size: 11.5px; color: var(--m-text-faint); white-space: nowrap; }
+
+/* ============================================================================
+   Compléments (accueil, listes, connexion)
+   ============================================================================ */
+body.app .bp-badge--neutral { /* = style par défaut, nommé pour la lisibilité */ }
+
+/* Tâche : champs compacts */
+body.app .bp-task__controls .bp-field { gap: 4px; }
+body.app .bp-task__controls .bp-field > label { font-size: 11.5px; }
+body.app .bp-task__controls .form-control, body.app .bp-task__controls .form-select { padding-top: 6px; padding-bottom: 6px; font-size: 13px; }
+body.app .bp-task__head { align-items: center; flex-wrap: wrap; }
+body.app .bp-task__title { font-weight: 600; }
+
+/* Case à cocher avec libellé */
+body.app .bp-check { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--m-text); margin: 0; cursor: pointer; }
+body.app .bp-check .form-check-input { margin: 0; }
+
+/* Tableau : sous-ligne, jauge, groupe d'actions */
+body.app .bp-table__sub { display: block; font-size: 12px; font-weight: 400; color: var(--m-text-muted); white-space: normal; }
+body.app .bp-meter { display: flex; align-items: center; gap: 8px; min-width: 110px; font-size: 12px; color: var(--m-text-muted); }
+body.app .bp-meter .bp-progress { flex: 1; }
+body.app .bp-actions { display: inline-flex; gap: 6px; justify-content: flex-end; flex-wrap: nowrap; }
+
+/* Graphiques : pastilles de légende */
+body.app .bp-legend__swatch--c1 { background: #4272d7; }
+body.app .bp-legend__swatch--c2 { background: #d9590b; }
+
+/* Compteurs « À traiter » (cliquables) */
+body.app .bp-stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+body.app .bp-stat {
+    display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+    background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius);
+    box-shadow: var(--m-shadow-xs); color: var(--m-text); text-decoration: none;
+    transition: border-color 120ms ease;
+}
+body.app .bp-stat:hover { border-color: var(--m-accent); color: var(--m-text); }
+body.app .bp-stat__icon { flex: 0 0 34px; height: 34px; border-radius: var(--m-radius-sm); display: inline-flex; align-items: center; justify-content: center; background: var(--m-surface-2); color: var(--m-text-muted); }
+body.app .bp-stat--danger .bp-stat__icon { background: var(--m-danger-soft); color: var(--m-danger); }
+body.app .bp-stat--warning .bp-stat__icon { background: var(--m-warning-soft); color: #b45309; }
+body.app .bp-stat__value { display: block; font-size: 22px; font-weight: 600; line-height: 1.1; font-variant-numeric: tabular-nums; }
+body.app .bp-stat__label { display: block; font-size: 12.5px; font-weight: 500; margin-top: 2px; }
+body.app .bp-stat__meta { display: block; font-size: 11.5px; color: var(--m-text-faint); margin-top: 2px; }
+
+/* Connexion */
+body.app .bp-auth-logo img { height: 64px; width: auto; }
+body.app .bp-password { position: relative; }
+body.app .bp-password .form-control { padding-right: 42px; }
+body.app .bp-password__toggle { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); border: 0; background: none; color: var(--m-text-muted); width: 34px; height: 34px; border-radius: var(--m-radius-sm); }
+body.app .bp-password__toggle:hover { background: var(--m-surface-2); color: var(--m-text); }
+
+@media (max-width: 767.98px) {
+    body.app .bp-table--cards td .bp-actions { width: 100%; justify-content: flex-end; }
+}
+body.app .bp-head-actions { flex-direction: column; align-items: flex-end; gap: 10px; }
+@media (max-width: 767.98px) { body.app .bp-head-actions { flex-direction: row; align-items: center; flex-wrap: wrap; } }
+
+/* ============================================================================
+   Pages des maquettes de la professeure (devis, rentabilité)
+   ============================================================================ */
+/* Total du poste et ligne de calcul (devis) */
+body.app .bp-post-total { font-size: 13.5px; font-weight: 600; color: #047857; margin: 2px 0 14px; }
+body.app .bp-calc-row {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+    padding: 12px 14px; margin: 10px 0;
+    background: var(--m-c1-soft); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
+    font-size: 13px;
+}
+body.app .bp-calc-row label { display: inline-flex; align-items: center; gap: 8px; margin: 0; }
+body.app .bp-calc-row .form-control { width: 120px; }
+body.app .bp-calc-row strong { font-size: 14.5px; }
+
+/* Prestation : prix et montant calculé */
+body.app .bp-task__title--desc { font-weight: 400; color: var(--m-text-muted); }
+body.app .bp-item-price { display: grid; grid-template-columns: 1fr 160px 160px; gap: 10px; align-items: end; margin: 10px 0 0; }
+body.app .bp-item-total { margin-top: 8px; }
+body.app .bp-line-total { color: #047857; font-weight: 600; }
+
+/* Bloc grisé et lignes de totaux */
+body.app .bp-subcard--soft { background: var(--m-surface-2); }
+body.app .bp-total-row { display: flex; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--m-divider); font-size: 13px; }
+body.app .bp-total-row:last-child { border-bottom: 0; }
+body.app .bp-total-row strong { white-space: nowrap; font-variant-numeric: tabular-nums; }
+body.app .bp-total-row--grand strong { font-size: 16px; }
+body.app .bp-total-row--grand strong:last-child { color: #047857; }
+
+/* Rentabilité : en-tête client, colonnes et lignes dépliables */
+body.app .bp-rent-client { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 14px; }
+body.app .bp-rent-grid { display: grid; grid-template-columns: 2.05fr repeat(6, minmax(0, 1fr)); gap: 8px; align-items: center; }
+body.app .bp-rent-columns {
+    padding: 10px 16px; background: var(--m-surface-2); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
+    font-size: 11px; font-weight: 500; letter-spacing: 0.03em; text-transform: uppercase; color: var(--m-text-muted);
+}
+body.app .bp-rent-columns span:not(:first-child), body.app .bp-money { text-align: right; }
+body.app .bp-money { font-size: 13px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+body.app .bp-acc { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); margin-top: 8px; overflow: hidden; }
+body.app .bp-acc__head { width: 100%; border: 0; background: none; text-align: left; padding: 14px 16px; color: var(--m-text); cursor: pointer; }
+body.app .bp-acc__head:hover, body.app .bp-acc.is-open .bp-acc__head { background: var(--m-surface-2); }
+body.app .bp-acc__title { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 13.5px; }
+body.app .bp-acc__chevron { font-size: 11px; color: var(--m-text-faint); transition: transform 150ms ease; }
+body.app .bp-acc.is-open .bp-acc__chevron { transform: rotate(90deg); }
+body.app .bp-acc__body { border-top: 1px solid var(--m-border); background: var(--m-surface-2); padding: 16px; }
+body.app .bp-acc__body .bp-table td .form-control { min-width: 80px; }
+body.app .bp-block-title > div h2 { margin: 0; }
+
+@media (max-width: 991.98px) {
+    body.app .bp-rent-columns { display: none; }
+    body.app .bp-rent-grid { grid-template-columns: 1.6fr repeat(3, 1fr); }
+    body.app .bp-rent-secondary { display: none; }
+}
+@media (max-width: 767.98px) {
+    body.app .bp-item-price { grid-template-columns: 1fr; }
+    body.app .bp-rent-client { grid-template-columns: 1fr; }
+    body.app .bp-rent-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    body.app .bp-acc__title { grid-column: 1 / -1; }
+    body.app .bp-rent-secondary { display: block; }
+    body.app .bp-money { text-align: left; }
+    body.app .bp-money::before { content: attr(data-label) " : "; color: var(--m-text-faint); }
+    body.app .bp-calc-row .form-control { width: 100%; }
+}
+@media print {
+    body.app .menu-sidebar, body.app .header-desktop, body.app .header-mobile, body.app .bp-no-print, body.app .copyright { display: none !important; }
+    body.app .page-container { padding-left: 0 !important; }
+    body.app .bp-acc { break-inside: avoid; }
+}
+
+/* ----------------------------------------------------------------------------
+   Gabarits de profil
+   ---------------------------------------------------------------------------- */
+/* Nom de l'espace au centre de la barre du haut */
+body.app .header-wrap > .bp-topbar-title { grid-column: 2; font-size: 14px; font-weight: 600; color: var(--m-text-muted); }
+/* Gabarit employé (data-readonly) : éléments de modification masqués */
+body.app[data-readonly] [data-edit-only] { display: none !important; }
+
+/* ----------------------------------------------------------------------------
+   Page design system (documentation)
+   ---------------------------------------------------------------------------- */
+body.app .bp-ds-toc { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+body.app .bp-ds-toc a {
+    padding: 5px 10px; border: 1px solid var(--m-border); border-radius: 999px; background: var(--m-surface);
+    font-size: 12.5px; color: var(--m-text-muted); text-decoration: none;
+}
+body.app .bp-ds-toc a:hover { border-color: var(--m-accent); color: var(--m-accent); }
+body.app .bp-ds-title { font-size: 16px; font-weight: 600; margin: 0 0 6px; }
+body.app .bp-ds-section { scroll-margin-top: 80px; }
+body.app .bp-ds-demo { padding: 16px; border: 1px dashed var(--m-border); border-radius: var(--m-radius-sm); background: var(--m-bg); }
+body.app .bp-ds-demo + .bp-code { margin-bottom: 16px; }
+
+/* ----------------------------------------------------------------------------
+   Écran de bienvenue après la connexion (.bp-welcome)
+   Le logo se dessine au centre, puis un cercle s'ouvre et dévoile la page.
+   Affiché par la classe body.bp-welcome-on, ouvert par bp-ui.js après 1,6 s.
+   ---------------------------------------------------------------------------- */
+@property --bp-sweep {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+@property --bp-hole {
+    syntax: '<length>';
+    inherits: false;
+    initial-value: 0px;
+}
+@keyframes bp-w-draw {
+    from { --bp-sweep: 0deg; }
+    to   { --bp-sweep: 360deg; }
+}
+@keyframes bp-w-hole {
+    0%   { --bp-hole: 0px; animation-timing-function: cubic-bezier(0.2, 0.8, 0.4, 1); }
+    40%  { --bp-hole: 22px; animation-timing-function: cubic-bezier(0.7, 0, 0.9, 0.6); }
+    100% { --bp-hole: 150vmax; }
+}
+@keyframes bp-w-logo-dim {
+    to { opacity: 0.45; }
+}
+@keyframes bp-w-page-in {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+body.app .bp-welcome {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: #1f5fd6;
+    cursor: pointer;
+}
+body.app.bp-welcome-on { overflow: hidden; }
+body.app.bp-welcome-on .bp-welcome { display: flex; }
+
+body.app .bp-welcome__logo {
+    width: 140px;
+    height: auto;
+    -webkit-mask-image: conic-gradient(#000 var(--bp-sweep), transparent 0);
+    mask-image: conic-gradient(#000 var(--bp-sweep), transparent 0);
+    animation: bp-w-draw 1.2s cubic-bezier(0.5, 0, 0.3, 1) 0.1s both;
+}
+
+body.app .bp-welcome.is-leaving {
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent var(--bp-hole), #000 calc(var(--bp-hole) + 1px));
+    mask-image: radial-gradient(circle at 50% 50%, transparent var(--bp-hole), #000 calc(var(--bp-hole) + 1px));
+    animation: bp-w-hole 1.2s linear forwards;
+}
+
+body.app .bp-welcome.is-leaving .bp-welcome__logo {
+    -webkit-mask-image: none;
+    mask-image: none;
+    animation: bp-w-logo-dim 0.3s ease forwards;
+}
+
+body.app.bp-welcome-reveal #main-content .container-fluid > * {
+    animation: bp-w-page-in 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@for $i from 1 through 8 {
+    body.app.bp-welcome-reveal #main-content .container-fluid > :nth-child(#{$i}) { animation-delay: #{0.25 + $i * 0.1}s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.app .bp-welcome__logo,
+    body.app.bp-welcome-reveal #main-content .container-fluid > * {
+        animation: none;
+        -webkit-mask-image: none;
+        mask-image: none;
+    }
+}

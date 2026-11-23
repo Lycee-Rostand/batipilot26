@@ -1,0 +1,36 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <h1>Accueil page employé</h1>
+            <p class="subtitle">Consultation de vos chantiers et saisie de vos heures.</p>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-4">
+            <a class="bp-quick" href="{{ path('employe_chantiers') }}">
+                <span class="bp-quick__icon"><i class="fa-solid fa-helmet-safety" aria-hidden="true"></i></span>
+                <span><span class="bp-quick__title">Mes chantiers</span><span class="bp-quick__text">Suivi des travaux, en consultation</span></span>
+                <i class="fa-solid fa-arrow-right bp-quick__arrow" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a class="bp-quick" href="{{ path('employe_heures') }}">
+                <span class="bp-quick__icon"><i class="fa-regular fa-clock" aria-hidden="true"></i></span>
+                <span><span class="bp-quick__title">Saisie des heures</span><span class="bp-quick__text">Heures passées sur un poste</span></span>
+                <i class="fa-solid fa-arrow-right bp-quick__arrow" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a class="bp-quick" href="{{ path('employe_documents') }}">
+                <span class="bp-quick__icon"><i class="fa-regular fa-folder" aria-hidden="true"></i></span>
+                <span><span class="bp-quick__title">Documents</span><span class="bp-quick__text">Plans et documents des chantiers</span></span>
+                <i class="fa-solid fa-arrow-right bp-quick__arrow" aria-hidden="true"></i>
+            </a>
+        </div>
+    </div>
+{% endblock %}

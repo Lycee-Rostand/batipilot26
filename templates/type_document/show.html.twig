@@ -1,0 +1,27 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ type_document.nom }} - Types de documents{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_type_document_index') }}">Types de documents</a><span aria-hidden="true">/</span><span>{{ type_document.nom }}</span></nav>
+            <h1>{{ type_document.nom }}</h1>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('app_type_document_index') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour</a>
+            <a href="{{ path('app_type_document_edit', {'id': type_document.id}) }}" class="m-btn m-btn--primary"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Modifier</a>
+        </div>
+    </div>
+
+    <section class="m-card">
+        <dl class="bp-dl">
+            <dt>Nom</dt><dd>{{ type_document.nom ?: '-' }}</dd>
+            <dt>Archivé</dt><dd>{% if type_document.archive %}<span class="bp-badge">Archivé</span>{% else %}<span class="bp-badge bp-badge--success">Actif</span>{% endif %}</dd>
+        </dl>
+    </section>
+
+    <div class="bp-form-actions">
+        {{ include('type_document/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

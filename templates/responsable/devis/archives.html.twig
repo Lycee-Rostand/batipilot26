@@ -1,0 +1,45 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Devis archivés{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane">
+                <a href="{{ path('devis') }}">Devis</a>
+                <span aria-hidden="true">/</span>
+                <span>Archives</span>
+            </nav>
+            <h1>Devis archivés</h1>
+            <p class="subtitle">Retrouvez les devis précédemment archivés.</p>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('devis') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour aux devis</a>
+        </div>
+    </div>
+
+    <section class="bp-section is-open">
+        <div class="bp-section__body pt-3">
+            <div class="bp-table-wrap">
+                <table class="bp-table bp-table--cards">
+                    <thead>
+                        <tr>
+                            <th>Référence</th>
+                            <th>Date</th>
+                            <th>Nom et prénom du client</th>
+                            <th>Ville</th>
+                            <th>Dernière version</th>
+                            <th class="is-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="archives-rows"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/batipilot/devis-store.js') }}"></script>
+    <script src="{{ asset('js/batipilot/devis-archives.js') }}"></script>
+{% endblock %}

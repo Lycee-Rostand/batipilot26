@@ -1,0 +1,15 @@
+{{ form_start(form, {attr: {class: 'bp-form-card', novalidate: 'novalidate'}}) }}
+    <div class="bp-form-grid">
+        {{ form_row(form.employe, {label: 'Employé'}) }}
+        {{ form_row(form.chantier, {label: 'Chantier'}) }}
+        {{ form_row(form.poste, {label: 'Poste'}) }}
+        {{ form_row(form.nbHeures, {label: 'Nombre d\'heures'}) }}
+    </div>
+    {{ form_rest(form) }}
+    <div class="bp-form-actions">
+        <a href="{{ path('app_inter_employe_index') }}" class="m-btn m-btn--ghost">Annuler</a>
+        <div class="bp-form-actions__right">
+            <button class="m-btn m-btn--primary"><i class="fa-solid fa-check" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button>
+        </div>
+    </div>
+{{ form_end(form) }}

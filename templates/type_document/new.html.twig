@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Nouveau type de document{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_type_document_index') }}">Types de documents</a><span aria-hidden="true">/</span><span>Nouveau</span></nav>
+            <h1>Nouveau type de document</h1>
+        </div>
+    </div>
+
+    {{ include('type_document/_form.html.twig') }}
+{% endblock %}
