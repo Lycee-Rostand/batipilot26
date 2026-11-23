@@ -2,18 +2,10 @@
 
 {% block title %}Devis{% endblock %}
 
-{% block body %}
-    <div class="page-header">
-        <div>
-            <h1>Devis</h1>
-            <p class="subtitle" id="devis-total">&nbsp;</p>
-        </div>
-        <div class="page-header__actions bp-head-actions">
-            <a href="{{ path('devis_edition') }}" class="m-btn m-btn--primary"><i class="fa-solid fa-plus" aria-hidden="true"></i> Démarrer un nouveau devis</a>
-            <a href="{{ path('devis_archives') }}" class="bp-link bp-link--muted">Voir les devis archivés →</a>
-        </div>
-    </div>
+{% block title_page %}Devis{% endblock %}
+{% block subtitle_page %}TEST{% endblock %}
 
+{% block body %}
     <div class="bp-toolbar">
         <div class="bp-search">
             <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
@@ -21,10 +13,32 @@
         </div>
     </div>
 
-    <div id="devis-sections"></div>
-{% endblock %}
-
-{% block javascripts %}
-    <script src="{{ asset('js/batipilot/devis-store.js') }}"></script>
-    <script src="{{ asset('js/batipilot/devis-list.js') }}"></script>
+    <div id="devis-sections">
+        <twig:BpSection
+            nom="brouillons"
+            titre="Brouillons"
+            sousTitre="Devis en cours de préparation · version 0"
+            nombre="0"
+            colonnes="{{ ["Référence", "Date", "Nom et prénom du client", "Ville", "Dernière version"] }}"
+            messageEmpty="Aucun devis"
+        />
+        <twig:BpSection
+            nom="attenteClient"
+            titre="En attente client"
+            sousTitre="Devis envoyés"
+            nombre="0"
+            colonnes="{{ ["Référence", "Date", "Nom et prénom du client", "Ville", "Dernière version"] }}"
+            messageEmpty="Aucun devis"
+            couleur="info"
+        />
+        <twig:BpSection
+            nom="signes"
+            titre="Signés"
+            sousTitre="Devis acceptés"
+            nombre="0"
+            colonnes="{{ ["Référence", "Date", "Nom et prénom du client", "Ville", "Dernière version"] }}"
+            messageEmpty="Aucun devis"
+            couleur="success"
+        />
+    </div>
 {% endblock %}
