@@ -3,7 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ClientRepository;
-use BcMath\Number;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -30,7 +31,6 @@ class Client
     #[ORM\Column(length: 50)]
     private ?string $mail1 = null;
 
-    
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $nom2 = null;
 
@@ -45,6 +45,17 @@ class Client
 
     #[ORM\ManyToOne]
     private ?Civilite $civilite2 = null;
+
+    /**
+     * @var Collection<int, Maison>
+     */
+    #[ORM\OneToMany(targetEntity: Maison::class, mappedBy: 'client')]
+    private Collection $maisons;
+
+    public function __construct()
+    {
+        $this->maisons = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -174,6 +185,35 @@ class Client
     public function setCivilite2(?Civilite $civilite2): static
     {
         $this->civilite2 = $civilite2;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Maison>
+     */
+    public function getMaisons(): Collection
+    {
+        return $this->maisons;
+    }
+
+    public function addMaison(Maison $maison): static
+    {
+        if (!$this->maisons->contains($maison)) {
+            $this->maisons->add($maison);
+            $maison->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMaison(Maison $maison): static
+    {
+        if ($this->maisons->removeElement($maison)) {
+            if ($maison->getClient() === $this) {
+                $maison->setClient(null);
+            }
+        }
 
         return $this;
     }

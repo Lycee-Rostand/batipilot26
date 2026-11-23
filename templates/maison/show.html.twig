@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Maison{% endblock %}
+
+{% block body %}
+    <h1>Maison</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ maison.id }}</td>
+            </tr>
+            <tr>
+                <th>Rue</th>
+                <td>{{ maison.rue }}</td>
+            </tr>
+            <tr>
+                <th>Code postal</th>
+                <td>{{ maison.copos }}</td>
+            </tr>
+            <tr>
+                <th>Ville</th>
+                <td>{{ maison.ville }}</td>
+            </tr>
+            <tr>
+                <th>Type de charpente</th>
+                <td>{{ maison.typeCharpente.nom }}</td>
+            </tr>
+            <tr>
+                <th>Année de construction</th>
+                <td>{{ maison.anneeConstruction ? maison.anneeConstruction|date('d/m/Y') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Section cadastrale</th>
+                <td>{{ maison.sectionCadastrale }}</td>
+            </tr>
+            <tr>
+                <th>Superficie de la section cadastrale (m²)</th>
+                <td>{{ maison.superficieSectionCadastrale }}</td>
+            </tr>
+            <tr>
+                <th>Maison Phénix</th>
+                <td>{{ maison.maisonPhenix is null ? '' : (maison.maisonPhenix ? 'Oui' : 'Non') }}</td>
+            </tr>
+            <tr>
+                <th>Distance au dépôt (km)</th>
+                <td>{{ maison.distanceDepot }}</td>
+            </tr>
+            <tr>
+                <th>Temps de trajet (min)</th>
+                <td>{{ maison.tempsTrajet }}</td>
+            </tr>
+            <tr>
+                <th>Surface habitable (m²)</th>
+                <td>{{ maison.surfaceHabitable }}</td>
+            </tr>
+            <tr>
+                <th>Surface des combles créée (m²)</th>
+                <td>{{ maison.surfaceComblesCree }}</td>
+            </tr>
+            <tr>
+                <th>Remarques</th>
+                <td>{{ maison.remarques }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_maison_index') }}">back to list</a>
+
+    <a href="{{ path('app_maison_edit', {'id': maison.id}) }}">edit</a>
+
+    {{ include('maison/_delete_form.html.twig') }}
+{% endblock %}
