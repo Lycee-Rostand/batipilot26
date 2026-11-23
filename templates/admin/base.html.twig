@@ -6,11 +6,12 @@
 {% block home_url %}{{ path('accueil_admin') }}{% endblock %}
 
 {% block menu_accueil %}
-    {{ menu.link('accueil_admin', 'fa-solid fa-house', 'Accueil') }}
+    {{ menu.link('accueil', 'fa-solid fa-house', 'Accueil') }}
 {% endblock %}
 
 {% block menu_admin %}
     {{ menu.heading('Données référentielles') }}
+    {{ menu.link('accueil_admin', 'fa-solid fa-house', 'Dashboard') }}
     {{ menu.link('admin_comptes', 'fa-solid fa-user-gear', 'Comptes utilisateurs') }}
     {{ menu.link('app_employe_index', 'fa-solid fa-people-group', 'Employés') }}
     {{ menu.link('app_poste_index', 'fa-solid fa-hammer', 'Postes de travaux') }}

@@ -1,12 +1,7 @@
 index:
     path: /
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
-    defaults: { route: connexion, permanent: false }
-
-connexion:
-    path: /connexion
-    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
-    defaults: { template: security/login.html.twig }
+    defaults: { route: app_login, permanent: false }
 
 design_system:
     path: /design-system
@@ -14,7 +9,7 @@ design_system:
     defaults: { template: design_system/index.html.twig }
 
 accueil:
-    path: /responsable
+    path: /dashboard
     controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
     defaults: { template: responsable/accueil.html.twig }
 

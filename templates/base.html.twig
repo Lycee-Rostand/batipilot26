@@ -28,7 +28,7 @@
 
         <aside class="menu-sidebar" id="main-sidebar">
             <div class="logo">
-                <a class="logo-link" href="{% block home_url %}{{ path('connexion') }}{% endblock %}" aria-label="Accueil BatiPilot">
+                <a class="logo-link" aria-label="Accueil BatiPilot">
                     <img class="bp-logo-full" src="{{ asset('images/batipilot/logo-batipilot-blanc.png') }}" alt="BatiPilot" width="131" height="44">
                     <img class="bp-logo-icon" src="{{ asset('images/batipilot/logo-batipilot-icon-blanc.png') }}" alt="" width="36" height="36">
                 </a>
@@ -68,7 +68,7 @@
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
-                                                <a href="{{ path('connexion') }}"><i class="fa-solid fa-power-off"></i>Se déconnecter</a>
+                                                <a href="{{ logout_path() }}"><i class="fa-solid fa-power-off"></i>Se déconnecter</a>
                                             </div>
                                         </div>
                                     </div>

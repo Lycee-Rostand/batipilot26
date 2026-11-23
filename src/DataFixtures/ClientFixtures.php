@@ -12,12 +12,5 @@ class ClientFixtures extends Fixture
     {
         // $product = new Product();
         // $manager->persist($product);
-
-        $client = new Client();
-        $client->setNom("test");
-
-        $manager->persist($client);
-
-        $manager->flush();
     }
 }

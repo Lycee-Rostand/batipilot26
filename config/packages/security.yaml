@@ -5,7 +5,12 @@ security:
 
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: username
+        # used to reload user from session & other features (e.g. switch_user)
 
     firewalls:
         dev:
@@ -14,7 +19,16 @@ security:
             security: false
         main:
             lazy: true
-            provider: users_in_memory
+            provider: app_user_provider
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                enable_csrf: true
+                success_handler: App\Security\LoginSuccessHandler
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
 
             # Activate different ways to authenticate:
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -23,9 +37,21 @@ security:
             # switch_user: true
 
     # Note: Only the *first* matching rule is applied
+    role_hierarchy:
+        ROLE_RESPONSABLE: ROLE_EMPLOYE
+        ROLE_ADMIN: ROLE_RESPONSABLE
+
+    # AJOUTER LES RESTRICTIONS POUR LES PAGES ICI SI PAS MIS ALORS TOUS LES USERS CONNECTES ONT ACCES
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        # CAS OU OUBLIE D'AJOUTE ROUTE PATH ICI
+        - { path: ^/, roles: ROLE_USER }
+        # EMPLOYE
+        - { path: ^/espace-employe, roles: ROLE_EMPLOYE }
+        # RESPONSABLE
+        - { path: ^/responsable, roles: ROLE_RESPONSABLE }
+        # ADMIN
+        - { path: ^/admin, roles: ROLE_ADMIN }
 
 when@test:
     security:
