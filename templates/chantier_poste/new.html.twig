@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New ChantierPoste{% endblock %}
+{% block title %}Ajouter un poste{% endblock %}
 
 {% block body %}
-    <h1>Create new ChantierPoste</h1>
+    <h1>Ajouter un poste</h1>
 
     {{ include('chantier_poste/_form.html.twig') }}
 
-    <a href="{{ path('app_chantier_poste_index') }}">back to list</a>
+    {% if chantier is defined and chantier %}
+        <a href="{{ path('app_chantier_show', {'id': chantier.id}) }}">Retour au chantier</a>
+    {% else %}
+        <a href="{{ path('app_chantier_index') }}">Retour aux chantiers</a>
+    {% endif %}
 {% endblock %}
