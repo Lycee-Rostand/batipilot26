@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TypeCharpente{% endblock %}
+
+{% block body %}
+    <h1>TypeCharpente</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ type_charpente.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ type_charpente.nom }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_type_charpente_index') }}">back to list</a>
+
+    <a href="{{ path('app_type_charpente_edit', {'id': type_charpente.id}) }}">edit</a>
+
+    {{ include('type_charpente/_delete_form.html.twig') }}
+{% endblock %}
