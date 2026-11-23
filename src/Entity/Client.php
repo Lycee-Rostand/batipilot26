@@ -40,6 +40,12 @@ class Client
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $dateNaissance1 = null;
 
+    #[ORM\ManyToOne]
+    private ?Civilite $civilite1 = null;
+
+    #[ORM\ManyToOne]
+    private ?Civilite $civilite2 = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -144,6 +150,30 @@ class Client
     public function setDateNaissance1(\DateTime $dateNaissance1): static
     {
         $this->dateNaissance1 = $dateNaissance1;
+
+        return $this;
+    }
+
+    public function getCivilite1(): ?Civilite
+    {
+        return $this->civilite1;
+    }
+
+    public function setCivilite1(?Civilite $civilite1): static
+    {
+        $this->civilite1 = $civilite1;
+
+        return $this;
+    }
+
+    public function getCivilite2(): ?Civilite
+    {
+        return $this->civilite2;
+    }
+
+    public function setCivilite2(?Civilite $civilite2): static
+    {
+        $this->civilite2 = $civilite2;
 
         return $this;
     }
