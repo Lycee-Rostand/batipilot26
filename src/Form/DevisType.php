@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Devis;
 use App\Entity\EtatDevis;
+use App\Entity\TarifStructure;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,6 +21,7 @@ class DevisType extends AbstractType
             ->add('dateSignature')
             ->add('dateRDVClient')
             ->add('etatDevis', EntityType::class, array('class' => 'App\Entity\EtatDevis','choice_label' => 'nom' ))
+            ->add('tarifStructure', EntityType::class, array('class' => 'App\Entity\TarifStructure','choice_label' => 'id' ))
         ;
     }
 
