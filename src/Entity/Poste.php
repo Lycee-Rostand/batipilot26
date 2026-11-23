@@ -134,4 +134,14 @@ class Poste
 
         return $this;
     }
+
+    public function isVisible($code): bool
+    {
+        foreach ($this->visibilitePostes as $visibilitePoste) {
+            if ($visibilitePoste->getVisibilite()->getCode() === $code && $visibilitePoste->getArchive() === 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
