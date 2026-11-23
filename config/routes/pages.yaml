@@ -64,9 +64,9 @@ planning:
     defaults: { template: responsable/planning/index.html.twig }
 
 taches:
-    path: /responsable/taches
-    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
-    defaults: { template: responsable/taches/index.html.twig }
+    path: /tache
+    controller: App\Controller\TacheController::index
+
 
 prestataires:
     path: /responsable/prestataires
