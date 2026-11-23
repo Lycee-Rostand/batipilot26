@@ -1,0 +1,145 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Suivi — {{ chantier.reference }} - Chantiers{% endblock %}
+
+{% block body %}
+    <form method="post" action="{{ path('app_chantier_suivi', {'id': chantier.id}) }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('suivi_chantier_' ~ chantier.id) }}">
+
+        <div class="page-header">
+            <div>
+                <nav class="bp-breadcrumb" aria-label="Fil d'Ariane">
+                    <a href="{{ path('app_chantier_index') }}">Chantiers</a>
+                    <span aria-hidden="true">/</span>
+                    <a href="{{ path('app_chantier_show', {'id': chantier.id}) }}">{{ chantier.reference }}</a>
+                    <span aria-hidden="true">/</span>
+                    <span>Suivi</span>
+                </nav>
+                <h1>
+                    Suivi — {{ chantier.reference }}
+                    {% if chantier.statut %}
+                        <span class="bp-badge">{{ chantier.statut.nom }}</span>
+                    {% endif %}
+                </h1>
+            </div>
+            <div class="page-header__actions">
+                <a href="{{ path('app_chantier_show', {'id': chantier.id}) }}" class="m-btn m-btn--ghost">
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Fiche chantier
+                </a>
+                <button type="submit" class="m-btn m-btn--primary">
+                    <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Enregistrer le suivi
+                </button>
+            </div>
+        </div>
+
+        <nav class="bp-subtabs" aria-label="Sections du chantier">
+            <a href="{{ path('app_chantier_show', {'id': chantier.id}) }}" class="bp-subtab">Informations</a>
+            <a href="{{ path('app_chantier_suivi', {'id': chantier.id}) }}" class="bp-subtab is-active">Suivi</a>
+        </nav>
+
+        <section class="m-card">
+            <h2>Informations du chantier</h2>
+            <dl class="bp-dl">
+                <dt>Référence</dt><dd>{{ chantier.reference ?: '-' }}</dd>
+                <dt>Statut</dt><dd>{{ chantier.statut ? chantier.statut.nom : '-' }}</dd>
+                <dt>Démarrage</dt><dd>{{ chantier.dateDemarrage ? chantier.dateDemarrage|date('d/m/Y') : '-' }}</dd>
+                <dt>Fin prévue</dt><dd>{{ chantier.dateFinPrevue ? chantier.dateFinPrevue|date('d/m/Y') : '-' }}</dd>
+                <dt>État d'archivage</dt>
+                <dd>
+                    {% if chantier.archive %}
+                        <span class="bp-badge">Archivé</span>
+                    {% else %}
+                        <span class="bp-badge bp-badge--success">Actif</span>
+                    {% endif %}
+                </dd>
+            </dl>
+        </section>
+
+        {% if tachesParPoste is empty %}
+            <section class="m-card">
+                <p>Aucune tâche de suivi associée à ce chantier.</p>
+            </section>
+        {% else %}
+            {% for groupe in tachesParPoste %}
+                {% set poste = groupe.poste %}
+                {% set isComplete = groupe.totalCount > 0 and groupe.doneCount == groupe.totalCount %}
+
+                <section class="m-card bp-subcard">
+                    <div class="page-header">
+                        <div>
+                            <h2>{{ poste ? (poste.libelle ?: ('Poste #' ~ poste.id)) : 'Tâches sans poste' }}</h2>
+                        </div>
+                        <div class="page-header__actions">
+                            <span class="bp-badge {{ isComplete ? 'bp-badge--success' : 'bp-badge--accent' }}">
+                                {{ groupe.doneCount }} / {{ groupe.totalCount }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="bp-task-list">
+                        {% for ct in groupe.items %}
+                            {% set tache = ct.tache %}
+                            {% set formatNom = tache and tache.tacheFormat ? tache.tacheFormat.nom : '' %}
+                            {% set formatLower = formatNom|lower %}
+                            {% set ctId = ct.id %}
+
+                            {% set isDone = ct.isValBoolean() or ct.valDate is not null or ct.valDateHeure is not null or ct.valEntier is not null or ct.valFloat is not null or (ct.valTexte is not null and ct.valTexte != '') %}
+
+                            <div class="bp-task {{ isDone ? 'is-done' : '' }}">
+                                <div class="bp-task__main">
+                                    <div class="bp-task__title">{{ tache ? tache.libelle : ('Tâche #' ~ ctId) }}</div>
+                                    {% if formatNom %}
+                                        <div class="bp-task__meta">Format : {{ formatNom }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="bp-task__val">
+                                    {% if 'bool' in formatLower or 'oui' in formatLower or 'case' in formatLower %}
+                                        <input type="hidden" name="taches[{{ ctId }}][bool]" value="0">
+                                        <label class="bp-check">
+                                            <input type="checkbox"
+                                                   name="taches[{{ ctId }}][bool]"
+                                                   value="1"
+                                                   {{ ct.isValBoolean() ? 'checked' : '' }}>
+                                            <span>{{ ct.isValBoolean() ? 'Oui / Réalisé' : 'Non / À faire' }}</span>
+                                        </label>
+                                    {% elseif 'datetime' in formatLower or 'heure' in formatLower %}
+                                        <input type="datetime-local"
+                                               class="m-input"
+                                               name="taches[{{ ctId }}][datetime]"
+                                               value="{{ ct.valDateHeure ? ct.valDateHeure|date('Y-m-d\\TH:i') : '' }}">
+                                    {% elseif 'date' in formatLower %}
+                                        <input type="date"
+                                               class="m-input"
+                                               name="taches[{{ ctId }}][date]"
+                                               value="{{ ct.valDate ? ct.valDate|date('Y-m-d') : '' }}">
+                                    {% elseif 'entier' in formatLower or 'int' in formatLower %}
+                                        <input type="number"
+                                               step="1"
+                                               class="m-input"
+                                               name="taches[{{ ctId }}][int]"
+                                               value="{{ ct.valEntier is not null ? ct.valEntier : '' }}"
+                                               placeholder="Entier">
+                                    {% elseif 'float' in formatLower or 'décimal' in formatLower or 'decimal' in formatLower or 'montant' in formatLower %}
+                                        <input type="number"
+                                               step="0.01"
+                                               class="m-input"
+                                               name="taches[{{ ctId }}][float]"
+                                               value="{{ ct.valFloat is not null ? ct.valFloat : '' }}"
+                                               placeholder="0.00">
+                                    {% else %}
+                                        <input type="text"
+                                               class="m-input"
+                                               name="taches[{{ ctId }}][texte]"
+                                               value="{{ ct.valTexte ?? '' }}"
+                                               placeholder="Saisir une valeur...">
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </section>
+            {% endfor %}
+        {% endif %}
+    </form>
+{% endblock %}
