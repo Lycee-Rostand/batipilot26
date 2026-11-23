@@ -15,7 +15,7 @@ class DevisModif
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $versio = null;
+    private ?int $version = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTime $dateModif = null;
@@ -31,14 +31,14 @@ class DevisModif
         return $this->id;
     }
 
-    public function getVersio(): ?int
+    public function getVersion(): ?int
     {
-        return $this->versio;
+        return $this->version;
     }
 
-    public function setVersio(?int $versio): static
+    public function setVersion(?int $version): static
     {
-        $this->versio = $versio;
+        $this->version = $version;
 
         return $this;
     }
