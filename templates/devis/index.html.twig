@@ -5,7 +5,7 @@
 {% block title_page %}Devis{% endblock %}
 {% block subtitle_page %}TEST{% endblock %}
 
-{% block page_header %}
+{% block page_header_actions %}
     <twig:Cta
         route="app_devis_new"
         message="Démarrer un nouveau devis"
@@ -14,7 +14,7 @@
     <twig:Cta
         route="app_devis_archives"
         message="Voir les devis archivés"
-        secondaire="{{ true }}"
+        :secondaire="true"
     />
 {% endblock %}
 
