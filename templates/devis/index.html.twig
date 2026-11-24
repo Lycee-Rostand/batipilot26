@@ -1,19 +1,24 @@
-{% extends 'layout.html.twig' %}
+{% extends './layout.html.twig' %}
 
 {% block title %}Devis{% endblock %}
 
-{% block body %}
-    <div class="page-header">
-        <div>
-            <h1>Devis</h1>
-            <p class="subtitle">Devis classés par etats.</p>
-        </div>
-        <div class="page-header__actions bp-head-actions">
-            <a href="{{ path('app_devis_new') }}" class="m-btn m-btn--primary"><i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter un devis</a>
-            <a href="{{ path('devis_archives') }}" class="bp-link bp-link--muted">Voir les devis archivés →</a>
-        </div>
-    </div>
+{% block title_page %}Devis{% endblock %}
+{% block subtitle_page %}TEST{% endblock %}
 
+{% block page_header %}
+    <twig:Cta
+        route="app_devis_new"
+        message="Démarrer un nouveau devis"
+        icon="plus"
+    />
+    <twig:Cta
+        route="app_devis_archives"
+        message="Voir les devis archivés"
+        secondaire="{{ true }}"
+    />
+{% endblock %}
+
+{% block body %}
     <div class="bp-toolbar">
         <div class="bp-search">
             <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
@@ -21,51 +26,32 @@
         </div>
     </div>
 
-    {% for etat in etats %}
-    <section class="bp-section is-open">
-        <button type="button" class="bp-section__toggle" data-bp-toggle aria-expanded="true">
-            <h2 class="bp-section__title">{{ etat.nom }}</h2>
-            <span class="bp-badge bp-badge--accent">{{ etat.devis|length }}</span>
-            <i class="fa-solid fa-chevron-down bp-section__chevron" aria-hidden="true"></i>
-        </button>
-        <div class="bp-section__body">
-            <div class="bp-table-wrap">
-                <table class="bp-table bp-table--cards">
-                    <thead><tr><th>Référence</th>{%if etat.id == 1 %}<th>Date de creation</th><th>Date de validité</th>{%elseif etat.id == 2 %}<th>Date de RDV Client</th><th>Date de validité</th>{%elseif etat.id == 3 %}<th>Date de creation</th><th>Date de signature</th>{%endif%}<th>Nom et prénom du client</th><th>Ville</th><th>Derniere version</th><th class="is-end">Actions</th></tr></thead>
-                    <tbody>
-                    {% for devis in etat.devis %}
-                        <tr>
-                        <td class="bp-table__ref" data-label="Référence">{{ devis.refInterne}}</td>
-                        {%if etat.id == 1 %}
-                        <td data-label="Date de creation">{{ devis.dateCreation ? devis.dateCreation|date('d/m/Y') : '-' }}</td>
-                        <td data-label="Date de validité">{{ devis.dateValidite ? devis.dateValidite|date('d/m/Y') : '-' }}</td>
-                        {%elseif etat.id == 2%}
-                        <td data-label="Date de RDV client">{{ devis.dateRDVClient ? devis.dateRDVClient|date('d/m/Y') : '-' }}</td>
-                        <td data-label="Date de validité">{{ devis.dateValidite ? devis.dateValidite|date('d/m/Y') : '-' }}</td>
-                        {%elseif etat.id == 3%}
-                        <td data-label="Date de creation">{{ devis.dateCreation ? devis.dateCreation|date('d/m/Y') : '-' }}</td>
-                        <td data-label="Date de signature">{{ devis.dateSignature ? devis.dateSignature|date('d/m/Y') : '-' }}</td>
-                        {%endif%}
-                        <td class="bp-table__ref" data-label="Nom et prénom du client">{{ devis.maison.client.nom}} {{ devis.maison.client.prenom}}</td>
-                        <td class="bp-table__ref" data-label="Ville">{{ devis.maison.ville}}</td>
-                        <td class="bp-table__ref" data-label="Derniere version">{{ (devis.devisModifs|last).version ?? '-' }}</td>
-                        <td class="is-end"><div class="bp-actions"><a class="bp-link" href="{{ path('app_devis_show', {'id': devis.id}) }}">Voir</a><a class="bp-link" href="{{ path('app_devis_edit', {'id': devis.id}) }}">Modifier</a></div></td>
-                        </tr>
-                    {% else %}
-                        <tr><td colspan="5" class="bp-table__empty">Aucun devis pour cet etat.</td></tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-    {% else %}
-    <section class="m-card">
-        <div class="empty-state">
-            <span class="empty-state__icon"><i class="fa-solid fa-helmet-safety" aria-hidden="true"></i></span>
-            <h2 class="empty-state__title">Aucun etat de devis</h2>
-            <p class="empty-state__text">Créez d'abord les etats dans les données référentielles.</p>
-        </div>
-    </section>
-    {% endfor %}
+    <div id="devis-sections">
+        <twig:BpSection
+            nom="brouillons"
+            titre="Brouillons"
+            sousTitre="Devis en cours de préparation · version 0"
+            nombre="0"
+            colonnes="{{ ["Référence", "Date", "Nom et prénom du client", "Ville", "Dernière version"] }}"
+            messageEmpty="Aucun devis"
+        />
+        <twig:BpSection
+            nom="attenteClient"
+            titre="En attente client"
+            sousTitre="Devis envoyés"
+            nombre="0"
+            colonnes="{{ ["Référence", "Date", "Nom et prénom du client", "Ville", "Dernière version"] }}"
+            messageEmpty="Aucun devis"
+            couleur="info"
+        />
+        <twig:BpSection
+            nom="signes"
+            titre="Signés"
+            sousTitre="Devis acceptés"
+            nombre="0"
+            colonnes="{{ ["Référence", "Date", "Nom et prénom du client", "Ville", "Dernière version"] }}"
+            messageEmpty="Aucun devis"
+            couleur="success"
+        />
+    </div>
 {% endblock %}

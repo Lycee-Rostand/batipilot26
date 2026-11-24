@@ -2,6 +2,7 @@
 
 namespace App\Twig\Components;
 
+use App\Entity\Devis;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent]
@@ -14,4 +15,6 @@ final class BpSection
     public array $colonnes;
     public string $messageEmpty;
     public string $couleur = "neutral";
+    public array $elements;
+    public array $proprietesElement;
 }

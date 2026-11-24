@@ -2,6 +2,9 @@ twig:
     file_name_pattern: '*.twig'
     form_themes:
         - 'form/batipilot_theme.html.twig'
+    globals:
+        batipilot:
+            menu: '%batipilot.menu%'
 
 when@test:
     twig:

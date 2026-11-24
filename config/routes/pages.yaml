@@ -14,24 +14,14 @@ design_system:
     defaults: { template: design_system/index.html.twig }
 
 accueil:
-    path: /responsable
+    path: /dashboard
     controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
     defaults: { template: responsable/accueil.html.twig }
-
-devis:
-    path: /responsable/devis
-    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
-    defaults: { template: responsable/devis/index.html.twig }
 
 devis_edition:
     path: /responsable/devis/edition
     controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
     defaults: { template: responsable/devis/edition.html.twig }
-
-devis_archives:
-    path: /responsable/devis/archives
-    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
-    defaults: { template: responsable/devis/archives.html.twig }
 
 chantiers:
     path: /responsable/chantiers

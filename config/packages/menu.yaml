@@ -1,0 +1,40 @@
+parameters:
+    batipilot.menu:
+        - categorie: 'Données référentielles'
+          items:
+              - { label: 'Comptes utilisateurs', route: 'admin_comptes', icon: 'user-gear' }
+              - { label: 'Employés', route: 'app_employe_index', icon: 'people-group' }
+              - { label: 'Postes de travaux', route: 'app_poste_index', icon: 'hammer' }
+              - { label: 'Étapes (tâches par poste)', route: 'app_tache_index', icon: 'list-ol' }
+              - { label: 'Statuts des devis', route: 'admin_statuts_devis', icon: 'tags' }
+              - { label: 'Statuts des chantiers', route: 'app_statut_chantier_index', icon: 'tag' }
+              - { label: 'Taux de TVA', route: 'app_tva_index', icon: 'percent' }
+              - { label: 'Types de documents', route: 'app_type_document_index', icon: 'folder' }
+
+        - categorie: 'Espace de travail'
+          items:
+              - { label: 'Clients & maisons', route: 'app_client_index', icon: 'users', active: ['app_client_new'] }
+              - { label: 'Projets', route: 'projets', icon: 'folder-open' }
+              - { label: 'Devis', route: 'app_devis_index', icon: 'file-lines', active_routes: ['app_devis_new', 'app_devis_show', ''] }
+              - { label: 'Chantiers', route: 'chantiers', icon: 'helmet-safety', active_routes: ['chantier_suivi', 'chantiers_archives', 'rentabilite'] }
+              - { label: 'Planning & équipes', route: 'planning', icon: 'calendar' }
+              - { label: 'Tâches & postes', route: 'taches', icon: 'list-check' }
+
+        - categorie: 'Saisie des données'
+          items:
+              - { label: 'Chantiers (base)', route: 'app_chantier_index', icon: 'building' }
+              - { label: 'Tâches des chantiers', route: 'app_chantier_tache_index', icon: 'clipboard-check' }
+              - { label: 'Heures des employés', route: 'app_inter_employe_index', icon: 'clock' }
+              - { label: 'Documents des devis', route: 'app_devis_document_index', icon: 'file-lines' }
+
+        - categorie: 'Achats & finances'
+          items:
+              - { label: 'Prestataires', route: 'prestataires', icon: 'user-tie' }
+              - { label: 'Fournisseurs', route: 'fournisseurs', icon: 'boxes-stacked' }
+              - { label: 'Commandes & livraisons', route: 'commandes', icon: 'truck' }
+              - { label: 'Factures & règlements', route: 'factures', icon: 'receipt' }
+
+        - categorie: 'Ressources'
+          items:
+              - { label: 'Documents', route: 'documents', icon: 'folder' }
+              - { label: 'Design system', route: 'design_system', icon: 'swatchbook' }

@@ -26,7 +26,17 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td colspan="{{ colonnes|length + 1 }}" class="bp-table__empty">{{ messageEmpty }}</td>
+                    {% if elements is empty %}
+                        <td colspan="{{ colonnes|length + 1 }}" class="bp-table__empty">{{ messageEmpty }}</td>
+                    {% else %}
+                        {% for element in elements %}
+                            <td>
+                                {% for propieteElement in propietesElement %}
+                                    <tr>{{ element.proprieteElement }}</tr>
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    {% endif %}
                 </tr>
                 </tbody>
             </table>

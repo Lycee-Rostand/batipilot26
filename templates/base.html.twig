@@ -37,7 +37,24 @@
             <div class="menu-sidebar__content">
                 <nav class="navbar-sidebar" aria-label="Menu principal">
                     <ul class="list-unstyled navbar__list">
-                        {% block menu %}{% endblock %}
+                        <twig:Navigation:NavLink
+                            route="accueil"
+                            icon="house"
+                            label="Accueil"
+                            activeRoutes="{{ [] }}"
+                        />
+                        {% for group in batipilot.menu %}
+                            <twig:Navigation:NavHeader label="{{ group.categorie }}" />
+
+                            {% for item in group.items %}
+                                <twig:Navigation:NavLink
+                                    route="{{ item.route }}"
+                                    icon="{{ item.icon ?? '' }}"
+                                    label="{{ item.label }}"
+                                    activeRoutes="{{ item.active_routes ?? [] }}"
+                                />
+                            {% endfor %}
+                        {% endfor %}
                     </ul>
                 </nav>
             </div>
@@ -89,16 +106,7 @@
                             </div>
 
                             <div class="page-header__actions bp-head-actions">
-                                <twig:Cta
-                                    route="devis_edition"
-                                    message="Démarrer un nouveau devis"
-                                    icon="plus"
-                                />
-                                <twig:Cta
-                                    route="devis_archives"
-                                    message="Voir les devis archivés"
-                                    secondaire="{{ true }}"
-                                />
+                                {% block page_header %}{% endblock %}
                             </div>
                         </div>
                         {% block body %}{% endblock %}
