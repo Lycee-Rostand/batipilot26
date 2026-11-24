@@ -16,6 +16,8 @@
                 <th>DateRDVClient</th>
                 <th>EtatDevis</th>
                 <th>TarifStructure</th>
+                <th>Ville</th>
+                <th>Nom1</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -30,6 +32,8 @@
                 <td>{{ devi.dateRDVClient ? devi.dateRDVClient|date('Y-m-d') : '' }}</td>
                 <td>{{ devi.etatDevis.id }}</td>
                 <td>{{ devi.TarifStructure.id }}</td>
+                <td>{{ devi.Maison.ville }}</td>
+                <td>{{ devi.Maison.Client.nom }}</td>
 
                 <td>
                     <a href="{{ path('app_devis_show', {'id': devi.id}) }}">show</a>

@@ -45,6 +45,10 @@ class Devis
     #[ORM\JoinColumn(nullable: false)]
     private ?TarifStructure $tarifStructure = null;
 
+    #[ORM\ManyToOne(inversedBy: 'devis')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Maison $maison = null;
+
     public function __construct()
     {
         $this->devisDocuments = new ArrayCollection();
@@ -172,6 +176,18 @@ class Devis
     public function setTarifStructure(?TarifStructure $tarifStructure): static
     {
         $this->tarifStructure = $tarifStructure;
+
+        return $this;
+    }
+
+    public function getMaison(): ?Maison
+    {
+        return $this->maison;
+    }
+
+    public function setMaison(?Maison $maison): static
+    {
+        $this->maison = $maison;
 
         return $this;
     }

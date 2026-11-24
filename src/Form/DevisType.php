@@ -22,6 +22,7 @@ class DevisType extends AbstractType
             ->add('dateRDVClient')
             ->add('etatDevis', EntityType::class, array('class' => 'App\Entity\EtatDevis','choice_label' => 'nom' ))
             ->add('tarifStructure', EntityType::class, array('class' => 'App\Entity\TarifStructure','choice_label' => 'id' ))
+            ->add('maison', EntityType::class, array('class' => 'App\Entity\Maison','choice_label' => 'id' ))
         ;
     }
 
