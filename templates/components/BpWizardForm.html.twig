@@ -1,0 +1,44 @@
+{{ form_start(form, {
+    'attr': {
+        'class': 'bp-form-card',
+        'id': 'wizard-form',
+        'novalidate': 'novalidate'
+    }
+}) }}
+<div id="step-content">
+    <h2 class="bp-form-card__title">{{ titre }}</h2>
+
+    {% if sousTitre is defined and sousTitre is not empty %}
+        <p class="bp-form-card__intro">{{ sousTitre }}</p>
+    {% endif %}
+
+    {% if subCard %}
+        <div class="bp-subcard">
+            {% if subCardTitre is defined and subCardTitre is not null %}
+                <h3 class="bp-subcard__title mb-3">{{ subCardTitre }}</h3>
+            {% endif %}
+
+            {{ form_widget(form) }}
+        </div>
+    {% else %}
+        <div class="bp-form-grid">
+            {{ form_widget(form) }}
+        </div>
+    {% endif %}
+</div>
+
+<div class="bp-form-actions">
+    <button type="button" class="m-btn m-btn--ghost" id="prev-step" disabled>
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Précédent
+    </button>
+
+    <div class="bp-form-actions__right">
+        <button type="button" class="m-btn m-btn--ghost" id="save-draft">
+            <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Enregistrer le brouillon
+        </button>
+        <button type="submit" class="m-btn m-btn--primary" id="next-step">
+            Suivant <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </button>
+    </div>
+</div>
+{{ form_end(form) }}

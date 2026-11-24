@@ -1,4 +1,7 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+<twig:BpWizardForm
+    titre="Informations client"
+    sousTitre="Renseignez les coordonnées du ou des clients."
+    :subCard="true"
+    subCardTitre="Personne 1"
+    :form="form"
+/>
