@@ -2,10 +2,20 @@
 
 {% block title %}New Devis{% endblock %}
 
+{% block title_page %} Nouveau devis {% endblock %}
+{% block subtitle_page %} Création d'un nouveau devis {% endblock %}
+
+{% block page_header_actions %}
+    <twig:Cta
+        message="Retour au devis"
+        route="app_devis_index"
+        icon="left-arrown"
+        :retour="true"
+    />
+{% endblock %}
+
 {% block body %}
-    <h1>Create new Devis</h1>
 
     {{ include('devis/_form.html.twig') }}
 
-    <a href="{{ path('app_devis_index') }}">back to list</a>
 {% endblock %}

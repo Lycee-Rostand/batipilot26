@@ -1,5 +1,7 @@
 {% if secondaire  %}
     <a href="{{ path(route) }}" class="bp-link bp-link--muted">{{ message }} →</a>
+{% elseif retour %}
+    <a href="{{ path(route) }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> {{ message }}</a>
 {% else %}
-<a href="{{ path(route) }}" class="m-btn m-btn--{{ couleur }}"><i class="fa-solid {% if icon is defined and icon %}fa-{{ icon }}{% endif %}" aria-hidden="true"></i> {{ message }}</a>
+    <a href="{{ path(route) }}" class="m-btn m-btn--{{ couleur }}"><i class="fa-solid {% if icon is defined and icon %}fa-{{ icon }}{% endif %}" aria-hidden="true"></i> {{ message }}</a>
 {% endif %}
