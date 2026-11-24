@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Devis;
 use App\Form\DevisType;
-use App\Repository\EtatDevisRepository;
+use App\Repository\DevisRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +15,12 @@ use Symfony\Component\Routing\Attribute\Route;
 final class DevisController extends AbstractController
 {
     #[Route(name: 'app_devis_index', methods: ['GET'])]
-    public function index(EtatDevisRepository $etatDevisRepository): Response
+    public function index(DevisRepository $devisRepository): Response
     {
         return $this->render('devis/index.html.twig', [
-            'etats' => $etatDevisRepository->findAll(),
+            'brouillons' => $devisRepository->findByEtatCode('brouillon'),
+            'attenteClient' => $devisRepository->findByEtatCode('en attente'),
+            'signes' => $devisRepository->findByEtatCode('signe'),
         ]);
     }
 
