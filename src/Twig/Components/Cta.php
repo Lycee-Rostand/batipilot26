@@ -12,4 +12,5 @@ final class Cta
     public ?string $icon = null;
     public string $couleur = "primary";
     public bool $secondaire = false;
+    public bool $retour = false;
 }
