@@ -18,7 +18,9 @@ final class DevisController extends AbstractController
     public function index(DevisRepository $devisRepository): Response
     {
         return $this->render('devis/index.html.twig', [
-            'devis' => $devisRepository->findAll(),
+            'brouillons' => $devisRepository->findByEtatCode('brouillon'),
+            'attenteClient' => $devisRepository->findByEtatCode('en attente'),
+            'signes' => $devisRepository->findByEtatCode('signe'),
         ]);
     }
 

@@ -25,19 +25,30 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    {% if elements is empty %}
+                {% if elements is empty %}
+                    <tr>
                         <td colspan="{{ colonnes|length + 1 }}" class="bp-table__empty">{{ messageEmpty }}</td>
-                    {% else %}
-                        {% for element in elements %}
-                            <td>
-                                {% for propieteElement in propietesElement %}
-                                    <tr>{{ element.proprieteElement }}</tr>
+                    </tr>
+                {% else %}
+                    {% for element in elements %}
+                        <tr>
+                            {% for propriete in proprietesElement %}
+                                {% set parts = propriete|split('.') %}
+                                {% set currentVal = element %}
+                                {% for part in parts %}
+                                    {% set currentVal = currentVal is not null ? attribute(currentVal, part) : null %}
                                 {% endfor %}
-                            </td>
-                        {% endfor %}
-                    {% endif %}
-                </tr>
+                                <td>
+                                    {% if currentVal is not null and currentVal.format is defined %}
+                                        {{ currentVal|date('d/m/Y') }}
+                                    {% else %}
+                                        {{ currentVal ?? '-' }}
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                {% endif %}
                 </tbody>
             </table>
         </div>

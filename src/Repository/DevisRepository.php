@@ -16,6 +16,21 @@ class DevisRepository extends ServiceEntityRepository
         parent::__construct($registry, Devis::class);
     }
 
+    /**
+     * @return Devis[]
+     */
+    public function findByEtatCode(string $codeEtat): array
+    {
+        return $this->createQueryBuilder('d')
+            ->innerJoin('d.etatDevis', 'e')
+            ->leftJoin('d.maison', 'm')->addSelect('m')
+            ->leftJoin('m.client', 'c')->addSelect('c')
+            ->andWhere('e.nom = :code')
+            ->setParameter('code', $codeEtat)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Devis[] Returns an array of Devis objects
 //     */

@@ -16,5 +16,5 @@ final class BpSection
     public string $messageEmpty;
     public string $couleur = "neutral";
     public array $elements;
-    public array $proprietesElement;
+    public array $proprietesElement = [];
 }
