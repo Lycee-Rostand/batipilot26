@@ -24,3 +24,15 @@
         <span id="{{ id }}_help" class="bp-help">{{ help|trans(help_translation_parameters, translation_domain) }}</span>
     {%- endif -%}
 {%- endblock form_help %}
+
+{% block form_widget %}
+    {% if compound %}
+        {# Cas d'un formulaire ou sous-formulaire composé de plusieurs champs #}
+        <div {{ block('widget_container_attributes') }} class="{{ attr.class|default('') }} bp-form-grid">
+            {{- block('form_rows') -}}
+            {{- form_rest(form) -}}
+        </div>
+    {% else %}
+        {{- block('form_widget_simple') -}}
+    {% endif %}
+{% endblock %}
