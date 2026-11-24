@@ -1,0 +1,44 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Devis{% endblock %}
+
+{% block title_page %}Devis{% endblock %}
+{% block subtitle_page %}TEST{% endblock %}
+
+{% block body %}
+    <div class="bp-toolbar">
+        <div class="bp-search">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <input type="search" class="form-control" id="devis-search" placeholder="Rechercher : référence, client, ville…" aria-label="Rechercher un devis">
+        </div>
+    </div>
+
+    <div id="devis-sections">
+        <twig:BpSection
+            nom="brouillons"
+            titre="Brouillons"
+            sousTitre="Devis en cours de préparation · version 0"
+            nombre="0"
+            colonnes="{{ ["Référence", "Date", "Nom et prénom du client", "Ville", "Dernière version"] }}"
+            messageEmpty="Aucun devis"
+        />
+        <twig:BpSection
+            nom="attenteClient"
+            titre="En attente client"
+            sousTitre="Devis envoyés"
+            nombre="0"
+            colonnes="{{ ["Référence", "Date", "Nom et prénom du client", "Ville", "Dernière version"] }}"
+            messageEmpty="Aucun devis"
+            couleur="info"
+        />
+        <twig:BpSection
+            nom="signes"
+            titre="Signés"
+            sousTitre="Devis acceptés"
+            nombre="0"
+            colonnes="{{ ["Référence", "Date", "Nom et prénom du client", "Ville", "Dernière version"] }}"
+            messageEmpty="Aucun devis"
+            couleur="success"
+        />
+    </div>
+{% endblock %}
