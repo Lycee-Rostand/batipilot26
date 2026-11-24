@@ -1,0 +1,11 @@
+{% set current_route = app.request.attributes.get('_route') %}
+{% set is_active = (current_route == route) %}
+
+<li class="navlink {{ is_active ? 'active is-active' : '' }}">
+    <a href="{{ path(route) }}" {% if is_active %}aria-current="page"{% endif %}>
+        {% if icon is defined and icon %}
+            <i class="fa-solid fa-{{ icon }}" aria-hidden="true"></i>
+        {% endif %}
+        <span>{{ label }}</span>
+    </a>
+</li>

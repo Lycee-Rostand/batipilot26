@@ -1,4 +1,4 @@
-{% extends 'layout.html.twig' %}
+{% extends './layout.html.twig' %}
 
 {% block title %}Devis archivés{% endblock %}
 
@@ -6,7 +6,7 @@
     <div class="page-header">
         <div>
             <nav class="bp-breadcrumb" aria-label="Fil d'Ariane">
-                <a href="{{ path('devis') }}">Devis</a>
+                <a href="{{ path('app_devis_index') }}">Devis</a>
                 <span aria-hidden="true">/</span>
                 <span>Archives</span>
             </nav>
@@ -14,7 +14,7 @@
             <p class="subtitle">Retrouvez les devis précédemment archivés.</p>
         </div>
         <div class="page-header__actions">
-            <a href="{{ path('devis') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour aux devis</a>
+            <a href="{{ path('app_devis_index') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour aux devis</a>
         </div>
     </div>
 
@@ -37,9 +37,4 @@
             </div>
         </div>
     </section>
-{% endblock %}
-
-{% block javascripts %}
-    <script src="{{ asset('js/batipilot/devis-store.js') }}"></script>
-    <script src="{{ asset('js/batipilot/devis-archives.js') }}"></script>
 {% endblock %}

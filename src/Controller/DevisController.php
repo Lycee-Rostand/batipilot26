@@ -78,4 +78,10 @@ final class DevisController extends AbstractController
 
         return $this->redirectToRoute('app_devis_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/archives', name: 'app_devis_archives', methods: ['GET'])]
+    public function showArchives(DevisRepository $devisRepository): Response
+    {
+        return $this->render('devis/archives.html.twig', []);
+    }
 }

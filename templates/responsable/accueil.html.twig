@@ -3,23 +3,13 @@
 {% block title %}Tableau de bord{% endblock %}
 
 {% block body %}
-    <div class="page-header">
-        <div>
-            <h1>Tableau de bord</h1>
-            <p class="subtitle">Accueil du responsable de chantier - tableau de bord de gestion.</p>
-        </div>
-        <div class="page-header__actions">
-            <a href="{{ path('chantier_suivi') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-helmet-safety" aria-hidden="true"></i> Nouveau chantier</a>
-            <a href="{{ path('devis') }}" class="m-btn m-btn--primary"><i class="fa-solid fa-plus" aria-hidden="true"></i> Créer un devis</a>
-        </div>
-    </div>
 
-    <!-- Accès directs demandés : devis, chantiers, indicateurs -->
+    <!-- Accès directs demandés : app_devis_index, chantiers, indicateurs -->
     <div class="row g-3">
         <div class="col-md-4">
-            <a class="bp-quick" href="{{ path('devis') }}">
+            <a class="bp-quick" href="{{ path('app_devis_index') }}">
                 <span class="bp-quick__icon"><i class="fa-regular fa-file-lines" aria-hidden="true"></i></span>
-                <span><span class="bp-quick__title">Devis</span><span class="bp-quick__text">Créer, suivre et relancer</span></span>
+                <span><span class="bp-quick__title">app_devis_index</span><span class="bp-quick__text">Créer, suivre et relancer</span></span>
                 <i class="fa-solid fa-arrow-right bp-quick__arrow" aria-hidden="true"></i>
             </a>
         </div>
@@ -62,7 +52,7 @@
             <div class="bp-kpi">
                 <div class="bp-kpi__head"><p class="bp-kpi__label">Total vendu sur l'année</p><span class="bp-kpi__icon"><i class="fa-solid fa-euro-sign" aria-hidden="true"></i></span></div>
                 <div class="bp-kpi__value" id="kpi-sold">-</div>
-                <div class="bp-kpi__meta">Devis acceptés, HT</div>
+                <div class="bp-kpi__meta">app_devis_index acceptés, HT</div>
             </div>
         </div>
         <div class="col-sm-6 col-xl-3">
@@ -136,10 +126,10 @@
             <section class="m-card h-100">
                 <div class="m-card__header">
                     <div>
-                        <h2 class="m-card__title">Relances devis</h2>
+                        <h2 class="m-card__title">Relances app_devis_index</h2>
                         <p class="m-card__subtitle">En retard et prochains jours</p>
                     </div>
-                    <a class="bp-link" href="{{ path('devis') }}">Devis →</a>
+                    <a class="bp-link" href="{{ path('app_devis_index') }}">app_devis_index →</a>
                 </div>
 <div class="empty-state">
                     <span class="empty-state__icon"><i class="fa-regular fa-bell" aria-hidden="true"></i></span>
@@ -153,6 +143,6 @@
 {% block javascripts %}
     <script src="{{ asset('vendor/chartjs/chart.umd.js-4.5.1.min.js') }}"></script>
     <script src="{{ asset('js/batipilot/chantiers-store.js') }}"></script>
-    <script src="{{ asset('js/batipilot/devis-store.js') }}"></script>
+    <script src="{{ asset('js/batipilot/app_devis_index-store.js') }}"></script>
     <script src="{{ asset('js/batipilot/accueil.js') }}"></script>
 {% endblock %}

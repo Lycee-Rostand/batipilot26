@@ -1,52 +1,57 @@
-{% extends 'base.html.twig' %}
+{% extends './layout.html.twig' %}
 
-{% block title %}Devis index{% endblock %}
+{% block title %}Devis{% endblock %}
+
+{% block title_page %}Devis{% endblock %}
+{% block subtitle_page %}TEST{% endblock %}
+
+{% block page_header %}
+    <twig:Cta
+        route="app_devis_new"
+        message="Démarrer un nouveau devis"
+        icon="plus"
+    />
+    <twig:Cta
+        route="app_devis_archives"
+        message="Voir les devis archivés"
+        secondaire="{{ true }}"
+    />
+{% endblock %}
 
 {% block body %}
-    <h1>Devis index</h1>
+    <div class="bp-toolbar">
+        <div class="bp-search">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <input type="search" class="form-control" id="devis-search" placeholder="Rechercher : référence, client, ville…" aria-label="Rechercher un devis">
+        </div>
+    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>DateCreation</th>
-                <th>DateValidite</th>
-                <th>RefInterne</th>
-                <th>DateSignature</th>
-                <th>DateRDVClient</th>
-                <th>EtatDevis</th>
-                <th>TarifStructure</th>
-                <th>Ville</th>
-                <th>Nom1</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for devi in devis %}
-            <tr>
-                <td>{{ devi.id }}</td>
-                <td>{{ devi.dateCreation ? devi.dateCreation|date('Y-m-d') : '' }}</td>
-                <td>{{ devi.dateValidite ? devi.dateValidite|date('Y-m-d') : '' }}</td>
-                <td>{{ devi.refInterne }}</td>
-                <td>{{ devi.dateSignature ? devi.dateSignature|date('Y-m-d') : '' }}</td>
-                <td>{{ devi.dateRDVClient ? devi.dateRDVClient|date('Y-m-d') : '' }}</td>
-                <td>{{ devi.etatDevis.id }}</td>
-                <td>{{ devi.TarifStructure.id }}</td>
-                <td>{{ devi.Maison.ville }}</td>
-                <td>{{ devi.Maison.Client.nom }}</td>
-
-                <td>
-                    <a href="{{ path('app_devis_show', {'id': devi.id}) }}">show</a>
-                    <a href="{{ path('app_devis_edit', {'id': devi.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_devis_new') }}">Create new</a>
+    <div id="devis-sections">
+        <twig:BpSection
+            nom="brouillons"
+            titre="Brouillons"
+            sousTitre="Devis en cours de préparation · version 0"
+            nombre="0"
+            colonnes="{{ ["Référence", "Date", "Nom et prénom du client", "Ville", "Dernière version"] }}"
+            messageEmpty="Aucun devis"
+        />
+        <twig:BpSection
+            nom="attenteClient"
+            titre="En attente client"
+            sousTitre="Devis envoyés"
+            nombre="0"
+            colonnes="{{ ["Référence", "Date", "Nom et prénom du client", "Ville", "Dernière version"] }}"
+            messageEmpty="Aucun devis"
+            couleur="info"
+        />
+        <twig:BpSection
+            nom="signes"
+            titre="Signés"
+            sousTitre="Devis acceptés"
+            nombre="0"
+            colonnes="{{ ["Référence", "Date", "Nom et prénom du client", "Ville", "Dernière version"] }}"
+            messageEmpty="Aucun devis"
+            couleur="success"
+        />
+    </div>
 {% endblock %}
