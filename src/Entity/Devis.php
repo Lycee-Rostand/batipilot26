@@ -50,7 +50,12 @@ class Devis
     private ?Maison $maison = null;
 
     #[ORM\ManyToOne(inversedBy: 'devis')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Prime $prime = null;
     private ?LigneDevisSupplementaire $ligneDevisSupplementaire = null;
+    
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Prime $prime = null;
 
     public function __construct()
     {
@@ -195,6 +200,15 @@ class Devis
         return $this;
     }
 
+    public function getPrime(): ?Prime
+    {
+        return $this->prime;
+    }
+
+    public function setPrime(?Prime $prime): static
+    {
+        $this->prime = $prime;
+    }
     public function getLigneDevisSupplementaire(): ?LigneDevisSupplementaire
     {
         return $this->ligneDevisSupplementaire;
@@ -203,7 +217,15 @@ class Devis
     public function setLigneDevisSupplementaire(?LigneDevisSupplementaire $ligneDevisSupplementaire): static
     {
         $this->ligneDevisSupplementaire = $ligneDevisSupplementaire;
+    }
+    public function getPrime(): ?Prime
+    {
+        return $this->prime;
+    }
 
+    public function setPrime(?Prime $prime): static
+    {
+        $this->prime = $prime;
         return $this;
     }
 }
