@@ -65,7 +65,7 @@ final class ChantierController extends AbstractController
             }
 
             $poste = $tache->getPosteId();
-            if ($poste !== null && !$poste->isVisible('suivi')) {
+            if ($poste !== null && !$poste->isVisible('SUI')) {
                 continue;
             }
 
@@ -115,8 +115,10 @@ final class ChantierController extends AbstractController
                 } elseif (str_contains($formatNom, 'datetime') || str_contains($formatNom, 'heure')) {
                     $raw = trim((string) ($input['datetime'] ?? ''));
                     if ($raw !== '') {
-                        $dt = \DateTime::createFromFormat('Y-m-d\TH:i', $raw) ?: new \DateTime($raw);
-                        $chantierTache->setValDateHeure($dt);
+                        $dt = $this->parseDateTime($raw);
+                        if ($dt !== null) {
+                            $chantierTache->setValDateHeure($dt);
+                        }
                     } else {
                         $chantierTache->setValDateHeure(null);
                     }
@@ -124,7 +126,10 @@ final class ChantierController extends AbstractController
                     $raw = trim((string) ($input['date'] ?? ''));
                     if ($raw !== '') {
                         $dt = \DateTime::createFromFormat('Y-m-d', $raw);
-                        $chantierTache->setValDate($dt ?: null);
+                        if ($dt !== false) {
+                            $dt->setTime(0, 0, 0);
+                            $chantierTache->setValDate($dt);
+                        }
                     } else {
                         $chantierTache->setValDate(null);
                     }
@@ -179,6 +184,22 @@ final class ChantierController extends AbstractController
         }
 
         return $this->redirectToRoute('app_chantier_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    private function parseDateTime(string $raw): ?\DateTime
+    {
+        foreach (['Y-m-d\TH:i:s', 'Y-m-d\TH:i', 'Y-m-d H:i:s', 'Y-m-d H:i'] as $format) {
+            $dt = \DateTime::createFromFormat($format, $raw);
+            if ($dt !== false) {
+                return $dt;
+            }
+        }
+
+        try {
+            return new \DateTime($raw);
+        } catch (\Throwable) {
+            return null;
+        }
     }
 
     private function isChantierTacheDone(ChantierTache $ct): bool

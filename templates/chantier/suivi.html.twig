@@ -88,9 +88,6 @@
                             <div class="bp-task {{ isDone ? 'is-done' : '' }}">
                                 <div class="bp-task__main">
                                     <div class="bp-task__title">{{ tache ? tache.libelle : ('Tâche #' ~ ctId) }}</div>
-                                    {% if formatNom %}
-                                        <div class="bp-task__meta">Format : {{ formatNom }}</div>
-                                    {% endif %}
                                 </div>
 
                                 <div class="bp-task__val">

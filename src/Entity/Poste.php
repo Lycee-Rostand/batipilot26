@@ -135,13 +135,27 @@ class Poste
         return $this;
     }
 
-    public function isVisible($code): bool
+    public function isVisible(string $code): bool
     {
+        $normalizedCode = strtoupper(trim($code));
+        if ($normalizedCode === '') {
+            return false;
+        }
+
         foreach ($this->visibilitePostes as $visibilitePoste) {
-            if ($visibilitePoste->getVisibilite()->getCode() === $code && $visibilitePoste->getArchive() === 0) {
+            $visibilite = $visibilitePoste->getVisibilite();
+            if ($visibilite === null) {
+                continue;
+            }
+
+            if (
+                strtoupper(trim((string) $visibilite->getCode())) === $normalizedCode
+                && (int) $visibilitePoste->getArchive() === 0
+            ) {
                 return true;
             }
         }
+
         return false;
     }
 }
