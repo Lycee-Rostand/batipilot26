@@ -1,19 +1,50 @@
 {{ form_start(form, {attr: {class: 'bp-form-card', novalidate: 'novalidate'}}) }}
     <div class="bp-form-grid">
+        {{ form_row(form.civilite1, {label: 'Civilité'}) }}
         {{ form_row(form.nom, {label: 'Nom'}) }}
         {{ form_row(form.prenom, {label: 'Prénom'}) }}
         {{ form_row(form.lieu_naissance, {label: 'Lieu de naissance'}) }}
         {{ form_row(form.dateNaissance1, {label: 'Date de naissance'}) }}
         {{ form_row(form.telephone1, {label: 'Téléphone'}) }}
         {{ form_row(form.mail1, {label: 'Mail'}) }}
+    </div>
+
+    <label>
+        <input type="checkbox" id="toggle-client2"> 2e client
+    </label>
+
+    <div class="bp-form-grid">
+        {{ form_row(form.civilite2, {label: 'Civilité (2e client)'}) }}
         {{ form_row(form.nom2, {label: 'Nom (2e client)'}) }}
         {{ form_row(form.prenom2, {label: 'Prénom (2e client)'}) }}
     </div>
+
     {{ form_rest(form) }}
+
     <div class="bp-form-actions">
         <a href="{{ path('app_client_index') }}" class="m-btn m-btn--ghost">Annuler</a>
         <div class="bp-form-actions__right">
             <button class="m-btn m-btn--primary"><i class="fa-solid fa-check" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button>
         </div>
     </div>
+
+    <script>
+    const check = document.getElementById('toggle-client2');  // Récupère la checkbox qui sert à activer/afficher le 2e client
+    const champs = [  // Crée un tableau contenant les 3 champs du 2e client grâce à leurs IDs générés par Symfony
+        document.getElementById('{{ form.civilite2.vars.id }}'),
+        document.getElementById('{{ form.nom2.vars.id }}'),
+        document.getElementById('{{ form.prenom2.vars.id }}'),
+    ];
+
+    function majChamps() { // Déclare la fonction qui met à jour l'état des champs selon la checkbox
+        champs.forEach((champ) => { // Parcourt chaque élément du tableau "champs"
+            if (!champ) return; // Si un champ n'est pas trouvé dans le DOM, passe au suivant sans erreur
+            champ.disabled = !check.checked; // Désactive le champ si la case n'est pas cochée, ou l'active si elle est cochée
+            if (!check.checked) champ.value = ''; // Si la case n'est pas cochée, vide la valeur du champ
+        });
+    }
+
+    majChamps();// Exécute la fonction une première fois au chargement de la page
+    check.addEventListener('change', majChamps);// Appelle majChamps() à chaque fois que l'utilisateur coche ou décoche la checkbox
+    </script>
 {{ form_end(form) }}
