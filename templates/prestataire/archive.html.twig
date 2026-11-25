@@ -1,4 +1,5 @@
-<form method="post" action="{{ path('app_prestataire_archive', {'id': prestataire.id}) }}" data-bp-confirm="Archiver ce prestataire ?">
+<form method="post"
+      action="{{ path('app_prestataire_archive', {'id': prestataire.id}) }}" style="display:inline;">
     <input type="hidden" name="_token" value="{{ csrf_token('archive' ~ prestataire.id) }}">
-    <button class="m-btn m-btn--warning"><i class="fa-regular fa-box-archive" aria-hidden="true"></i> Archiver</button>
+    <button type="submit" class="bp-link">Archiver</button>
 </form>

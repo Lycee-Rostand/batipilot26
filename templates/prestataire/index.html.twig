@@ -31,12 +31,13 @@
                         <td class="bp-table__ref" data-label="Nom">{{ prestataire.nom }}</td>
                         <td data-label="Prénom">{{ prestataire.prenom }}</td>
                         <td data-label="Poste">{{ prestataire.poste ? prestataire.poste.libelle : 'Aucun poste' }}</td>
-                        <td data-label="Archivé">{{ prestataire.archive ? 'Oui' : 'Non' }}</td>
+                        <td data-label="Archivé">{{ prestataire.archive == 1 ? 'Oui' : 'Non' }}</td>
                         <td class="is-end">
                             <div class="bp-actions">
-                                <a class="bp-link" href="{{ path('app_prestataire_edit', {'id': prestataire.id}) }}">Modifier</a>
-                                <a class="bp-link" href="{{ path('app_prestataire_archive', {'id': prestataire.id}) }}">Archiver</a>
-                            </div>
+                                <a class="bp-link" href="{{ path('app_prestataire_edit', {'id': prestataire.id}) }}">Modifier</a>                   
+                                    <form method="post" action="{{ path('app_prestataire_archive', {'id': prestataire.id}) }}" style="display:inline;">
+                                        <button type="submit" class="bp-link">Archiver</button>
+                                    </form>
                         </td>
                     </tr>
                 {% else %}

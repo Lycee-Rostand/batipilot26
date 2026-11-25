@@ -40,4 +40,14 @@ class PrestataireRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findNonArchives(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.Archive = :val OR p.Archive IS NULL')
+            ->setParameter('val', 0)
+            ->orderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
