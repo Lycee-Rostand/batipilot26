@@ -18,7 +18,10 @@ final class TypeDocumentController extends AbstractController
     public function index(TypeDocumentRepository $typeDocumentRepository): Response
     {
         return $this->render('type_document/index.html.twig', [
-            'type_documents' => $typeDocumentRepository->findAll(),
+            'type_documents' => $typeDocumentRepository->findBy(
+                [],
+                ['archive' => 'asc']
+            ),
         ]);
     }
 
@@ -26,6 +29,8 @@ final class TypeDocumentController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $typeDocument = new TypeDocument();
+        $typeDocument->setArchive(0);
+
         $form = $this->createForm(TypeDocumentType::class, $typeDocument);
         $form->handleRequest($request);
 
@@ -39,14 +44,6 @@ final class TypeDocumentController extends AbstractController
         return $this->render('type_document/new.html.twig', [
             'type_document' => $typeDocument,
             'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_type_document_show', methods: ['GET'])]
-    public function show(TypeDocument $typeDocument): Response
-    {
-        return $this->render('type_document/show.html.twig', [
-            'type_document' => $typeDocument,
         ]);
     }
 
@@ -73,6 +70,17 @@ final class TypeDocumentController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$typeDocument->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($typeDocument);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_type_document_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/archive', name: 'app_type_document_archive', methods: ['POST'])]
+    public function archive(Request $request, TypeDocument $typeDocument, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('archive'.$typeDocument->getId(), $request->getPayload()->getString('_token'))) {
+            $typeDocument->setArchive($typeDocument->getArchive() ? 0 : 1);
             $entityManager->flush();
         }
 

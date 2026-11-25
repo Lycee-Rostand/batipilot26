@@ -9,26 +9,492 @@
             <p class="subtitle">Types de documents rattachés aux devis.</p>
         </div>
         <div class="page-header__actions">
-            <a href="{{ path('app_type_document_new') }}" class="m-btn m-btn--primary"><i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter un type</a>
+            <button type="button" id="js-add-inline-type" class="m-btn m-btn--primary">
+                <i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter un type
+            </button>
         </div>
     </div>
 
     <section class="m-card">
         <div class="bp-table-wrap">
             <table class="bp-table bp-table--cards">
-                <thead><tr><th>Nom</th><th>Archivé</th><th class="is-end">Actions</th></tr></thead>
-                <tbody>
-                {% for type_document in type_documents %}
+                <thead>
                     <tr>
-                    <td class="bp-table__ref" data-label="Nom">{{ type_document.nom }}</td>
-                    <td data-label="Archivé">{% if type_document.archive %}<span class="bp-badge">Archivé</span>{% else %}<span class="bp-badge bp-badge--success">Actif</span>{% endif %}</td>
-                    <td class="is-end"><div class="bp-actions"><a class="bp-link" href="{{ path('app_type_document_show', {'id': type_document.id}) }}">Voir</a><a class="bp-link" href="{{ path('app_type_document_edit', {'id': type_document.id}) }}">Modifier</a></div></td>
+                        <th>Nom</th>
+                        <th>Archivé</th>
+                        <th class="is-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="js-type-document-tbody">
+                {% for type_document in type_documents %}
+                    <tr data-row-id="{{ type_document.id }}">
+                        <td class="bp-table__ref js-nom-cell" data-label="Nom">{{ type_document.nom }}</td>
+                        <td data-label="Archivé">
+                            {% if type_document.archive %}
+                                <span class="bp-badge">Archivé</span>
+                            {% else %}
+                                <span class="bp-badge bp-badge--success">Actif</span>
+                            {% endif %}
+                        </td>
+                        <td class="is-end" data-label="Actions">
+                            <div class="bp-actions js-row-actions">
+                                <form method="post"
+                                      action="{{ path('app_type_document_archive', {'id': type_document.id}) }}"
+                                      data-bp-confirm="{{ type_document.archive ? 'Activer ce type de document ?' : 'Archiver ce type de document ?' }}"
+                                      style="display:inline;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('archive' ~ type_document.id) }}">
+                                    <button type="submit"
+                                            class="bp-link js-archive-trigger"
+                                            data-action-label="{{ type_document.archive ? 'Activer' : 'Archiver' }}"
+                                            data-action-color="{{ type_document.archive ? '#16a34a' : '#dc2626' }}"
+                                            style="background:none; border:none; padding:0; cursor:pointer; font:inherit;">
+                                        {{ type_document.archive ? 'Activer' : 'Archiver' }}
+                                    </button>
+                                </form>
+                                <button type="button"
+                                        class="bp-link js-edit-inline-trigger"
+                                        data-edit-url="{{ path('app_type_document_edit', {'id': type_document.id}) }}"
+                                        data-current-nom="{{ type_document.nom|e('html_attr') }}"
+                                        style="background:none; border:none; padding:0; cursor:pointer; font:inherit;">
+                                    Renommer
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                 {% else %}
-                    <tr><td colspan="3" class="bp-table__empty">Aucun type de document.</td></tr>
+                    <tr id="js-empty-row">
+                        <td colspan="3" class="bp-table__empty">Aucun type de document.</td>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
     </section>
+
+    <script>
+        (function () {
+            const MAX_LENGTH = 100;
+            const addBtn = document.getElementById('js-add-inline-type');
+            const tbody = document.getElementById('js-type-document-tbody');
+            const actionUrl = "{{ path('app_type_document_new') }}";
+            const indexUrl = "{{ path('app_type_document_index') }}";
+
+            function getExistingNames(excludeRow = null) {
+                const names = [];
+                tbody?.querySelectorAll('tr[data-row-id]').forEach(row => {
+                    if (excludeRow && row === excludeRow) return;
+                    const trigger = row.querySelector('.js-edit-inline-trigger');
+                    const nom = trigger?.dataset.currentNom ?? row.querySelector('.js-nom-cell')?.textContent ?? '';
+                    const cleaned = nom.trim().toLowerCase();
+                    if (cleaned) names.push(cleaned);
+                });
+                return names;
+            }
+
+            function validateNom(value, excludeRow = null) {
+                const trimmed = value.trim();
+                if (!trimmed) {
+                    return 'Veuillez saisir un nom.';
+                }
+                if (trimmed.length > MAX_LENGTH) {
+                    return `Le nom est trop long (${trimmed.length}/${MAX_LENGTH} caractères maximum).`;
+                }
+                const existing = getExistingNames(excludeRow);
+                if (existing.includes(trimmed.toLowerCase())) {
+                    return 'Ce type de document existe déjà.';
+                }
+                return null;
+            }
+
+            function extractServerError(htmlText, fallbackMessage) {
+                const doc = new DOMParser().parseFromString(htmlText, 'text/html');
+                const specific = doc.querySelector('.form-error-message, .invalid-feedback, .alert-danger li, .alert-danger');
+                if (specific && specific.textContent.trim()) {
+                    return specific.textContent.trim();
+                }
+                const lower = htmlText.toLowerCase();
+                if (lower.includes('unique') || lower.includes('duplicate') || lower.includes('existe déjà')) {
+                    return 'Ce type de document existe déjà.';
+                }
+                if (lower.includes('too long') || lower.includes('trop long') || lower.includes('100 characters') || lower.includes('100 caractères')) {
+                    return `Le nom est trop long (${MAX_LENGTH} caractères maximum).`;
+                }
+                return fallbackMessage;
+            }
+
+            // --- AJOUT EN LIGNE ---
+            if (addBtn && tbody) {
+                addBtn.addEventListener('click', async function () {
+                    if (document.getElementById('js-temp-create-row')) {
+                        document.getElementById('js-temp-create-input')?.focus();
+                        return;
+                    }
+
+                    let csrfToken = '';
+                    let csrfInputName = 'type_document[_token]';
+                    let nomInputName = 'type_document[nom]';
+                    let archiveInputName = 'type_document[archive]';
+
+                    try {
+                        const res = await fetch(actionUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+                        if (res.ok) {
+                            const html = await res.text();
+                            const doc = new DOMParser().parseFromString(html, 'text/html');
+                            const tokenInput = doc.querySelector('input[name$="[_token]"]');
+                            if (tokenInput) {
+                                csrfToken = tokenInput.value;
+                                csrfInputName = tokenInput.name;
+                            }
+
+                            const nomField = doc.querySelector('input[name$="[nom]"]');
+                            if (nomField) nomInputName = nomField.name;
+
+                            const archiveField = doc.querySelector('[name$="[archive]"]');
+                            if (archiveField) archiveInputName = archiveField.name;
+                        }
+                    } catch (e) {}
+
+                    const emptyRow = document.getElementById('js-empty-row');
+                    const emptyRowHtml = emptyRow ? emptyRow.outerHTML : '';
+                    emptyRow?.remove();
+
+                    const tr = document.createElement('tr');
+                    tr.id = 'js-temp-create-row';
+                    tr.innerHTML = `
+                        <td data-label="Nom" colspan="2">
+                            <form id="js-inline-create-form" method="post" action="${actionUrl}" style="display:flex; flex-direction:column; gap:4px; margin:0;">
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <input type="text"
+                                           id="js-temp-create-input"
+                                           name="${nomInputName}"
+                                           placeholder="Nom du type de document..."
+                                           maxlength="${MAX_LENGTH + 20}"
+                                           required
+                                           style="padding:6px 10px; border:1px solid #cbd5e1; border-radius:6px; width:100%; max-width:340px;">
+                                    <input type="hidden" name="${archiveInputName}" value="0">
+                                    ${csrfToken ? `<input type="hidden" name="${csrfInputName}" value="${csrfToken}">` : ''}
+                                </div>
+                                <small id="js-inline-error" style="color:#dc2626; display:none;"></small>
+                            </form>
+                        </td>
+                        <td class="is-end" data-label="Actions">
+                            <div class="bp-actions">
+                                <button type="submit" form="js-inline-create-form" id="js-submit-inline-type" class="bp-link" style="background:none; border:none; padding:0; cursor:pointer; font:inherit;">
+                                    Valider
+                                </button>
+                                <button type="button" id="js-cancel-inline-type" class="bp-link" style="background:none; border:none; padding:0; cursor:pointer; font:inherit;">
+                                    Annuler
+                                </button>
+                            </div>
+                        </td>
+                    `;
+
+                    tbody.prepend(tr);
+
+                    const input = document.getElementById('js-temp-create-input');
+                    const form = document.getElementById('js-inline-create-form');
+                    const submitBtn = document.getElementById('js-submit-inline-type');
+                    const cancelBtn = document.getElementById('js-cancel-inline-type');
+                    const errorEl = document.getElementById('js-inline-error');
+
+                    input?.focus();
+
+                    function showError(msg) {
+                        errorEl.textContent = msg;
+                        errorEl.style.display = 'block';
+                        input.style.borderColor = '#dc2626';
+                        input?.focus();
+                    }
+
+                    function clearError() {
+                        errorEl.textContent = '';
+                        errorEl.style.display = 'none';
+                        input.style.borderColor = '#cbd5e1';
+                    }
+
+                    input?.addEventListener('input', clearError);
+
+                    function cancelCreate() {
+                        tr.remove();
+                        if (emptyRowHtml && tbody.children.length === 0) {
+                            tbody.innerHTML = emptyRowHtml;
+                        }
+                    }
+
+                    cancelBtn?.addEventListener('click', cancelCreate);
+
+                    input?.addEventListener('keydown', function (e) {
+                        if (e.key === 'Escape') {
+                            e.preventDefault();
+                            cancelCreate();
+                            return;
+                        }
+                        if (e.key === 'Enter' && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
+                            e.preventDefault();
+                            form?.requestSubmit();
+                        }
+                    });
+
+                    form?.addEventListener('submit', async function (e) {
+                        e.preventDefault();
+
+                        const validationError = validateNom(input.value);
+                        if (validationError) {
+                            showError(validationError);
+                            return;
+                        }
+
+                        clearError();
+                        if (submitBtn) submitBtn.disabled = true;
+
+                        try {
+                            const response = await fetch(actionUrl, {
+                                method: 'POST',
+                                body: new FormData(form),
+                                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                            });
+
+                            if (response.redirected || response.ok) {
+                                window.location.href = indexUrl;
+                                return;
+                            }
+
+                            const errHtml = await response.text();
+                            showError(extractServerError(errHtml, 'Erreur lors de la validation du formulaire.'));
+                            if (submitBtn) submitBtn.disabled = false;
+                        } catch (err) {
+                            showError('Erreur réseau, réessayez.');
+                            if (submitBtn) submitBtn.disabled = false;
+                        }
+                    });
+                });
+            }
+
+            // --- MODIFICATION EN LIGNE ---
+            document.addEventListener('click', async function (e) {
+                const editBtn = e.target.closest('.js-edit-inline-trigger');
+                if (!editBtn) return;
+
+                const tr = editBtn.closest('tr');
+                if (!tr || tr.dataset.editing === '1') return;
+
+                document.querySelectorAll('tr[data-editing="1"]').forEach(otherTr => {
+                    if (otherTr.dataset.originalHtml) {
+                        otherTr.innerHTML = otherTr.dataset.originalHtml;
+                        otherTr.dataset.editing = '0';
+                    }
+                });
+
+                const editUrl = editBtn.dataset.editUrl;
+                const currentNom = editBtn.dataset.currentNom;
+                const nomCell = tr.querySelector('.js-nom-cell');
+                const actionsBox = tr.querySelector('.js-row-actions');
+                if (!nomCell || !actionsBox) return;
+
+                tr.dataset.editing = '1';
+                tr.dataset.originalHtml = tr.innerHTML;
+
+                let csrfToken = '';
+                let csrfInputName = 'type_document[_token]';
+                let nomInputName = 'type_document[nom]';
+                const extraHiddenFields = [];
+
+                try {
+                    const res = await fetch(editUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+                    if (res.ok) {
+                        const html = await res.text();
+                        const doc = new DOMParser().parseFromString(html, 'text/html');
+
+                        const tokenInput = doc.querySelector('input[name$="[_token]"]');
+                        if (tokenInput) {
+                            csrfToken = tokenInput.value;
+                            csrfInputName = tokenInput.name;
+                        }
+
+                        const nomField = doc.querySelector('input[name$="[nom]"]');
+                        if (nomField) nomInputName = nomField.name;
+
+                        doc.querySelectorAll('input, select, textarea').forEach(field => {
+                            if (!field.name || field.name.endsWith('[_token]') || field.name.endsWith('[nom]')) return;
+                            if ((field.type === 'checkbox' || field.type === 'radio') && !field.checked) return;
+                            extraHiddenFields.push({ name: field.name, value: field.value });
+                        });
+                    }
+                } catch (err) {}
+
+                const rowKey = tr.dataset.rowId || Date.now();
+                const formId = 'js-inline-edit-form-' + rowKey;
+                const inputId = 'js-inline-edit-input-' + rowKey;
+                const errorId = 'js-inline-edit-error-' + rowKey;
+                const submitId = 'js-inline-edit-submit-' + rowKey;
+                const cancelId = 'js-inline-edit-cancel-' + rowKey;
+
+                const hiddenHtml = [
+                    ...extraHiddenFields.map(f => `<input type="hidden" name="${f.name}" value="${f.value.replace(/"/g, '&quot;')}">`),
+                    csrfToken ? `<input type="hidden" name="${csrfInputName}" value="${csrfToken}">` : ''
+                ].join('');
+
+                nomCell.innerHTML = `
+                    <form id="${formId}" method="post" action="${editUrl}" style="display:flex; flex-direction:column; gap:4px; margin:0;">
+                        <input type="text"
+                               id="${inputId}"
+                               name="${nomInputName}"
+                               value="${currentNom}"
+                               maxlength="${MAX_LENGTH + 20}"
+                               required
+                               style="padding:6px 10px; border:1px solid #cbd5e1; border-radius:6px; width:100%; max-width:340px;">
+                        ${hiddenHtml}
+                        <small id="${errorId}" style="color:#dc2626; display:none;"></small>
+                    </form>
+                `;
+
+                actionsBox.innerHTML = `
+                    <button type="submit" form="${formId}" id="${submitId}" class="bp-link" style="background:none; border:none; padding:0; cursor:pointer; font:inherit;">
+                        Valider
+                    </button>
+                    <button type="button" id="${cancelId}" class="bp-link" style="background:none; border:none; padding:0; cursor:pointer; font:inherit;">
+                        Annuler
+                    </button>
+                `;
+
+                const input = document.getElementById(inputId);
+                const form = document.getElementById(formId);
+                const submitBtn = document.getElementById(submitId);
+                const cancelBtn = document.getElementById(cancelId);
+                const errorEl = document.getElementById(errorId);
+
+                input?.focus();
+                input?.select();
+
+                function showEditError(msg) {
+                    errorEl.textContent = msg;
+                    errorEl.style.display = 'block';
+                    input.style.borderColor = '#dc2626';
+                    input?.focus();
+                }
+
+                function clearEditError() {
+                    errorEl.textContent = '';
+                    errorEl.style.display = 'none';
+                    input.style.borderColor = '#cbd5e1';
+                }
+
+                input?.addEventListener('input', clearEditError);
+
+                function cancelEdit() {
+                    tr.innerHTML = tr.dataset.originalHtml;
+                    tr.dataset.editing = '0';
+                }
+
+                cancelBtn?.addEventListener('click', cancelEdit);
+
+                input?.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        cancelEdit();
+                        return;
+                    }
+                    if (e.key === 'Enter' && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
+                        e.preventDefault();
+                        form?.requestSubmit();
+                    }
+                });
+
+                form?.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+
+                    const validationError = validateNom(input.value, tr);
+                    if (validationError) {
+                        showEditError(validationError);
+                        return;
+                    }
+
+                    clearEditError();
+                    if (submitBtn) submitBtn.disabled = true;
+
+                    try {
+                        const response = await fetch(editUrl, {
+                            method: 'POST',
+                            body: new FormData(form),
+                            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                        });
+
+                        if (response.redirected || response.ok) {
+                            window.location.href = indexUrl;
+                            return;
+                        }
+
+                        const errHtml = await response.text();
+                        showEditError(extractServerError(errHtml, 'Erreur lors de la modification.'));
+                        if (submitBtn) submitBtn.disabled = false;
+                    } catch (err) {
+                        showEditError('Erreur réseau, réessayez.');
+                        if (submitBtn) submitBtn.disabled = false;
+                    }
+                });
+            });
+
+            // --- COULEUR / TEXTE + RACCOURCIS ENTRÉE / ÉCHAP SUR LA MODALE ARCHIVER ---
+            function getActiveConfirmModal() {
+                return document.querySelector('.bp-modal.is-open, .bp-confirm.is-open, [data-bp-modal].is-open, .modal.show, dialog[open]')
+                    || Array.from(document.querySelectorAll('div, dialog')).find(el => {
+                        if (el.id === 'js-add-inline-type' || el.closest('table')) return false;
+                        const style = window.getComputedStyle(el);
+                        return style.display !== 'none' &&
+                            style.visibility !== 'hidden' &&
+                            el.querySelector('button.m-btn--danger, button[type="submit"].btn-danger, .btn-danger, [data-bp-confirm-ok], [data-confirm]');
+                    })
+                    || null;
+            }
+
+            document.addEventListener('click', function (e) {
+                const trigger = e.target.closest('.js-archive-trigger');
+                if (!trigger) return;
+
+                const label = trigger.dataset.actionLabel;
+                const color = trigger.dataset.actionColor;
+
+                setTimeout(() => {
+                    const modal = getActiveConfirmModal();
+                    if (!modal) return;
+
+                    const confirmBtn = modal.querySelector('button.m-btn--danger, .m-btn--danger, .btn-danger, [data-bp-confirm-ok], [data-confirm], button[type="submit"]');
+                    if (confirmBtn) {
+                        confirmBtn.textContent = label;
+                        confirmBtn.style.backgroundColor = color;
+                        confirmBtn.style.borderColor = color;
+                        confirmBtn.style.color = '#fff';
+                        confirmBtn.focus();
+                    }
+                }, 10);
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key !== 'Enter' && e.key !== 'Escape') return;
+                if (e.shiftKey || e.altKey || e.ctrlKey || e.metaKey) return;
+
+                const activeTag = document.activeElement?.tagName;
+                if (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || activeTag === 'SELECT') return;
+
+                const modal = getActiveConfirmModal();
+                if (!modal) return;
+
+                if (e.key === 'Enter') {
+                    const confirmBtn = modal.querySelector('button.m-btn--danger, .m-btn--danger, .btn-danger, [data-bp-confirm-ok], [data-confirm], button[type="submit"]');
+                    if (confirmBtn) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        confirmBtn.click();
+                    }
+                } else if (e.key === 'Escape') {
+                    const cancelBtn = modal.querySelector('[data-bp-confirm-cancel], [data-cancel], [data-dismiss], .bp-modal__close, button[type="button"]');
+                    if (cancelBtn) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        cancelBtn.click();
+                    }
+                }
+            }, true);
+        })();
+    </script>
 {% endblock %}
