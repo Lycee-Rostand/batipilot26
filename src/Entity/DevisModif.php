@@ -26,7 +26,7 @@ class DevisModif
     #[ORM\ManyToOne]
     private ?Devis $Devis = null;
 
-    #[ORM\ManyToOne(inversedBy: 'devis_modif_id')]
+    #[ORM\ManyToOne(inversedBy: 'devisModifs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Devis $devis = null;
 
