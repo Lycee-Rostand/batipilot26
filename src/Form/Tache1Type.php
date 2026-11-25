@@ -23,7 +23,7 @@ class Tache1Type extends AbstractType
             ])
             ->add('PosteId', EntityType::class, [
                 'class' => Poste::class,
-                'choice_label' => 'id',
+                'choice_label' => 'libelle',
             ])
         ;
     }

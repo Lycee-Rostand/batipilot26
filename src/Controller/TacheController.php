@@ -18,7 +18,7 @@ final class TacheController extends AbstractController
     public function index(TacheRepository $tacheRepository): Response
     {
         return $this->render('tache/index.html.twig', [
-            'taches' => $tacheRepository->findAll(),
+            'taches' => $tacheRepository->findBy([], ['posteId' => 'ASC']),
         ]);
     }
 
