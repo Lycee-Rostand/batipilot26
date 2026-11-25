@@ -28,8 +28,8 @@ class Prestation
     #[Assert\NotBlank]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    #[Assert\NotBlank]
+    // Facultatif : certaines lignes du catalogue n'ont pas de prix (en-têtes "comprenant :", CH...)
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Assert\PositiveOrZero]
     private ?string $montantUnitaire = null;
 
@@ -56,10 +56,9 @@ class Prestation
     #[Assert\NotNull]
     private ?Tva $tva = null;
 
-    // cif11 : Prestation 1,1 — Unite 0,n
+    // cif11 : Prestation 0,1 — Unite 0,n (facultatif : toutes les prestations n'ont pas d'unité)
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotNull]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Unite $unite = null;
 
     public function getId(): ?int
@@ -105,7 +104,7 @@ class Prestation
         return $this->montantUnitaire;
     }
 
-    public function setMontantUnitaire(string $montantUnitaire): static
+    public function setMontantUnitaire(?string $montantUnitaire): static
     {
         $this->montantUnitaire = $montantUnitaire;
         return $this;
