@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Chantier;
 use App\Entity\ChantierTache;
+use App\Entity\Client;
 use App\Form\ChantierType;
 use App\Repository\StatutChantierRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,7 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Entity\Client;
 
 #[Route('/chantier')]
 final class ChantierController extends AbstractController
@@ -65,7 +65,7 @@ final class ChantierController extends AbstractController
             }
 
             $poste = $tache->getPosteId();
-            if ($poste !== null && $poste->isArchive() === true) {
+            if ($poste !== null && !$poste->isVisible('suivi')) {
                 continue;
             }
 
