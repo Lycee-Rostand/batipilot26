@@ -50,12 +50,10 @@ class Devis
     private ?Maison $maison = null;
 
     #[ORM\ManyToOne(inversedBy: 'devis')]
-<<<<<<< HEAD
     private ?LigneDevisSupplementaire $ligneDevisSupplementaire = null;
-=======
+    
     #[ORM\JoinColumn(nullable: false)]
     private ?Prime $prime = null;
->>>>>>> bba5f8a (feat(chantier): Creation entity,crud Prime + relations Prime vers Devis)
 
     public function __construct()
     {
@@ -200,7 +198,6 @@ class Devis
         return $this;
     }
 
-<<<<<<< HEAD
     public function getLigneDevisSupplementaire(): ?LigneDevisSupplementaire
     {
         return $this->ligneDevisSupplementaire;
@@ -209,7 +206,7 @@ class Devis
     public function setLigneDevisSupplementaire(?LigneDevisSupplementaire $ligneDevisSupplementaire): static
     {
         $this->ligneDevisSupplementaire = $ligneDevisSupplementaire;
-=======
+    }
     public function getPrime(): ?Prime
     {
         return $this->prime;
@@ -218,8 +215,6 @@ class Devis
     public function setPrime(?Prime $prime): static
     {
         $this->prime = $prime;
->>>>>>> bba5f8a (feat(chantier): Creation entity,crud Prime + relations Prime vers Devis)
-
         return $this;
     }
 }
