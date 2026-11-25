@@ -28,8 +28,7 @@ class Prestation
     #[Assert\NotBlank]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    #[Assert\NotBlank]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Assert\PositiveOrZero]
     private ?string $montantUnitaire = null;
 
@@ -44,21 +43,18 @@ class Prestation
     #[ORM\Column]
     private bool $archive = false;
 
-    // cif13 : Prestation 1,1 — Poste 0,n
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull]
     private ?Poste $poste = null;
 
-    // ataux : Prestation 1,1 — Tva 0,n
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull]
     private ?Tva $tva = null;
 
-    // cif11 : Prestation 1,1 — Unite 0,n
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     #[Assert\NotNull]
     private ?Unite $unite = null;
 
@@ -105,7 +101,7 @@ class Prestation
         return $this->montantUnitaire;
     }
 
-    public function setMontantUnitaire(string $montantUnitaire): static
+    public function setMontantUnitaire(?string $montantUnitaire): static
     {
         $this->montantUnitaire = $montantUnitaire;
         return $this;
