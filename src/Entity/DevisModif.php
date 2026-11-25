@@ -26,6 +26,10 @@ class DevisModif
     #[ORM\ManyToOne]
     private ?Devis $Devis = null;
 
+    #[ORM\ManyToOne(inversedBy: 'devisModifs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Devis $devis = null;
+
     public function getId(): ?int
     {
         return $this->id;
