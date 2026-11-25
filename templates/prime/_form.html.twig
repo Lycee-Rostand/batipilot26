@@ -1,4 +1,20 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+{{ form_start(form, {attr: {class: 'bp-form-card', novalidate: 'novalidate'}}) }}
+    <div class="bp-form-grid">
+        {{ form_row(form.libelle, {label: 'Libellé'}) }}
+        {{ form_row(form.organisme, {label: 'Organisme'}) }}
+        {{ form_row(form.montant, {label: 'Montant'}) }}
+    </div>
+
+    {{ form_rest(form) }}
+
+    <div class="bp-form-actions">
+        <a href="{{ path('app_prime_index') }}" class="m-btn m-btn--ghost">Annuler</a>
+        <div class="bp-form-actions__right">
+            <button class="m-btn m-btn--primary">
+                <i class="fa-solid fa-check" aria-hidden="true"></i>
+                {{ button_label|default('Enregistrer') }}
+            </button>
+        </div>
+    </div>
 {{ form_end(form) }}

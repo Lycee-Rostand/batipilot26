@@ -1,39 +1,60 @@
-{% extends 'base.html.twig' %}
 
-{% block title %}Prime index{% endblock %}
+{% extends 'layout.html.twig' %}
+
+{% block title %}Primes{% endblock %}
 
 {% block body %}
-    <h1>Prime index</h1>
+    <div class="page-header">
+        <div>
+            <h1>Primes</h1>
+            <p class="subtitle">Liste des primes et de leurs organismes associés.</p>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('app_prime_new') }}" class="m-btn m-btn--primary">
+                <i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter une prime
+            </a>
+        </div>
+    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Libelle</th>
-                <th>Organisme</th>
-                <th>Montant</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for prime in primes %}
-            <tr>
-                <td>{{ prime.id }}</td>
-                <td>{{ prime.libelle }}</td>
-                <td>{{ prime.organisme }}</td>
-                <td>{{ prime.montant }}</td>
-                <td>
-                    <a href="{{ path('app_prime_show', {'id': prime.id}) }}">show</a>
-                    <a href="{{ path('app_prime_edit', {'id': prime.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_prime_new') }}">Create new</a>
+    <section class="m-card">
+        <div class="bp-table-wrap">
+            <table class="bp-table bp-table--cards">
+                <thead>
+                    <tr>
+                        <th>Libellé</th>
+                        <th>Organisme</th>
+                        <th class="is-num">Montant</th>
+                        <th class="is-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for prime in primes %}
+                    <tr>
+                        <td class="bp-table__ref" data-label="Libellé">
+                            {{ prime.libelle }}
+                        </td>
+                        <td data-label="Organisme">
+                            {{ prime.organisme }}
+                        </td>
+                        <td class="is-num" data-label="Montant">
+                            {{ prime.montant }}
+                        </td>
+                        <td class="is-end">
+                            <div class="bp-actions">
+                                <a class="bp-link" href="{{ path('app_prime_show', {'id': prime.id}) }}">Voir</a>
+                                <a class="bp-link" href="{{ path('app_prime_edit', {'id': prime.id}) }}">Modifier</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="bp-table__empty">
+                            Aucune prime enregistrée.
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
 {% endblock %}
