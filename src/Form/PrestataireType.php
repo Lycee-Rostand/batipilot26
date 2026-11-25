@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Poste;
 use App\Entity\Prestataire;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,6 +16,10 @@ class PrestataireType extends AbstractType
         $builder
             ->add('nom')
             ->add('prenom')
+            ->add('poste', EntityType::class, [
+                'class' => Poste::class,
+                'choice_label' => 'libelle',
+            ])
             ->add('archive')
         ;
     }

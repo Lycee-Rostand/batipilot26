@@ -72,6 +72,8 @@ class Prestataire
     public function setPoste(?Poste $poste): static
     {
         $this->poste = $poste;
+
+        return $this;
     }
 
     public function getArchive(): ?int
