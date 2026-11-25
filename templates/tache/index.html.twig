@@ -13,24 +13,68 @@
         </div>
     </div>
 
-    <section class="m-card">
-        <div class="bp-table-wrap">
-            <table class="bp-table bp-table--cards">
-                <thead><tr><th>Libellé</th><th>Poste</th><th>Format de la réponse</th><th>Archive</th><th class="is-end">Actions</th></tr></thead>
-                <tbody>
+    {% set dernierPoste = null %}
+    {% set aDesTaches = false %}
+
+    
                 {% for tache in taches %}
-                    <tr>
-                    <td class="bp-table__ref" data-label="Libellé">{{ tache.libelle }}</td>
-                    <td data-label="Poste">{{ tache.posteId ? tache.posteId.libelle : '-' }}</td>
-                    <td data-label="Format de la réponse">{{ tache.tacheFormat ? tache.tacheFormat.nom : '-' }}</td>
-                    <td class="bp-table__ref" data-label="Archive">{{ tache.archive }}</td>
-                    <td class="is-end"><div class="bp-actions"><a class="bp-link" href="{{ path('app_tache_show', {'id': tache.id}) }}">Voir</a><a class="bp-link" href="{{ path('app_tache_edit', {'id': tache.id}) }}">Modifier</a></div></td>
-                    </tr>
-                {% else %}
-                    <tr><td colspan="4" class="bp-table__empty">Aucune tâche.</td></tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </section>
+                        {% set aDesTaches = true %}
+                        {% set posteActuel = tache.posteId.libelle %}
+        {% if posteActuel != dernierPoste %}
+            {% if dernierPoste is not null %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            {% endif %}
+
+            <h2 class="bp-section-title" style="margin: 2rem 0 1rem 0; font-size: 1.5rem; font-weight: bold;">
+                <i class="fa-solid fa-layer-group" aria-hidden="true"></i> {{ posteActuel }}
+            </h2>
+            <section class="m-card">
+                <div class="bp-table-wrap">
+                    <table class="bp-table bp-table--cards">
+                        <thead>
+                            <tr>
+                                <th>Libellé</th>
+                                <th>Format de la réponse</th>
+                                <th>Archive</th>
+                                <th class="is-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            {% set dernierPoste = posteActuel %}
+        {% endif %}
+
+        <tr>
+            <td class="bp-table__ref" data-label="Libellé">{{ tache.libelle }}</td>
+            <td data-label="Format de la réponse">{{ tache.tacheFormat ? tache.tacheFormat.nom : '-' }}</td>
+            <td class="bp-table__ref" data-label="Archive">{{ tache.archive }}</td>
+            <td class="is-end">
+                <div class="bp-actions">
+                    <a class="bp-link" href="{{ path('app_tache_show', {'id': tache.id}) }}">Voir</a>
+                    <a class="bp-link" href="{{ path('app_tache_edit', {'id': tache.id}) }}">Modifier</a>
+                </div>
+            </td>
+        </tr>
+         {% if loop.last %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        {% endif %}
+    {% endfor %}
+
+    {% if not aDesTaches %}
+        <section class="m-card"></section>
+            <div class="bp-table-wrap">
+                <table class="bp-table">
+                    <tbody>
+                        <tr><td class="bp-table__empty">Aucune tâche enregistrée.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    {% endif %}
 {% endblock %}
+
