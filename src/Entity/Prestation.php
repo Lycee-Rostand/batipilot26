@@ -56,6 +56,7 @@ class Prestation
     #[Assert\NotNull]
     private ?Tva $tva = null;
 
+    // cif11 : Prestation 0,1 — Unite 0,n (facultatif : toutes les prestations n'ont pas d'unité)
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true)]
     #[Assert\NotNull]
