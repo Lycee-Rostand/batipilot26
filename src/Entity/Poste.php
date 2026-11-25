@@ -33,6 +33,12 @@ class Poste
     #[ORM\OneToMany(targetEntity: VisibilitePoste::class, mappedBy: 'poste')]
     private Collection $visibilitePostes;
 
+    /**
+     * @var Collection<int, ChantierPoste>
+     */
+    #[ORM\OneToMany(targetEntity: ChantierPoste::class, mappedBy: 'poste')]
+    private Collection $chantierPostes;
+
     #[ORM\ManyToOne(inversedBy: 'posteTemp')]
     private ?LigneDevisSupplementaire $ligneDevisSupplementaire = null;
 
@@ -40,6 +46,7 @@ class Poste
     {
         $this->taches = new ArrayCollection();
         $this->visibilitePostes = new ArrayCollection();
+        $this->chantierPostes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -132,6 +139,36 @@ class Poste
             // set the owning side to null (unless already changed)
             if ($visibilitePoste->getPoste() === $this) {
                 $visibilitePoste->setPoste(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ChantierPoste>
+     */
+    public function getChantierPostes(): Collection
+    {
+        return $this->chantierPostes;
+    }
+
+    public function addChantierPoste(ChantierPoste $chantierPoste): static
+    {
+        if (!$this->chantierPostes->contains($chantierPoste)) {
+            $this->chantierPostes->add($chantierPoste);
+            $chantierPoste->setPoste($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChantierPoste(ChantierPoste $chantierPoste): static
+    {
+        if ($this->chantierPostes->removeElement($chantierPoste)) {
+            // set the owning side to null (unless already changed)
+            if ($chantierPoste->getPoste() === $this) {
+                $chantierPoste->setPoste(null);
             }
         }
 
