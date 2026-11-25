@@ -6,7 +6,7 @@
     <div class="page-header">
         <div>
             <h1>Tâches par poste</h1>
-            <p class="subtitle">Tâches à réaliser pour chaque poste de travaux.</p>
+            <p class="subtitle">Tâches à réaliser pour chaque poste.</p>
         </div>
         <div class="page-header__actions">
             <a href="{{ path('app_tache_new') }}" class="m-btn m-btn--primary"><i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter une tâche</a>
@@ -38,7 +38,6 @@
                             <tr>
                                 <th>Libellé</th>
                                 <th>Format de la réponse</th>
-                                <th>Archive</th>
                                 <th class="is-end">Actions</th>
                             </tr>
                         </thead>
@@ -49,7 +48,6 @@
         <tr>
             <td class="bp-table__ref" data-label="Libellé">{{ tache.libelle }}</td>
             <td data-label="Format de la réponse">{{ tache.tacheFormat ? tache.tacheFormat.nom : '-' }}</td>
-            <td class="bp-table__ref" data-label="Archive">{{ tache.archive }}</td>
             <td class="is-end">
                 <div class="bp-actions">
                     <a class="bp-link" href="{{ path('app_tache_show', {'id': tache.id}) }}">Voir</a>
