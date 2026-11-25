@@ -49,6 +49,9 @@ class Devis
     #[ORM\JoinColumn(nullable: false)]
     private ?Maison $maison = null;
 
+    #[ORM\ManyToOne(inversedBy: 'devis')]
+    private ?LigneDevisSupplementaire $ligneDevisSupplementaire = null;
+
     public function __construct()
     {
         $this->devisDocuments = new ArrayCollection();
@@ -188,6 +191,18 @@ class Devis
     public function setMaison(?Maison $maison): static
     {
         $this->maison = $maison;
+
+        return $this;
+    }
+
+    public function getLigneDevisSupplementaire(): ?LigneDevisSupplementaire
+    {
+        return $this->ligneDevisSupplementaire;
+    }
+
+    public function setLigneDevisSupplementaire(?LigneDevisSupplementaire $ligneDevisSupplementaire): static
+    {
+        $this->ligneDevisSupplementaire = $ligneDevisSupplementaire;
 
         return $this;
     }
