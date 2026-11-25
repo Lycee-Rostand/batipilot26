@@ -49,6 +49,10 @@ class Devis
     #[ORM\JoinColumn(nullable: false)]
     private ?Maison $maison = null;
 
+    #[ORM\ManyToOne(inversedBy: 'devis')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Prime $prime = null;
+
     public function __construct()
     {
         $this->devisDocuments = new ArrayCollection();
@@ -188,6 +192,18 @@ class Devis
     public function setMaison(?Maison $maison): static
     {
         $this->maison = $maison;
+
+        return $this;
+    }
+
+    public function getPrime(): ?Prime
+    {
+        return $this->prime;
+    }
+
+    public function setPrime(?Prime $prime): static
+    {
+        $this->prime = $prime;
 
         return $this;
     }
