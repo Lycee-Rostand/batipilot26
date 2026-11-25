@@ -1,11 +1,14 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
-{% block title %}New Maison{% endblock %}
+{% block title %}Nouvelle maison{% endblock %}
 
 {% block body %}
-    <h1>Create new Maison</h1>
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_maison_index') }}">Maisons</a><span aria-hidden="true">/</span><span>Nouvelle</span></nav>
+            <h1>Nouvelle maison</h1>
+        </div>
+    </div>
 
     {{ include('maison/_form.html.twig') }}
-
-    <a href="{{ path('app_maison_index') }}">back to list</a>
 {% endblock %}

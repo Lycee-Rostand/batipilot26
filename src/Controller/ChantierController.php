@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Entity\Client;
 
 #[Route('/chantier')]
 final class ChantierController extends AbstractController
@@ -26,6 +27,7 @@ final class ChantierController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $chantier = new Chantier();
+        $chantier->setClient($entityManager->getRepository(Client::class)->find(1)); // debug pas touche : client par défaut
         $form = $this->createForm(ChantierType::class, $chantier);
         $form->handleRequest($request);
 

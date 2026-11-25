@@ -1,4 +1,25 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {attr: {class: 'bp-form-card', novalidate: 'novalidate'}}) }}
+    <div class="bp-form-grid">
+        {{ form_row(form.rue, {label: 'Rue'}) }}
+        {{ form_row(form.copos, {label: 'Code postal'}) }}
+        {{ form_row(form.ville, {label: 'Ville'}) }}
+        {#  {{ form_row(form.client, {label: 'Client'}) }}  #}
+        {{ form_row(form.typeCharpente, {label: 'Type de charpente'}) }}
+        {{ form_row(form.anneeConstruction, {label: 'Année de construction'}) }}
+        {{ form_row(form.sectionCadastrale, {label: 'Section cadastrale'}) }}
+        {{ form_row(form.superficieSectionCadastrale, {label: 'Superficie de la section cadastrale (m²)'}) }}
+        {{ form_row(form.maisonPhenix, {label: 'Maison Phénix'}) }}
+        {{ form_row(form.distanceDepot, {label: 'Distance au dépôt (km)'}) }}
+        {{ form_row(form.tempsTrajet, {label: 'Temps de trajet (min)'}) }}
+        {{ form_row(form.surfaceHabitable, {label: 'Surface habitable (m²)'}) }}
+        {{ form_row(form.surfaceComblesCree, {label: 'Surface des combles créée (m²)'}) }}
+        {{ form_row(form.remarques, {label: 'Remarques'}) }}
+    </div>
+    {{ form_rest(form) }}
+    <div class="bp-form-actions">
+        <a href="{{ path('app_maison_index') }}" class="m-btn m-btn--ghost">Annuler</a>
+        <div class="bp-form-actions__right">
+            <button class="m-btn m-btn--primary"><i class="fa-solid fa-check" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button>
+        </div>
+    </div>
 {{ form_end(form) }}

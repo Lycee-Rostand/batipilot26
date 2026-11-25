@@ -1,5 +1,5 @@
 <?php
-/*
+
 namespace App\Controller;
 
 use App\Entity\Maison;
@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Entity\Client;
 
 #[Route('/maison')]
 final class MaisonController extends AbstractController
@@ -26,6 +27,7 @@ final class MaisonController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $maison = new Maison();
+        $maison->setClient($entityManager->getRepository(Client::class)->findOneBy([])); // debug pas touche  : client par défaut
         $form = $this->createForm(MaisonType::class, $maison);
         $form->handleRequest($request);
 
@@ -80,4 +82,3 @@ final class MaisonController extends AbstractController
     }
 }
 
-*/

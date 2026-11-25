@@ -26,11 +26,13 @@ class MaisonType extends AbstractType
                 'label' => 'Code postal',
             ])
             ->add('ville')
+            /* pas de client dans le formulaire d'après madame Annouche 
             ->add('client', EntityType::class, [
                 'class' => Client::class,
                 'choice_label' => 'nom',
                 'placeholder' => 'Choisir un client',
             ])
+                */
             ->add('typeCharpente', EntityType::class, [
                 'class' => TypeCharpente::class,
                 'choice_label' => 'nom',
