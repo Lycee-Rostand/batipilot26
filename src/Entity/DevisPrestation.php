@@ -8,22 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: DevisPrestationRepository::class)]
 class DevisPrestation
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $quantite = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?float $montantHT = null;
-
-    #[ORM\ManyToOne]
-    private ?Prestation $Prestation = null;
-
-    #[ORM\ManyToOne]
-    private ?Devis $Devis = null;
 
     public function getId(): ?int
     {
@@ -54,27 +38,4 @@ class DevisPrestation
         return $this;
     }
 
-    public function getPrestation(): ?Prestation
-    {
-        return $this->Prestation;
-    }
-
-    public function setPrestation(?Prestation $Prestation): static
-    {
-        $this->Prestation = $Prestation;
-
-        return $this;
-    }
-
-    public function getDevis(): ?Devis
-    {
-        return $this->Devis;
-    }
-
-    public function setDevis(?Devis $Devis): static
-    {
-        $this->Devis = $Devis;
-
-        return $this;
-    }
 }
