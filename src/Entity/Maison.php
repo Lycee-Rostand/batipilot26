@@ -66,9 +66,16 @@ class Maison
     #[ORM\OneToMany(targetEntity: Devis::class, mappedBy: 'maison')]
     private Collection $devis;
 
+    /**
+     * @var Collection<int, SectionPanne>
+     */
+    #[ORM\OneToMany(targetEntity: SectionPanne::class, mappedBy: 'maison')]
+    private Collection $sectionPanne;
+
     public function __construct()
     {
         $this->devis = new ArrayCollection();
+        $this->sectionPanne = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -254,6 +261,36 @@ class Maison
             // set the owning side to null (unless already changed)
             if ($devi->getMaison() === $this) {
                 $devi->setMaison(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SectionPanne>
+     */
+    public function getSectionPanne(): Collection
+    {
+        return $this->sectionPanne;
+    }
+
+    public function addSectionPanne(SectionPanne $sectionPanne): static
+    {
+        if (!$this->sectionPanne->contains($sectionPanne)) {
+            $this->sectionPanne->add($sectionPanne);
+            $sectionPanne->setMaison($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSectionPanne(SectionPanne $sectionPanne): static
+    {
+        if ($this->sectionPanne->removeElement($sectionPanne)) {
+            // set the owning side to null (unless already changed)
+            if ($sectionPanne->getMaison() === $this) {
+                $sectionPanne->setMaison(null);
             }
         }
 
