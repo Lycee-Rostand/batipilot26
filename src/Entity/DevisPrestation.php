@@ -13,6 +13,12 @@ class DevisPrestation
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\ManyToOne(inversedBy: 'devisPrestations')]
+    private ?Devis $Devis = null;
+
+    #[ORM\ManyToOne(inversedBy: 'devisPrestations')]
+    private ?Prestation $Prestation = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -38,6 +44,30 @@ class DevisPrestation
     public function setMontantHT(?float $montantHT): static
     {
         $this->montantHT = $montantHT;
+
+        return $this;
+    }
+
+    public function getDevis(): ?Devis
+    {
+        return $this->Devis;
+    }
+
+    public function setDevis(?Devis $Devis): static
+    {
+        $this->Devis = $Devis;
+
+        return $this;
+    }
+
+    public function getPrestation(): ?Prestation
+    {
+        return $this->Prestation;
+    }
+
+    public function setPrestation(?Prestation $Prestation): static
+    {
+        $this->Prestation = $Prestation;
 
         return $this;
     }
