@@ -30,6 +30,7 @@ class Prestation
     #[Assert\NotBlank]
     private ?string $description = null;
 
+    // Facultatif : certaines lignes du catalogue n'ont pas de prix (en-têtes "comprenant :", CH...)
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Assert\PositiveOrZero]
     private ?string $montantUnitaire = null;
