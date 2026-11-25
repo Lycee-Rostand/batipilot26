@@ -20,7 +20,7 @@ class ChantierType extends AbstractType
             ->add('archive')
             ->add('statut', EntityType::class, [
                 'class' => StatutChantier::class,
-                'choice_label' => 'id',
+                'choice_label' => 'nom',
             ])
         ;
     }

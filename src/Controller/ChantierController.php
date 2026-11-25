@@ -27,9 +27,7 @@ final class ChantierController extends AbstractController
     #[Route('/new', name: 'app_chantier_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $chantier = new Chantier();
-        $chantier->setClient($entityManager->getRepository(Client::class)->find(1)); // debug pas touche : client par défaut
-        $form = $this->createForm(ChantierType::class, $chantier);
+        $chantier = new Chantier();$form = $this->createForm(ChantierType::class, $chantier);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
