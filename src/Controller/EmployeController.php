@@ -18,7 +18,7 @@ final class EmployeController extends AbstractController
     public function index(EmployeRepository $employeRepository): Response
     {
         return $this->render('employe/index.html.twig', [
-            'employes' => $employeRepository->findAll(),
+            'employes' => $employeRepository->findBy(['archive' => false]),
         ]);
     }
 
@@ -39,6 +39,14 @@ final class EmployeController extends AbstractController
         return $this->render('employe/new.html.twig', [
             'employe' => $employe,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/archived', name: 'app_employe_archived', methods: ['GET'])]
+    public function archived(EmployeRepository $employeRepository): Response
+    {
+        return $this->render('employe/archived.html.twig', [
+            'employes' => $employeRepository->findBy(['archive' => true]),
         ]);
     }
 

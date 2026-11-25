@@ -1,13 +1,18 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
-{% block title %}Edit Employe{% endblock %}
+{% block title %}Modifier l'employé{% endblock %}
 
 {% block body %}
-    <h1>Edit Employe</h1>
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_employe_index') }}">Employés</a><span aria-hidden="true">/</span><span>{{ employe.prenom ~ ' ' ~ employe.nom }}</span></nav>
+            <h1>Modifier l'employé</h1>
+        </div>
+        <div class="page-header__actions">
+        <a href="{{ path('app_employe_index') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour</a>
+            {{ include('employe/_delete_form.html.twig') }}
+        </div>
+    </div>
 
-    {{ include('employe/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_employe_index') }}">back to list</a>
-
-    {{ include('employe/_delete_form.html.twig') }}
+    {{ include('employe/_form.html.twig', {'button_label': 'Enregistrer les modifications'}) }}
 {% endblock %}

@@ -33,6 +33,9 @@ class Poste
     #[ORM\OneToMany(targetEntity: VisibilitePoste::class, mappedBy: 'poste')]
     private Collection $visibilitePostes;
 
+    #[ORM\ManyToOne(inversedBy: 'posteTemp')]
+    private ?LigneDevisSupplementaire $ligneDevisSupplementaire = null;
+
     public function __construct()
     {
         $this->taches = new ArrayCollection();
@@ -157,5 +160,17 @@ class Poste
         }
 
         return false;
+    }
+
+    public function getLigneDevisSupplementaire(): ?LigneDevisSupplementaire
+    {
+        return $this->ligneDevisSupplementaire;
+    }
+
+    public function setLigneDevisSupplementaire(?LigneDevisSupplementaire $ligneDevisSupplementaire): static
+    {
+        $this->ligneDevisSupplementaire = $ligneDevisSupplementaire;
+
+        return $this;
     }
 }
