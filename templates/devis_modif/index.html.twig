@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% block title %}DevisModif index{% endblock %}
 
@@ -8,9 +8,9 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                
                 <th>Version</th>
-                <th>DateModif</th>
+                <th>Date de Modification</th>
                 <th>Objet</th>
                 <th>actions</th>
             </tr>
@@ -18,7 +18,7 @@
         <tbody>
         {% for devis_modif in devis_modifs %}
             <tr>
-                <td>{{ devis_modif.id }}</td>
+                
                 <td>{{ devis_modif.version }}</td>
                 <td>{{ devis_modif.dateModif ? devis_modif.dateModif|date('Y-m-d') : '' }}</td>
                 <td>{{ devis_modif.objet }}</td>

@@ -52,6 +52,7 @@ class Devis
     #[ORM\ManyToOne(inversedBy: 'devis')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Prime $prime = null;
+    private ?LigneDevisSupplementaire $ligneDevisSupplementaire = null;
 
     public function __construct()
     {
@@ -204,6 +205,15 @@ class Devis
     public function setPrime(?Prime $prime): static
     {
         $this->prime = $prime;
+    }
+    public function getLigneDevisSupplementaire(): ?LigneDevisSupplementaire
+    {
+        return $this->ligneDevisSupplementaire;
+    }
+
+    public function setLigneDevisSupplementaire(?LigneDevisSupplementaire $ligneDevisSupplementaire): static
+    {
+        $this->ligneDevisSupplementaire = $ligneDevisSupplementaire;
 
         return $this;
     }

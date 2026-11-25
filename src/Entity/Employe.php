@@ -26,7 +26,7 @@ class Employe
     private ?int $archive = null;
 
     #[ORM\ManyToOne(inversedBy: 'employes')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?TypeCharpente $type_charpente = null;
 
     public function getId(): ?int
