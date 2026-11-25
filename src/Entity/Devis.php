@@ -67,9 +67,16 @@ class Devis
     #[ORM\JoinColumn(nullable: false)]
     private ?Prime $prime = null;
 
+    /**
+     * @var Collection<int, DevisPrestation>
+     */
+    #[ORM\OneToMany(targetEntity: DevisPrestation::class, mappedBy: 'Devis')]
+    private Collection $devisPrestations;
+
     public function __construct()
     {
         $this->devisDocuments = new ArrayCollection();
+        $this->devisPrestations = new ArrayCollection();
         $this->devisModifs = new ArrayCollection();
     }
 
@@ -278,6 +285,36 @@ class Devis
     public function setArchive(int $archive): static
     {
         $this->archive = $archive;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DevisPrestation>
+     */
+    public function getDevisPrestations(): Collection
+    {
+        return $this->devisPrestations;
+    }
+
+    public function addDevisPrestation(DevisPrestation $devisPrestation): static
+    {
+        if (!$this->devisPrestations->contains($devisPrestation)) {
+            $this->devisPrestations->add($devisPrestation);
+            $devisPrestation->setDevis($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevisPrestation(DevisPrestation $devisPrestation): static
+    {
+        if ($this->devisPrestations->removeElement($devisPrestation)) {
+            // set the owning side to null (unless already changed)
+            if ($devisPrestation->getDevis() === $this) {
+                $devisPrestation->setDevis(null);
+            }
+        }
 
         return $this;
     }

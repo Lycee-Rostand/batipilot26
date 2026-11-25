@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PrestationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -57,6 +59,17 @@ class Prestation
     #[ORM\JoinColumn(nullable: true)]
     #[Assert\NotNull]
     private ?Unite $unite = null;
+
+    /**
+     * @var Collection<int, DevisPrestation>
+     */
+    #[ORM\OneToMany(targetEntity: DevisPrestation::class, mappedBy: 'Prestation')]
+    private Collection $devisPrestations;
+
+    public function __construct()
+    {
+        $this->devisPrestations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -184,5 +197,35 @@ class Prestation
     public function __toString(): string
     {
         return $this->code . ' - ' . mb_strimwidth($this->description ?? '', 0, 60, '…');
+    }
+
+    /**
+     * @return Collection<int, DevisPrestation>
+     */
+    public function getDevisPrestations(): Collection
+    {
+        return $this->devisPrestations;
+    }
+
+    public function addDevisPrestation(DevisPrestation $devisPrestation): static
+    {
+        if (!$this->devisPrestations->contains($devisPrestation)) {
+            $this->devisPrestations->add($devisPrestation);
+            $devisPrestation->setPrestation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevisPrestation(DevisPrestation $devisPrestation): static
+    {
+        if ($this->devisPrestations->removeElement($devisPrestation)) {
+            // set the owning side to null (unless already changed)
+            if ($devisPrestation->getPrestation() === $this) {
+                $devisPrestation->setPrestation(null);
+            }
+        }
+
+        return $this;
     }
 }
