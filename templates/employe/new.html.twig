@@ -1,11 +1,17 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
-{% block title %}New Employe{% endblock %}
+{% block title %}Nouvel employé{% endblock %}
 
 {% block body %}
-    <h1>Create new Employe</h1>
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane"><a href="{{ path('app_employe_index') }}">Employés</a><span aria-hidden="true">/</span><span>Nouveau</span></nav>
+            <h1>Nouvel employé</h1>
+        </div>
+        <div class="page-header__actions">
+        <a href="{{ path('app_employe_index') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour</a>
+        </div>
+    </div>
 
     {{ include('employe/_form.html.twig') }}
-
-    <a href="{{ path('app_employe_index') }}">back to list</a>
 {% endblock %}
