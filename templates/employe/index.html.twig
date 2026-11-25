@@ -24,7 +24,7 @@
                 <thead>
                     <tr>
                         <th>Employé</th>
-                        <th>Coût horaire mensuel</th>
+                        <th>Coût horaire HT</th>
                         <th>Type de charpente</th>
                         <th class="is-end">Actions</th>
                     </tr>
@@ -35,7 +35,7 @@
                         <td class="bp-table__ref" data-label="Employé">
                             {{ employe.prenom ~ ' ' ~ employe.nom }}
                         </td>
-                        <td data-label="Coût horaire mensuel">
+                        <td data-label="Coût horaire HT">
                             {{ employe.coutHrMo|number_format(2, ',', ' ') }} €
                         </td>
                         <td data-label="Type de charpente">

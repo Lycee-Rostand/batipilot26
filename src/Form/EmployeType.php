@@ -20,7 +20,8 @@ class EmployeType extends AbstractType
             ->add('archive')
             ->add('typeCharpente', EntityType::class, [
                 'class' => TypeCharpente::class,
-                'choice_label' => 'id',
+                'choice_label' => 'nom',
+                'required' => false,
             ])
         ;
     }
