@@ -30,11 +30,10 @@ class ClientType extends AbstractType
             ->add('civilite2', EntityType::class, [
                 'class' => Civilite::class,
                 'choice_label' => 'nom_long',
-                'required' => false,
             ])
 
-            ->add('nom2', null, ['required' => false])
-            ->add('prenom2', null, ['required' => false])
+            ->add('nom2')
+            ->add('prenom2')
         ;
     }
 
