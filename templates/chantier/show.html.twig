@@ -10,9 +10,15 @@
         </div>
         <div class="page-header__actions">
             <a href="{{ path('app_chantier_index') }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour</a>
+            <a href="{{ path('app_chantier_suivi', {'id': chantier.id}) }}" class="m-btn m-btn--ghost"><i class="fa-solid fa-list-check" aria-hidden="true"></i> Suivi</a>
             <a href="{{ path('app_chantier_edit', {'id': chantier.id}) }}" class="m-btn m-btn--primary"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Modifier</a>
         </div>
     </div>
+
+    <nav class="bp-subtabs" aria-label="Sections du chantier">
+        <a href="{{ path('app_chantier_show', {'id': chantier.id}) }}" class="bp-subtab is-active">Informations</a>
+        <a href="{{ path('app_chantier_suivi', {'id': chantier.id}) }}" class="bp-subtab">Suivi</a>
+    </nav>
 
     <section class="m-card">
         <dl class="bp-dl">

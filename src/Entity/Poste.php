@@ -33,6 +33,12 @@ class Poste
     #[ORM\OneToMany(targetEntity: VisibilitePoste::class, mappedBy: 'poste')]
     private Collection $visibilitePostes;
 
+    /**
+     * @var Collection<int, ChantierPoste>
+     */
+    #[ORM\OneToMany(targetEntity: ChantierPoste::class, mappedBy: 'poste')]
+    private Collection $chantierPostes;
+
     #[ORM\ManyToOne(inversedBy: 'posteTemp')]
     private ?LigneDevisSupplementaire $ligneDevisSupplementaire = null;
 
@@ -40,6 +46,7 @@ class Poste
     {
         $this->taches = new ArrayCollection();
         $this->visibilitePostes = new ArrayCollection();
+        $this->chantierPostes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -138,13 +145,57 @@ class Poste
         return $this;
     }
 
-    public function isVisible($code): bool
+    /**
+     * @return Collection<int, ChantierPoste>
+     */
+    public function getChantierPostes(): Collection
     {
+        return $this->chantierPostes;
+    }
+
+    public function addChantierPoste(ChantierPoste $chantierPoste): static
+    {
+        if (!$this->chantierPostes->contains($chantierPoste)) {
+            $this->chantierPostes->add($chantierPoste);
+            $chantierPoste->setPoste($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChantierPoste(ChantierPoste $chantierPoste): static
+    {
+        if ($this->chantierPostes->removeElement($chantierPoste)) {
+            // set the owning side to null (unless already changed)
+            if ($chantierPoste->getPoste() === $this) {
+                $chantierPoste->setPoste(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isVisible(string $code): bool
+    {
+        $normalizedCode = strtoupper(trim($code));
+        if ($normalizedCode === '') {
+            return false;
+        }
+
         foreach ($this->visibilitePostes as $visibilitePoste) {
-            if ($visibilitePoste->getVisibilite()->getCode() === $code && $visibilitePoste->getArchive() === 0) {
+            $visibilite = $visibilitePoste->getVisibilite();
+            if ($visibilite === null) {
+                continue;
+            }
+
+            if (
+                strtoupper(trim((string) $visibilite->getCode())) === $normalizedCode
+                && (int) $visibilitePoste->getArchive() === 0
+            ) {
                 return true;
             }
         }
+
         return false;
     }
 
