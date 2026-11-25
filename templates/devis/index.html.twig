@@ -1,52 +1,71 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
-{% block title %}Devis index{% endblock %}
+{% block title %}Devis{% endblock %}
 
 {% block body %}
-    <h1>Devis index</h1>
+    <div class="page-header">
+        <div>
+            <h1>Devis</h1>
+            <p class="subtitle">Devis classés par etats.</p>
+        </div>
+        <div class="page-header__actions bp-head-actions">
+            <a href="{{ path('app_devis_new') }}" class="m-btn m-btn--primary"><i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter un devis</a>
+            <a href="{{ path('devis_archives') }}" class="bp-link bp-link--muted">Voir les devis archivés →</a>
+        </div>
+    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>DateCreation</th>
-                <th>DateValidite</th>
-                <th>RefInterne</th>
-                <th>DateSignature</th>
-                <th>DateRDVClient</th>
-                <th>EtatDevis</th>
-                <th>TarifStructure</th>
-                <th>Ville</th>
-                <th>Nom1</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for devi in devis %}
-            <tr>
-                <td>{{ devi.id }}</td>
-                <td>{{ devi.dateCreation ? devi.dateCreation|date('Y-m-d') : '' }}</td>
-                <td>{{ devi.dateValidite ? devi.dateValidite|date('Y-m-d') : '' }}</td>
-                <td>{{ devi.refInterne }}</td>
-                <td>{{ devi.dateSignature ? devi.dateSignature|date('Y-m-d') : '' }}</td>
-                <td>{{ devi.dateRDVClient ? devi.dateRDVClient|date('Y-m-d') : '' }}</td>
-                <td>{{ devi.etatDevis.id }}</td>
-                <td>{{ devi.TarifStructure.id }}</td>
-                <td>{{ devi.Maison.ville }}</td>
-                <td>{{ devi.Maison.Client.nom }}</td>
+    <div class="bp-toolbar">
+        <div class="bp-search">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <input type="search" class="form-control" id="devis-search" placeholder="Rechercher : référence, client, ville…" aria-label="Rechercher un devis">
+        </div>
+    </div>
 
-                <td>
-                    <a href="{{ path('app_devis_show', {'id': devi.id}) }}">show</a>
-                    <a href="{{ path('app_devis_edit', {'id': devi.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_devis_new') }}">Create new</a>
+    {% for etat in etats %}
+    <section class="bp-section is-open">
+        <button type="button" class="bp-section__toggle" data-bp-toggle aria-expanded="true">
+            <h2 class="bp-section__title">{{ etat.nom }}</h2>
+            <span class="bp-badge bp-badge--accent">{{ etat.devis|length }}</span>
+            <i class="fa-solid fa-chevron-down bp-section__chevron" aria-hidden="true"></i>
+        </button>
+        <div class="bp-section__body">
+            <div class="bp-table-wrap">
+                <table class="bp-table bp-table--cards">
+                    <thead><tr><th>Référence</th>{%if etat.id == 1 %}<th>Date de creation</th><th>Date de validité</th>{%elseif etat.id == 2 %}<th>Date de RDV Client</th><th>Date de validité</th>{%elseif etat.id == 3 %}<th>Date de creation</th><th>Date de signature</th>{%endif%}<th>Nom et prénom du client</th><th>Ville</th><th>Derniere version</th><th class="is-end">Actions</th></tr></thead>
+                    <tbody>
+                    {% for devis in etat.devis %}
+                        <tr>
+                        <td class="bp-table__ref" data-label="Référence">{{ devis.refInterne}}</td>
+                        {%if etat.id == 1 %}
+                        <td data-label="Date de creation">{{ devis.dateCreation ? devis.dateCreation|date('d/m/Y') : '-' }}</td>
+                        <td data-label="Date de validité">{{ devis.dateValidite ? devis.dateValidite|date('d/m/Y') : '-' }}</td>
+                        {%elseif etat.id == 2%}
+                        <td data-label="Date de RDV client">{{ devis.dateRDVClient ? devis.dateRDVClient|date('d/m/Y') : '-' }}</td>
+                        <td data-label="Date de validité">{{ devis.dateValidite ? devis.dateValidite|date('d/m/Y') : '-' }}</td>
+                        {%elseif etat.id == 3%}
+                        <td data-label="Date de creation">{{ devis.dateCreation ? devis.dateCreation|date('d/m/Y') : '-' }}</td>
+                        <td data-label="Date de signature">{{ devis.dateSignature ? devis.dateSignature|date('d/m/Y') : '-' }}</td>
+                        {%endif%}
+                        <td class="bp-table__ref" data-label="Nom et prénom du client">{{ devis.maison.client.nom}} {{ devis.maison.client.prenom}}</td>
+                        <td class="bp-table__ref" data-label="Ville">{{ devis.maison.ville}}</td>
+                        <td class="bp-table__ref" data-label="Derniere version">{{ (devis.devisModifs|last).version ?? '-' }}</td>
+                        <td class="is-end"><div class="bp-actions"><a class="bp-link" href="{{ path('app_devis_show', {'id': devis.id}) }}">Voir</a><a class="bp-link" href="{{ path('app_devis_edit', {'id': devis.id}) }}">Modifier</a></div></td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="5" class="bp-table__empty">Aucun devis pour cet etat.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    {% else %}
+    <section class="m-card">
+        <div class="empty-state">
+            <span class="empty-state__icon"><i class="fa-solid fa-helmet-safety" aria-hidden="true"></i></span>
+            <h2 class="empty-state__title">Aucun etat de devis</h2>
+            <p class="empty-state__text">Créez d'abord les etats dans les données référentielles.</p>
+        </div>
+    </section>
+    {% endfor %}
 {% endblock %}
