@@ -49,8 +49,23 @@ class Devis
     #[ORM\JoinColumn(nullable: false)]
     private ?Maison $maison = null;
 
+    /**
+     * @var Collection<int, DevisModif>
+     */
+    #[ORM\OneToMany(targetEntity: DevisModif::class, mappedBy: 'devis')]
+    #[ORM\OrderBy(['version' => 'ASC'])]
+    private Collection $devisModifs;
+
+    #[ORM\Column]
+    private ?int $archive = null;
+
     #[ORM\ManyToOne(inversedBy: 'devis')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Prime $prime = null;
     private ?LigneDevisSupplementaire $ligneDevisSupplementaire = null;
+    
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Prime $prime = null;
 
     /**
      * @var Collection<int, DevisPrestation>
@@ -62,6 +77,7 @@ class Devis
     {
         $this->devisDocuments = new ArrayCollection();
         $this->devisPrestations = new ArrayCollection();
+        $this->devisModifs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -202,6 +218,15 @@ class Devis
         return $this;
     }
 
+    public function getPrime(): ?Prime
+    {
+        return $this->prime;
+    }
+
+    public function setPrime(?Prime $prime): static
+    {
+        $this->prime = $prime;
+    }
     public function getLigneDevisSupplementaire(): ?LigneDevisSupplementaire
     {
         return $this->ligneDevisSupplementaire;
@@ -210,6 +235,56 @@ class Devis
     public function setLigneDevisSupplementaire(?LigneDevisSupplementaire $ligneDevisSupplementaire): static
     {
         $this->ligneDevisSupplementaire = $ligneDevisSupplementaire;
+    }
+    public function getPrime(): ?Prime
+    {
+        return $this->prime;
+    }
+
+    public function setPrime(?Prime $prime): static
+    {
+        $this->prime = $prime;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DevisModif>
+     */
+    public function getDevisModifs(): Collection
+    {
+        return $this->devisModifs;
+    }
+
+    public function addDevisModif(DevisModif $devisModif): static
+    {
+        if (!$this->devisModifs->contains($devisModif)) {
+            $this->devisModifs->add($devisModif);
+            $devisModif->setDevis($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevisModif(DevisModif $devisModif): static
+    {
+        if ($this->devisModifs->removeElement($devisModif)) {
+            // set the owning side to null (unless already changed)
+            if ($devisModif->getDevis() === $this) {
+                $devisModif->setDevis(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getArchive(): ?int
+    {
+        return $this->archive;
+    }
+
+    public function setArchive(int $archive): static
+    {
+        $this->archive = $archive;
 
         return $this;
     }

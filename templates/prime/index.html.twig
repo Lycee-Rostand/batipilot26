@@ -1,0 +1,60 @@
+
+{% extends 'layout.html.twig' %}
+
+{% block title %}Primes{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <h1>Primes</h1>
+            <p class="subtitle">Liste des primes et de leurs organismes associés.</p>
+        </div>
+        <div class="page-header__actions">
+            <a href="{{ path('app_prime_new') }}" class="m-btn m-btn--primary">
+                <i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter une prime
+            </a>
+        </div>
+    </div>
+
+    <section class="m-card">
+        <div class="bp-table-wrap">
+            <table class="bp-table bp-table--cards">
+                <thead>
+                    <tr>
+                        <th>Libellé</th>
+                        <th>Organisme</th>
+                        <th class="is-num">Montant</th>
+                        <th class="is-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for prime in primes %}
+                    <tr>
+                        <td class="bp-table__ref" data-label="Libellé">
+                            {{ prime.libelle }}
+                        </td>
+                        <td data-label="Organisme">
+                            {{ prime.organisme }}
+                        </td>
+                        <td class="is-num" data-label="Montant">
+                            {{ prime.montant }}
+                        </td>
+                        <td class="is-end">
+                            <div class="bp-actions">
+                                <a class="bp-link" href="{{ path('app_prime_show', {'id': prime.id}) }}">Voir</a>
+                                <a class="bp-link" href="{{ path('app_prime_edit', {'id': prime.id}) }}">Modifier</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="bp-table__empty">
+                            Aucune prime enregistrée.
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

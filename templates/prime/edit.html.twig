@@ -1,0 +1,22 @@
+
+{% extends 'layout.html.twig' %}
+
+{% block title %}Modifier la prime{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <nav class="bp-breadcrumb" aria-label="Fil d'Ariane">
+                <a href="{{ path('app_prime_index') }}">Primes</a>
+                <span aria-hidden="true">/</span>
+                <span>{{ prime.libelle }}</span>
+            </nav>
+            <h1>Modifier la prime</h1>
+        </div>
+        <div class="page-header__actions">
+            {{ include('prime/_delete_form.html.twig') }}
+        </div>
+    </div>
+
+    {{ include('prime/_form.html.twig', {'button_label': 'Enregistrer les modifications'}) }}
+{% endblock %}
