@@ -73,10 +73,54 @@
 
     <script>
         (function () {
+            const MAX_LENGTH = 100;
             const addBtn = document.getElementById('js-add-inline-type');
             const tbody = document.getElementById('js-type-document-tbody');
             const actionUrl = "{{ path('app_type_document_new') }}";
             const indexUrl = "{{ path('app_type_document_index') }}";
+
+            function getExistingNames(excludeRow = null) {
+                const names = [];
+                tbody?.querySelectorAll('tr[data-row-id]').forEach(row => {
+                    if (excludeRow && row === excludeRow) return;
+                    const trigger = row.querySelector('.js-edit-inline-trigger');
+                    const nom = trigger?.dataset.currentNom ?? row.querySelector('.js-nom-cell')?.textContent ?? '';
+                    const cleaned = nom.trim().toLowerCase();
+                    if (cleaned) names.push(cleaned);
+                });
+                return names;
+            }
+
+            function validateNom(value, excludeRow = null) {
+                const trimmed = value.trim();
+                if (!trimmed) {
+                    return 'Veuillez saisir un nom.';
+                }
+                if (trimmed.length > MAX_LENGTH) {
+                    return `Le nom est trop long (${trimmed.length}/${MAX_LENGTH} caractères maximum).`;
+                }
+                const existing = getExistingNames(excludeRow);
+                if (existing.includes(trimmed.toLowerCase())) {
+                    return 'Ce type de document existe déjà.';
+                }
+                return null;
+            }
+
+            function extractServerError(htmlText, fallbackMessage) {
+                const doc = new DOMParser().parseFromString(htmlText, 'text/html');
+                const specific = doc.querySelector('.form-error-message, .invalid-feedback, .alert-danger li, .alert-danger');
+                if (specific && specific.textContent.trim()) {
+                    return specific.textContent.trim();
+                }
+                const lower = htmlText.toLowerCase();
+                if (lower.includes('unique') || lower.includes('duplicate') || lower.includes('existe déjà')) {
+                    return 'Ce type de document existe déjà.';
+                }
+                if (lower.includes('too long') || lower.includes('trop long') || lower.includes('100 characters') || lower.includes('100 caractères')) {
+                    return `Le nom est trop long (${MAX_LENGTH} caractères maximum).`;
+                }
+                return fallbackMessage;
+            }
 
             // --- AJOUT EN LIGNE ---
             if (addBtn && tbody) {
@@ -110,7 +154,9 @@
                         }
                     } catch (e) {}
 
-                    document.getElementById('js-empty-row')?.remove();
+                    const emptyRow = document.getElementById('js-empty-row');
+                    const emptyRowHtml = emptyRow ? emptyRow.outerHTML : '';
+                    emptyRow?.remove();
 
                     const tr = document.createElement('tr');
                     tr.id = 'js-temp-create-row';
@@ -122,6 +168,7 @@
                                            id="js-temp-create-input"
                                            name="${nomInputName}"
                                            placeholder="Nom du type de document..."
+                                           maxlength="${MAX_LENGTH + 20}"
                                            required
                                            style="padding:6px 10px; border:1px solid #cbd5e1; border-radius:6px; width:100%; max-width:340px;">
                                     <input type="hidden" name="${archiveInputName}" value="0">
@@ -147,26 +194,57 @@
                     const input = document.getElementById('js-temp-create-input');
                     const form = document.getElementById('js-inline-create-form');
                     const submitBtn = document.getElementById('js-submit-inline-type');
+                    const cancelBtn = document.getElementById('js-cancel-inline-type');
                     const errorEl = document.getElementById('js-inline-error');
 
                     input?.focus();
 
-                    document.getElementById('js-cancel-inline-type')?.addEventListener('click', function () {
+                    function showError(msg) {
+                        errorEl.textContent = msg;
+                        errorEl.style.display = 'block';
+                        input.style.borderColor = '#dc2626';
+                        input?.focus();
+                    }
+
+                    function clearError() {
+                        errorEl.textContent = '';
+                        errorEl.style.display = 'none';
+                        input.style.borderColor = '#cbd5e1';
+                    }
+
+                    input?.addEventListener('input', clearError);
+
+                    function cancelCreate() {
                         tr.remove();
+                        if (emptyRowHtml && tbody.children.length === 0) {
+                            tbody.innerHTML = emptyRowHtml;
+                        }
+                    }
+
+                    cancelBtn?.addEventListener('click', cancelCreate);
+
+                    input?.addEventListener('keydown', function (e) {
+                        if (e.key === 'Escape') {
+                            e.preventDefault();
+                            cancelCreate();
+                            return;
+                        }
+                        if (e.key === 'Enter' && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
+                            e.preventDefault();
+                            form?.requestSubmit();
+                        }
                     });
 
                     form?.addEventListener('submit', async function (e) {
                         e.preventDefault();
 
-                        const val = input.value.trim();
-                        if (!val) {
-                            errorEl.textContent = 'Veuillez saisir un nom.';
-                            errorEl.style.display = 'block';
-                            input.focus();
+                        const validationError = validateNom(input.value);
+                        if (validationError) {
+                            showError(validationError);
                             return;
                         }
 
-                        errorEl.style.display = 'none';
+                        clearError();
                         if (submitBtn) submitBtn.disabled = true;
 
                         try {
@@ -182,14 +260,10 @@
                             }
 
                             const errHtml = await response.text();
-                            const errDoc = new DOMParser().parseFromString(errHtml, 'text/html');
-                            const symfonyError = errDoc.querySelector('.form-error-message, .invalid-feedback, li');
-                            errorEl.textContent = symfonyError?.textContent?.trim() || 'Erreur lors de la validation du formulaire.';
-                            errorEl.style.display = 'block';
+                            showError(extractServerError(errHtml, 'Erreur lors de la validation du formulaire.'));
                             if (submitBtn) submitBtn.disabled = false;
                         } catch (err) {
-                            errorEl.textContent = 'Erreur réseau, réessayez.';
-                            errorEl.style.display = 'block';
+                            showError('Erreur réseau, réessayez.');
                             if (submitBtn) submitBtn.disabled = false;
                         }
                     });
@@ -204,7 +278,6 @@
                 const tr = editBtn.closest('tr');
                 if (!tr || tr.dataset.editing === '1') return;
 
-                // Ferme toute autre ligne déjà en cours d'édition
                 document.querySelectorAll('tr[data-editing="1"]').forEach(otherTr => {
                     if (otherTr.dataset.originalHtml) {
                         otherTr.innerHTML = otherTr.dataset.originalHtml;
@@ -221,7 +294,6 @@
                 tr.dataset.editing = '1';
                 tr.dataset.originalHtml = tr.innerHTML;
 
-                // Récupère le token CSRF et les noms de champs depuis la page edit
                 let csrfToken = '';
                 let csrfInputName = 'type_document[_token]';
                 let nomInputName = 'type_document[nom]';
@@ -242,7 +314,6 @@
                         const nomField = doc.querySelector('input[name$="[nom]"]');
                         if (nomField) nomInputName = nomField.name;
 
-                        // Conserve les éventuels autres champs du formulaire (ex: archive) avec leur valeur actuelle
                         doc.querySelectorAll('input, select, textarea').forEach(field => {
                             if (!field.name || field.name.endsWith('[_token]') || field.name.endsWith('[nom]')) return;
                             if ((field.type === 'checkbox' || field.type === 'radio') && !field.checked) return;
@@ -251,11 +322,12 @@
                     }
                 } catch (err) {}
 
-                const formId = 'js-inline-edit-form-' + (tr.dataset.rowId || Date.now());
-                const inputId = 'js-inline-edit-input-' + (tr.dataset.rowId || Date.now());
-                const errorId = 'js-inline-edit-error-' + (tr.dataset.rowId || Date.now());
-                const submitId = 'js-inline-edit-submit-' + (tr.dataset.rowId || Date.now());
-                const cancelId = 'js-inline-edit-cancel-' + (tr.dataset.rowId || Date.now());
+                const rowKey = tr.dataset.rowId || Date.now();
+                const formId = 'js-inline-edit-form-' + rowKey;
+                const inputId = 'js-inline-edit-input-' + rowKey;
+                const errorId = 'js-inline-edit-error-' + rowKey;
+                const submitId = 'js-inline-edit-submit-' + rowKey;
+                const cancelId = 'js-inline-edit-cancel-' + rowKey;
 
                 const hiddenHtml = [
                     ...extraHiddenFields.map(f => `<input type="hidden" name="${f.name}" value="${f.value.replace(/"/g, '&quot;')}">`),
@@ -268,6 +340,7 @@
                                id="${inputId}"
                                name="${nomInputName}"
                                value="${currentNom}"
+                               maxlength="${MAX_LENGTH + 20}"
                                required
                                style="padding:6px 10px; border:1px solid #cbd5e1; border-radius:6px; width:100%; max-width:340px;">
                         ${hiddenHtml}
@@ -293,23 +366,50 @@
                 input?.focus();
                 input?.select();
 
-                cancelBtn?.addEventListener('click', function () {
+                function showEditError(msg) {
+                    errorEl.textContent = msg;
+                    errorEl.style.display = 'block';
+                    input.style.borderColor = '#dc2626';
+                    input?.focus();
+                }
+
+                function clearEditError() {
+                    errorEl.textContent = '';
+                    errorEl.style.display = 'none';
+                    input.style.borderColor = '#cbd5e1';
+                }
+
+                input?.addEventListener('input', clearEditError);
+
+                function cancelEdit() {
                     tr.innerHTML = tr.dataset.originalHtml;
                     tr.dataset.editing = '0';
+                }
+
+                cancelBtn?.addEventListener('click', cancelEdit);
+
+                input?.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        cancelEdit();
+                        return;
+                    }
+                    if (e.key === 'Enter' && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
+                        e.preventDefault();
+                        form?.requestSubmit();
+                    }
                 });
 
                 form?.addEventListener('submit', async function (e) {
                     e.preventDefault();
 
-                    const val = input.value.trim();
-                    if (!val) {
-                        errorEl.textContent = 'Veuillez saisir un nom.';
-                        errorEl.style.display = 'block';
-                        input.focus();
+                    const validationError = validateNom(input.value, tr);
+                    if (validationError) {
+                        showEditError(validationError);
                         return;
                     }
 
-                    errorEl.style.display = 'none';
+                    clearEditError();
                     if (submitBtn) submitBtn.disabled = true;
 
                     try {
@@ -325,20 +425,28 @@
                         }
 
                         const errHtml = await response.text();
-                        const errDoc = new DOMParser().parseFromString(errHtml, 'text/html');
-                        const symfonyError = errDoc.querySelector('.form-error-message, .invalid-feedback, li');
-                        errorEl.textContent = symfonyError?.textContent?.trim() || 'Erreur lors de la modification.';
-                        errorEl.style.display = 'block';
+                        showEditError(extractServerError(errHtml, 'Erreur lors de la modification.'));
                         if (submitBtn) submitBtn.disabled = false;
                     } catch (err) {
-                        errorEl.textContent = 'Erreur réseau, réessayez.';
-                        errorEl.style.display = 'block';
+                        showEditError('Erreur réseau, réessayez.');
                         if (submitBtn) submitBtn.disabled = false;
                     }
                 });
             });
 
-            // --- COULEUR / TEXTE BOUTON MODALE ARCHIVER ---
+            // --- COULEUR / TEXTE + RACCOURCIS ENTRÉE / ÉCHAP SUR LA MODALE ARCHIVER ---
+            function getActiveConfirmModal() {
+                return document.querySelector('.bp-modal.is-open, .bp-confirm.is-open, [data-bp-modal].is-open, .modal.show, dialog[open]')
+                    || Array.from(document.querySelectorAll('div, dialog')).find(el => {
+                        if (el.id === 'js-add-inline-type' || el.closest('table')) return false;
+                        const style = window.getComputedStyle(el);
+                        return style.display !== 'none' &&
+                            style.visibility !== 'hidden' &&
+                            el.querySelector('button.m-btn--danger, button[type="submit"].btn-danger, .btn-danger, [data-bp-confirm-ok], [data-confirm]');
+                    })
+                    || null;
+            }
+
             document.addEventListener('click', function (e) {
                 const trigger = e.target.closest('.js-archive-trigger');
                 if (!trigger) return;
@@ -347,23 +455,46 @@
                 const color = trigger.dataset.actionColor;
 
                 setTimeout(() => {
-                    const modal = document.querySelector('.bp-modal.is-open, .bp-confirm.is-open, [data-bp-modal].is-open, .modal.show, dialog[open]')
-                        || Array.from(document.querySelectorAll('div, dialog')).find(el =>
-                            window.getComputedStyle(el).display !== 'none' &&
-                            el.querySelector('button.m-btn--danger, button[type="submit"].btn-danger, .btn-danger')
-                        );
-
+                    const modal = getActiveConfirmModal();
                     if (!modal) return;
 
-                    const confirmBtn = modal.querySelector('button.m-btn--danger, .m-btn--danger, .btn-danger, button[type="submit"]');
+                    const confirmBtn = modal.querySelector('button.m-btn--danger, .m-btn--danger, .btn-danger, [data-bp-confirm-ok], [data-confirm], button[type="submit"]');
                     if (confirmBtn) {
                         confirmBtn.textContent = label;
                         confirmBtn.style.backgroundColor = color;
                         confirmBtn.style.borderColor = color;
                         confirmBtn.style.color = '#fff';
+                        confirmBtn.focus();
                     }
                 }, 10);
             });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key !== 'Enter' && e.key !== 'Escape') return;
+                if (e.shiftKey || e.altKey || e.ctrlKey || e.metaKey) return;
+
+                const activeTag = document.activeElement?.tagName;
+                if (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || activeTag === 'SELECT') return;
+
+                const modal = getActiveConfirmModal();
+                if (!modal) return;
+
+                if (e.key === 'Enter') {
+                    const confirmBtn = modal.querySelector('button.m-btn--danger, .m-btn--danger, .btn-danger, [data-bp-confirm-ok], [data-confirm], button[type="submit"]');
+                    if (confirmBtn) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        confirmBtn.click();
+                    }
+                } else if (e.key === 'Escape') {
+                    const cancelBtn = modal.querySelector('[data-bp-confirm-cancel], [data-cancel], [data-dismiss], .bp-modal__close, button[type="button"]');
+                    if (cancelBtn) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        cancelBtn.click();
+                    }
+                }
+            }, true);
         })();
     </script>
 {% endblock %}
