@@ -26,8 +26,8 @@ class LigneDevisSupplementaire
     #[ORM\Column(type: Types::DECIMAL, precision: 15, scale: 2)]
     private ?string $montantTva = null;
 
-    #[ORM\Column(type: Types::NUMBER)]
-    private ?Number $ordre = null;
+    #[ORM\Column]
+    private ?int $ordre = null;
 
     /**
      * @var Collection<int, Poste>
@@ -40,6 +40,8 @@ class LigneDevisSupplementaire
      */
     #[ORM\OneToMany(targetEntity: Devis::class, mappedBy: 'ligneDevisSupplementaire')]
     private Collection $devis;
+
+
 
     public function __construct()
     {
@@ -88,12 +90,12 @@ class LigneDevisSupplementaire
         return $this;
     }
 
-    public function getOrdre(): ?Number
+    public function getOrdre(): ?int
     {
         return $this->ordre;
     }
 
-    public function setOrdre(Number $ordre): static
+    public function setOrdre(int $ordre): static
     {
         $this->ordre = $ordre;
 
@@ -159,4 +161,6 @@ class LigneDevisSupplementaire
 
         return $this;
     }
+
+
 }
