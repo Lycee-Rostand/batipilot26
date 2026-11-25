@@ -30,6 +30,7 @@ class Prestation
     #[Assert\NotBlank]
     private ?string $description = null;
 
+    // Facultatif : certaines lignes du catalogue n'ont pas de prix (en-têtes "comprenant :", CH...)
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Assert\PositiveOrZero]
     private ?string $montantUnitaire = null;
@@ -55,6 +56,7 @@ class Prestation
     #[Assert\NotNull]
     private ?Tva $tva = null;
 
+    // cif11 : Prestation 0,1 — Unite 0,n (facultatif : toutes les prestations n'ont pas d'unité)
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true)]
     #[Assert\NotNull]
